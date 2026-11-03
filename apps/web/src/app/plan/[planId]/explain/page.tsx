@@ -79,6 +79,18 @@ function Body() {
         </section>
       )}
 
+      {ex.enrichment && ex.enrichment.length > 0 && (
+        <section className="rounded-2xl border bg-card p-5">
+          <h2 className="mb-1 flex items-center gap-2 font-semibold"><Lightbulb className="size-4.5 text-primary" /> Optional enrichment</h2>
+          <p className="mb-3 text-xs text-muted-foreground">Courses that match your interests but are not in a schedule this term. They are not presented as meeting any requirement.</p>
+          <ul className="space-y-2 text-sm">
+            {ex.enrichment.map((e) => (
+              <li key={e.course}><span className="font-medium">{e.course}</span> {e.title} <span className="text-xs text-muted-foreground">({Math.round(e.score * 100)}% match) — {e.why_not}</span></li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <HowCreated plan={plan} review={review} />
 
       <p className="rounded-xl bg-muted/60 p-3 text-xs text-muted-foreground"><ShieldCheck className="mr-1 inline size-3.5" />{ex.disclaimer}</p>

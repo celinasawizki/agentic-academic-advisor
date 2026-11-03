@@ -29,6 +29,7 @@ export default function Workspace() {
   const history = plan.state._history ?? []
 
   return (
+    <>
     <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
       <div>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -91,6 +92,8 @@ export default function Workspace() {
         )}
       </aside>
     </div>
+    {agents.some((a) => a.decision?.task) && <DecisionLog agents={agents} />}
+    </>
   )
 }
 
@@ -153,5 +156,45 @@ function AgentCard({ a, index }: { a: AgentExecution; index: number }) {
         </div>
       )}
     </li>
+  )
+}
+
+const VSTATUS: Record<string, "success" | "warning" | "danger" | "neutral"> = { passed: "success", warnings: "warning", failed: "danger", "n/a": "neutral" }
+
+function DecisionLog({ agents }: { agents: AgentExecution[] }) {
+  const rows = agents.filter((a) => a.status === "complete" && a.decision?.task)
+  return (
+    <section className="mt-6 rounded-2xl border bg-card">
+      <div className="border-b px-4 py-3">
+        <h3 className="font-semibold">Decision log</h3>
+        <p className="text-xs text-muted-foreground">
+          Structured summaries built from each agent&apos;s actual output and evidence — not model reasoning. Later agents check earlier findings
+          (e.g. Interest Matching cross-checks requirement links and section availability).
+        </p>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[860px] text-left text-xs">
+          <thead className="bg-muted/40 text-muted-foreground">
+            <tr><th className="px-3 py-2">Agent</th><th className="px-3 py-2">Research task &amp; sources</th><th className="px-3 py-2">Findings</th>
+              <th className="px-3 py-2">Recommendation</th><th className="px-3 py-2">Validation</th><th className="px-3 py-2">Unresolved</th></tr>
+          </thead>
+          <tbody>
+            {rows.map((a) => {
+              const d = a.decision!
+              return (
+                <tr key={a.id} className="border-t align-top">
+                  <td className="px-3 py-2 font-medium whitespace-nowrap">{a.title.replace(" Agent", "")}</td>
+                  <td className="px-3 py-2"><div>{d.task}</div><div className="mt-1 text-muted-foreground">{(d.data_sources ?? []).join(" · ")}</div></td>
+                  <td className="px-3 py-2"><ul className="list-disc space-y-0.5 pl-4">{(d.findings ?? []).filter(Boolean).map((f) => <li key={f}>{f}</li>)}</ul></td>
+                  <td className="px-3 py-2">{d.recommendation}</td>
+                  <td className="px-3 py-2"><Pill tone={VSTATUS[d.validation?.status ?? "n/a"]}>{d.validation?.status}</Pill><div className="mt-1 text-muted-foreground">{d.validation?.detail}</div></td>
+                  <td className="px-3 py-2">{(d.unresolved ?? []).length ? <ul className="list-disc space-y-0.5 pl-4 text-warning">{d.unresolved!.map((u) => <li key={u}>{u}</li>)}</ul> : <span className="text-muted-foreground">None</span>}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
   )
 }

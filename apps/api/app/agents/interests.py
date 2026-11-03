@@ -104,7 +104,7 @@ def fallback_scores(themes: list[str], courses: dict[str, dict], free_terms: lis
             if strength > 0:
                 miss_prob *= 1 - 0.85 * strength
                 matched.append(label)
-                evidence += [h for h in h_title + h_desc if h not in evidence]
+                evidence += [h for h in dict.fromkeys(h_title + h_desc) if h not in evidence]
         score = round(1 - miss_prob, 3)
         reason = (f"Course description covers {', '.join(repr(e) for e in evidence[:4])}, related to your interest in {', '.join(matched)}."
                   if matched else f"Course description mentions {', '.join(repr(e) for e in evidence[:4])} from your interests."
@@ -216,6 +216,26 @@ class InterestMatchingAgent(Agent):
             elif not ev["eligible"] and len(enrichment) < 6:
                 enrichment.append({**base, "why_not": ev["reason"]})
         return electives, enrichment
+
+    def decision(self, ctx, o):
+        disc = ctx.state.get("course_discovery", {})
+        reqs = {r["id"]: r for r in ctx.state.get("degree_requirements", {}).get("requirements", [])}
+        offered = {e["course"] for e in disc.get("eligible_sections", [])}
+        checks = []
+        for code in o["ranking"][:4]:
+            info = disc.get("courses", {}).get(code, {})
+            rnames = [reqs[r]["name"][:50] for r in info.get("requirement_ids", []) if r in reqs]
+            checks.append(f"{code} ({o['scores'][code]['score']:.2f}): "
+                          + (f"may satisfy {rnames[0]} (pending verification)" if rnames else "no requirement match")
+                          + ("; eligible section available" if code in offered else f"; not schedulable ({'prerequisite' if info.get('prereq_status') == 'missing' else 'no eligible section'})"))
+        method = next(iter(o["scores"].values()), {}).get("method", "n/a") if o["scores"] else "n/a"
+        return {"task": "Interpret free-text interests and rank courses by relevance",
+                "data_sources": ["Student interest text", "Bulletin course descriptions", f"Scoring method: {method}"],
+                "findings": [f"Themes: {', '.join(t['label'] for t in o['themes']) or 'none'}", *checks,
+                             f"{len(o.get('interest_electives', []))} interest-based elective(s) found outside requirements"],
+                "recommendation": "Rank requirement courses by interest; offer non-requirement matches only as free electives.",
+                "validation": {"status": "passed", "detail": "Cross-checked against requirement links (Requirements Agent) and sections (Discovery Agent)"},
+                "unresolved": [f"{e['course']}: {e['why_not']}" for e in o.get("enrichment", [])[:4]]}
 
     def summarize(self, o: dict) -> str:
         top = ", ".join(o["ranking"][:3])

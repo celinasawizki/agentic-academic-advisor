@@ -44,6 +44,8 @@ export type OptionSection = Section & {
   credits: number
   requires_linked_section?: boolean
   time_tba?: boolean
+  category?: CourseCategory
+  component_pairing?: "single" | "inferred"
   requirement_ids: string[]
   prereq_status: "satisfied" | "conditional" | "missing"
   prereq_pending: string[]
@@ -58,6 +60,7 @@ export type F1 = {
   status: "meets" | "below" | "needs_confirmation" | "not_applicable"
   credits_toward_full_time: number
   full_time_required: number
+  in_person_credits: number
   online_credits: number
   online_credits_counted: number
   hybrid_credits: number
@@ -125,6 +128,36 @@ export type RequirementProgress = {
   candidate_courses: string[]
   status: "complete" | "in_progress" | "incomplete" | "manual" | "note"
   notes: string[]
+  reliability?: Reliability
+  reliability_reason?: string
+}
+
+export type Reliability = "VERIFIED" | "PENDING_VERIFICATION" | "AMBIGUOUS" | "UNAVAILABLE" | "BLOCKED"
+export type CourseCategory = "REQUIRED" | "DEGREE_ELECTIVE" | "INTEREST_ELECTIVE" | "OPTIONAL_ENRICHMENT"
+
+export type Decision = {
+  task: string
+  data_sources: string[]
+  findings: string[]
+  recommendation: string
+  validation: { status: "passed" | "warnings" | "failed" | "n/a"; detail: string }
+  unresolved: string[]
+}
+
+export type Provenance = {
+  term: string
+  term_id: string
+  course: string
+  crn: string
+  section: string
+  campus: string
+  modality: string
+  meetings: string
+  instructor: string
+  source: string
+  retrieved_at: string
+  seats: string
+  availability_status: string
 }
 
 export type CourseExplanation = {
@@ -138,9 +171,14 @@ export type CourseExplanation = {
   location: string
   reasons: { kind: string; verified: boolean; text: string; status?: string; source?: string | null; score?: number; ai_generated?: boolean }[]
   prerequisites: string
+  prerequisite_text?: string
   requirement_status: string
   section_choice: string
-  data: { source: string; retrieved_at: string; crn: string }
+  category?: CourseCategory
+  category_label?: string
+  alternatives_considered?: { course: string; title: string; why_not: string }[]
+  unverified?: string[]
+  data: Provenance
 }
 
 export type AgentExecution = {
@@ -155,6 +193,7 @@ export type AgentExecution = {
   log: { t: string; message: string; data: Record<string, unknown> }[]
   sources: { kind: string; description: string; url: string | null; retrieved_at: string | null; verification_status: string }[]
   error: string | null
+  decision?: Partial<Decision>
   started_at: string | null
   finished_at: string | null
 }
@@ -171,6 +210,7 @@ export type StudentSnapshot = {
   campus: string
   f1_status: "yes" | "no" | "prefer_not"
   interests_text: string
+  career_interests?: string
   availability: AvailBlock[]
   preferences: {
     credit_target: number
@@ -182,6 +222,8 @@ export type StudentSnapshot = {
     excluded_courses: string[]
     required_courses: string[]
     interest_boost_terms: string[]
+    deferred_courses?: string[]
+    accepted_tradeoffs?: string[]
   }
 }
 
@@ -194,7 +236,7 @@ export type PlanState = {
   _history: { message: string; applied: string[]; assumptions: string[]; mode: string }[]
   _error?: string
   academic_profile?: Loose
-  degree_requirements?: { requirements: RequirementProgress[]; remaining: RequirementProgress[]; courses_needed: number; manual_review: RequirementProgress[]; review_flags: { requirement: string; issue: string }[] }
+  degree_requirements?: { requirements: RequirementProgress[]; remaining: RequirementProgress[]; courses_needed: number; manual_review: RequirementProgress[]; review_flags: { requirement: string; issue: string }[]; reliability_counts?: Record<Reliability, number> }
   course_discovery?: {
     term_id: string
     term_name: string
@@ -208,6 +250,8 @@ export type PlanState = {
     scores: Record<string, { score: number; reason: string; matched_themes: string[]; method: string }>
     ranking: string[]
     blocked_high_interest: { course: string; title: string; score: number; missing_prereq: string }[]
+    interest_electives?: { course: string; title: string; score: number; reason: string }[]
+    enrichment?: { course: string; title: string; score: number; reason: string; why_not: string }[]
   }
   graduation_planning?: {
     semesters_remaining: number
@@ -243,6 +287,7 @@ export type PlanState = {
     options: { option_id: string; label: string; courses: CourseExplanation[]; tradeoffs: string[]; unresolved: string[]; review_status: string; summary: string; ai_summary?: string }[]
     blocked_interest_alternatives: { course: string; title: string; message: string; eligible_alternatives: { course: string; title: string; in_a_schedule: boolean }[] }[]
     overall_ai_summary: string | null
+    enrichment?: { course: string; title: string; score: number; reason: string; why_not: string }[]
     disclaimer: string
   }
 }
@@ -252,6 +297,7 @@ export type Plan = {
   status: "pending" | "running" | "complete" | "failed"
   term_id: string
   student_id: string
+  is_demo?: boolean
   iteration: number
   agents: AgentExecution[]
   state: PlanState

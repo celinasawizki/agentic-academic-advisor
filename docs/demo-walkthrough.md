@@ -1,15 +1,17 @@
-# Demo walkthrough (≈5 minutes)
+# Demo walkthrough (≈6 minutes)
 
 Start the API and web app (see README). Students are fictional; programs, courses and sections are real Temple data (bulletin 2026-2027, Spring 2027 class-search snapshot).
 
-1. **Landing** (`/`) — "Your Degree. Your Schedule. Optimized." Click **Explore Demo**.
-2. **Demo** (`/demo`) — Lina Haddad: Psychology BA, Entrepreneurship & Innovation Management minor, Data Science: Computational Analytics certificate; interested in I-O Psychology and AI; works Mon/Wed 1–6 PM; prefers Fridays off; 15 credits; F-1. Click **Run the agents**.
-3. **Agent workspace** — nine cards move pending → running → complete from persisted execution records. Expand *Degree Requirements* (bulletin sources) and *Course Discovery* (real exclusions: full sections, Japan/Rome-only sections, missing prerequisites, courses not offered in Spring 2027).
-4. **Academic dashboard** — every bulletin rule for each program, grouped by the bulletin's headings, with "manual review" rules flagged; GenEd by attribute; PSY 3096 and STAT 2103 flagged graduation-critical.
-5. **Schedules** — three CP-SAT strategies over real sections (CRNs, instructors, rooms). Click a course for its explanation: bulletin rule it may satisfy, interest match, why this section, snapshot provenance.
-6. Click a **§ swap** button → the manual edit is validated by the same deterministic checks.
-7. **Ask for changes:** "I got a job on Tuesdays and Thursdays from 9 to 5" → hard blocks on both days; agents re-run (iteration 2). Every open section of PSY 3096 now collides with one of her jobs: CP-SAT shows the irreducible conflict {Job, Work, graduation-critical PSY 3096} and three verified fixes (change either job, or defer PSY 3096 with the graduation risk explained).
-8. **Explanation** → *How was this schedule created?*: agent summaries, constraint classes, and the review agent's checks (snapshot provenance, placement-test prerequisites, F-1 count).
-9. **Save draft to TUportal (mock)** → mock draft ID with real CRNs and the notice that nobody is registered.
-10. **Priya** (Computer Science BS) shows lecture + lab/recitation sections scheduled together. **Advisor view** (`/advisor`) summarizes all three students.
-11. **Build my schedule** — search any of the 435 programs, add courses or upload an audit PDF, and plan.
+**Demo student — Lina Haddad (fictional):** Psychology BA · Entrepreneurship & Innovation Management minor · Data Science: Computational Analytics certificate (Temple has no "Computer Science certificate"; this is the closest real one) · interested in I-O Psychology and AI · 15 credits · works Mon/Wed 1–6 PM · prefers Fridays off · Main Campus · F-1.
+
+1. **Onboarding** (`/onboarding`) — click *Prefill fictional demo values* and step through all seven screens: search among 435 programs, record entry and verification, interests plus career interests, the drag-to-paint availability grid and **days-off picker**, credit range, campus (Main only), F-1 with the immigration disclaimer. Or skip to step 2 to use Lina.
+2. **Academic record analysis** (`/demo` → *Run the agents*) — the **Agent workspace** shows nine persisted executions and the **Decision log**: each agent's task, sources, findings, recommendation, validation and unresolved items. Point out Interest Matching cross-checking requirement links and sections.
+3. **Academic dashboard** — every bulletin rule with its reliability (*Pending verification*, *Ambiguous* for the free-text "one additional course…", *Blocked* / *Unavailable* where relevant). Nothing is *Verified* without a recorded human check. PSY 3096 and STAT 2103 are graduation-critical.
+4. **Course recommendations & three schedule options** — Graduation Priority, Interest Priority and Work-Life Balance, computed by CP-SAT over real sections. Each course is labeled *Required course*, *Degree elective* or *Interest-based elective* (the latter explicitly does not count toward a requirement).
+5. **Transparent explanations** — click a course: why this course, requirement (with status), interest match, bulletin prerequisite text, why this section, alternatives considered, what's still unverified, and provenance (term, CRN, campus, modality, meetings, instructor, snapshot time, seats "not live"). The F-1 panel shows counted vs. additional online credits.
+6. **Schedule conflict** — in *Ask for changes* type: "I got a job on Tuesdays and Thursdays from 9 to 5". Agents re-run (iteration 2): *"We couldn't find a 15-credit schedule that keeps your Job and Work (campus job) hours while including PSY 3096…"* with CP-SAT's irreducible conflict set.
+7. **AI-assisted conflict resolution** — each fix was re-solved to confirm it works. Changing a job is a hard constraint, so only the student can do it (Edit availability). Click **Accept tradeoff & regenerate** on *Defer PSY 3096*.
+8. **Regenerated schedule** — iteration 3 shows the "Deferred PSY 3096" chip and valid options. *Different options* asks the solver for new combinations; *More Industrial-Organizational Psychology* boosts interest-aligned courses.
+9. **Explanation tab** → *How was this schedule created?*: constraint classes, the Review Agent's checks, and optional enrichment courses with the reason each isn't scheduled.
+10. **Mock TUportal draft** — *Save draft to TUportal (mock)* → approve in the dialog → MOCK draft ID with real CRNs and an explicit "you are NOT registered".
+11. **Advisor view** (`/advisor`) — fictional caseload only; the demo advisor role can't open real student records.

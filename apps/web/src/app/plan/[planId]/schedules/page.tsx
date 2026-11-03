@@ -2,14 +2,15 @@
 
 import {
   AlertTriangle, ArrowRightLeft, CalendarCog, CheckCircle2, CircleSlash, Info, Loader2, Lock, LockOpen, MessageSquare, Send, Sparkles,
-  Trash2, Upload, XCircle,
+  Shuffle, Trash2, Upload, XCircle,
 } from "lucide-react"
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { AvailabilityGrid } from "@/components/planner/availability-grid"
-import { F1Badge, Pill, ReviewBadge, SnapshotData } from "@/components/planner/badges"
+import { CategoryBadge, F1Badge, Pill, ReviewBadge, SnapshotData } from "@/components/planner/badges"
+import { Checkbox } from "@/components/ui/checkbox"
 import { CourseExplainer } from "@/components/planner/course-explainer"
 import { WaitFor, usePlan } from "@/components/planner/plan-context"
 import { WeekCalendar, dayHas } from "@/components/planner/week-calendar"
@@ -102,17 +103,24 @@ function Builder() {
     }
   }
 
+  const [approveOpen, setApproveOpen] = useState(false)
+  const [approved, setApproved] = useState(false)
   const exportDraft = async () => {
-    if (!selected) return
+    if (!selected || !approved) return
     setBusy(true)
     try {
-      setExportResult(await api.saveDraft(plan!.id, selected.id))
+      setExportResult(await api.saveDraft(plan!.id, selected.id, true))
+      setApproveOpen(false)
+      setApproved(false)
     } catch (e) {
       toast.error((e as Error).message)
     } finally {
       setBusy(false)
     }
   }
+  const accept = (r: Resolution) =>
+    rerun(() => api.resolve(plan!.id, r.relaxes, r.type === "reduce_credits" ? r.credits : undefined), "Tradeoff accepted — agents are re-planning")
+  const themes = st.interest_matching?.themes ?? []
 
   const focused = sections.find((s) => s.id === focusSection) ?? null
   const focusedExpl = expl.options.find((o) => o.option_id === selected?.id)?.courses.find((c) => c.course === focused?.course) ?? null
@@ -121,9 +129,15 @@ function Builder() {
     <div className="space-y-6">
       <ConflictBanner perfect={opt.ideal_analysis.perfect_exists} headline={expl.headline} conflicts={opt.ideal_analysis.conflict_set.map((g) => g.description)}
         details={expl.conflict_explanation.details} minimal={!!opt.ideal_analysis.minimal} resolutions={opt.ideal_analysis.resolutions}
-        options={opt.options} onSelect={setSelectedId}
-        onReduceCredits={(n) => rerun(() => api.preferences(plan!.id, { credit_min: Math.min(prefs.credit_min, n), credit_target: n }), "Credit load updated")}
-        onEditAvailability={() => setAvailOpen(true)} />
+        options={opt.options} onSelect={setSelectedId} onAccept={accept} onEditAvailability={() => setAvailOpen(true)} />
+
+      {((prefs.accepted_tradeoffs?.length ?? 0) > 0 || (prefs.deferred_courses?.length ?? 0) > 0) && (
+        <div className="flex flex-wrap items-center gap-1.5 rounded-xl border bg-muted/30 px-3 py-2 text-xs">
+          <span className="font-medium">Your accepted tradeoffs:</span>
+          {prefs.accepted_tradeoffs?.map((t) => <Pill key={t} tone="warning">Gave up &ldquo;{t}&rdquo;</Pill>)}
+          {prefs.deferred_courses?.map((c) => <Pill key={c} tone="danger">Deferred {c}</Pill>)}
+        </div>
+      )}
 
       {opt.infeasible_strategies.filter((inf) => opt.ideal_analysis.perfect_exists
         || inf.conflict_set.map((g) => g.key).sort().join() !== opt.ideal_analysis.conflict_set.map((g) => g.key).sort().join()).map((inf) => (
@@ -133,8 +147,7 @@ function Builder() {
             The solver proved these constraints cannot all hold{inf.minimal ? " (irreducible conflict set — removing any one restores feasibility)" : ""}:
           </p>
           <ul className="mt-2 flex flex-wrap gap-1.5">{inf.conflict_set.map((g) => <Pill key={g.key} tone="danger">{g.description}</Pill>)}</ul>
-          <ResolutionList resolutions={inf.resolutions} options={opt.options} onSelect={setSelectedId}
-            onReduceCredits={(n) => rerun(() => api.preferences(plan!.id, { credit_min: Math.min(prefs.credit_min, n), credit_target: n }), "Credit load updated")}
+          <ResolutionList resolutions={inf.resolutions} options={opt.options} onSelect={setSelectedId} onAccept={accept}
             onEditAvailability={() => setAvailOpen(true)} />
         </div>
       ))}
@@ -159,11 +172,31 @@ function Builder() {
                 <Button variant="outline" size="sm" onClick={() => setAvailOpen(true)}><CalendarCog /> Availability</Button>
                 <CreditControl key={prefs.credit_target} value={prefs.credit_target} min={prefs.credit_min} max={prefs.credit_max} disabled={busy}
                   onApply={(n) => rerun(() => api.preferences(plan!.id, { credit_target: n, credit_min: Math.min(prefs.credit_min, n), credit_max: Math.max(prefs.credit_max, n) }), `Target set to ${n} credits`)} />
-                <Button size="sm" onClick={exportDraft} disabled={busy || !!edited || reviews[selected.id]?.status === "rejected"}>
+                <Button variant="outline" size="sm" disabled={busy} onClick={() => rerun(() => api.regenerate(plan!.id), "Looking for different combinations")}>
+                  <Shuffle /> Different options
+                </Button>
+                {themes.length > 0 && (
+                  <Button variant="outline" size="sm" disabled={busy}
+                    onClick={() => rerun(() => api.modify(plan!.id, `Find more courses related to ${themes[0].label}`), `Boosting ${themes[0].label}`)}>
+                    <Sparkles /> More {themes[0].label}
+                  </Button>
+                )}
+                <Button size="sm" onClick={() => setApproveOpen(true)} disabled={busy || !!edited || reviews[selected.id]?.status === "rejected"}>
                   <Upload /> Save draft to TUportal (mock)
                 </Button>
               </div>
             </div>
+            {selected.f1.applies && (
+              <div className="rounded-xl border bg-muted/30 p-3 text-xs">
+                <span className="font-semibold">F-1 full course of study (planning estimate): </span>
+                {selected.f1.credits_toward_full_time} of {selected.f1.full_time_required} required credits count
+                · in-person {selected.f1.in_person_credits}
+                · online {selected.f1.online_credits} ({selected.f1.online_credits_counted} counted, {Math.max(0, selected.f1.online_credits - selected.f1.online_credits_counted)} additional, allowed but not counted)
+                {selected.f1.hybrid_credits > 0 && <> · hybrid {selected.f1.hybrid_credits} (not assumed in-person — confirm with ISSS)</>}
+                {selected.f1.notes.map((n) => <div key={n} className="mt-0.5 text-muted-foreground">{n}</div>)}
+                <div className="mt-0.5 text-muted-foreground">Planning assistance only; not immigration advice.</div>
+              </div>
+            )}
             {edited && (
               <div className={cn("flex flex-wrap items-center justify-between gap-2 rounded-xl border p-3 text-sm", validation?.valid ? "border-success/30 bg-success-soft" : "border-destructive/30 bg-destructive/5")}>
                 <div className="flex items-center gap-2">
@@ -216,6 +249,8 @@ function Builder() {
                         {s.prereq_status === "conditional" && <Pill tone="warning">{s.prereq_pending.length ? `Conditional on ${s.prereq_pending.join(", ")}` : "Prereq may need placement"}</Pill>}
                         {s.requires_linked_section && <Pill tone="warning">+ linked recitation/lab</Pill>}
                         {s.time_tba && <Pill tone="warning">Time TBA</Pill>}
+                        <CategoryBadge category={s.category} label={(s.component ?? "primary") !== "primary" ? `${s.component} component` : undefined} />
+                        {s.component_pairing === "inferred" && <Pill tone="warning">Pairing unverified</Pill>}
                         {selected.critical_included.includes(s.course) && <Pill tone="cherry">Graduation-critical</Pill>}
                         {s.interest_score >= 0.5 && <Pill tone="info"><Sparkles className="size-3" /> {Math.round(s.interest_score * 100)}% interest</Pill>}
                       </div>
@@ -223,7 +258,9 @@ function Builder() {
                         <Button size="xs" variant="outline" disabled={busy || !!edited} onClick={() => toggleLock(s.id)}>
                           {isLocked ? <LockOpen /> : <Lock />} {isLocked ? "Unlock" : "Lock"}
                         </Button>
-                        {!isComponent && <Button size="xs" variant="outline" disabled={busy || !!edited} onClick={() => removeCourse(s.course)}><Trash2 /> Remove</Button>}
+                        {!isComponent && <Button size="xs" variant="outline" disabled={busy || !!edited}
+                          onClick={() => (s.category !== "REQUIRED" || window.confirm(`${s.course} is a required course. Removing it delays that requirement to a later term. Continue?`)) && removeCourse(s.course)}>
+                          <Trash2 /> Remove</Button>}
                         {alts.map((a) => (
                           <Button key={a.section.id} size="xs" variant="ghost" onClick={() => swap(s, a.section.id)}
                             title={a.section.meetings.length ? a.section.meetings.map((m) => meetingLabel(m.days, m.start, m.end)).join("; ") : "Online"}>
@@ -250,6 +287,26 @@ function Builder() {
 
       <AvailabilityDialog open={availOpen} onOpenChange={setAvailOpen} initial={st._student.availability}
         onSave={(blocks) => { setAvailOpen(false); rerun(() => api.preferences(plan!.id, { availability: blocks }), "Availability updated — agents are re-planning") }} />
+
+      <Dialog open={approveOpen} onOpenChange={(o) => { setApproveOpen(o); if (!o) setApproved(false) }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Approve this draft?</DialogTitle>
+            <DialogDescription>
+              {selected?.label}: {[...new Set(selected?.sections.map((s) => s.course) ?? [])].join(", ")} · {selected?.credits} credits.
+              This saves a draft to a MOCK planning environment. It does not register you for any class.
+            </DialogDescription>
+          </DialogHeader>
+          <label className="flex items-start gap-2 text-sm">
+            <Checkbox checked={approved} onCheckedChange={(v) => setApproved(!!v)} className="mt-0.5" />
+            I reviewed this schedule, its warnings and unverified items, and approve saving it as a draft.
+          </label>
+          <div className="flex justify-end gap-2">
+            <Button variant="ghost" onClick={() => setApproveOpen(false)}>Cancel</Button>
+            <Button disabled={!approved || busy} onClick={exportDraft}>{busy ? <Loader2 className="animate-spin" /> : <Upload />} Save mock draft</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!exportResult} onOpenChange={(o) => !o && setExportResult(null)}>
         <DialogContent className="sm:max-w-md">
@@ -306,7 +363,7 @@ const Metric = ({ label, value }: { label: string; value: string }) => (
 
 function ConflictBanner(props: {
   perfect: boolean; headline: string; conflicts: string[]; details: string[]; minimal: boolean; resolutions: Resolution[]
-  options: ScheduleOption[]; onSelect: (id: string) => void; onReduceCredits: (n: number) => void; onEditAvailability: () => void
+  options: ScheduleOption[]; onSelect: (id: string) => void; onAccept: (r: Resolution) => void; onEditAvailability: () => void
 }) {
   if (props.perfect) {
     return (
@@ -333,8 +390,8 @@ function ConflictBanner(props: {
   )
 }
 
-function ResolutionList({ resolutions, options, onSelect, onReduceCredits, onEditAvailability }: {
-  resolutions: Resolution[]; options: ScheduleOption[]; onSelect: (id: string) => void; onReduceCredits: (n: number) => void; onEditAvailability: () => void
+function ResolutionList({ resolutions, options, onSelect, onAccept, onEditAvailability }: {
+  resolutions: Resolution[]; options: ScheduleOption[]; onSelect: (id: string) => void; onAccept: (r: Resolution) => void; onEditAvailability: () => void
 }) {
   const CLASS: Record<string, string> = { soft: "Soft preference", hard: "Hard constraint", academic_priority: "Academic priority", immigration: "Immigration rule" }
   const matchOption = (sectionIds: string[]) => options.find((o) => o.sections.map((s) => s.id).sort().join() === [...sectionIds].sort().join())
@@ -355,13 +412,15 @@ function ResolutionList({ resolutions, options, onSelect, onReduceCredits, onEdi
             {!r.feasible && r.type !== "not_overridable" && <p className="mt-1 text-xs text-destructive">Relaxing this alone is not enough.</p>}
             <div className="mt-2 flex items-center justify-between gap-2">
               <span className="text-[11px] text-muted-foreground">Requires {r.requires}</span>
-              {existing ? (
-                <Button size="xs" variant="outline" onClick={() => onSelect(existing.id)}>View {existing.label}</Button>
-              ) : r.type === "reduce_credits" && r.feasible ? (
-                <Button size="xs" variant="outline" onClick={() => onReduceCredits(r.credits)}>Use {r.credits} credits</Button>
-              ) : r.type === "change_hard" ? (
-                <Button size="xs" variant="outline" onClick={onEditAvailability}>Edit availability</Button>
-              ) : null}
+              <div className="flex flex-wrap justify-end gap-1">
+                {existing && <Button size="xs" variant="ghost" onClick={() => onSelect(existing.id)}>View {existing.label}</Button>}
+                {r.feasible && (r.type === "relax_soft" || r.type === "defer_course" || r.type === "reduce_credits") && (
+                  <Button size="xs" variant="outline" onClick={() => onAccept(r)}>
+                    {r.type === "reduce_credits" ? `Accept ${r.credits} credits & regenerate` : "Accept tradeoff & regenerate"}
+                  </Button>
+                )}
+                {r.type === "change_hard" && <Button size="xs" variant="outline" onClick={onEditAvailability}>Edit availability</Button>}
+              </div>
             </div>
           </div>
         )

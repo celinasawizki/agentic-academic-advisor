@@ -161,6 +161,11 @@ def _execute(ctx: PlanContext, plan: PlanRun, agent: Agent) -> None:
         raise
     ctx.state[agent.key] = output
     ex.status, ex.finished_at, ex.summary = "complete", now(), agent.summarize(output)
+    try:
+        ex.decision = agent.decision(ctx, output)
+    except Exception as e:  # a decision summary must never break planning
+        ex.decision = {"task": agent.responsibility, "findings": [], "unresolved": [f"Decision summary unavailable: {type(e).__name__}"],
+                       "data_sources": [], "recommendation": "", "validation": {"status": "n/a", "detail": ""}}
     plan.state = {k: v for k, v in ctx.state.items() if k != "_llm_enabled"}
     db.commit()
     ctx._exec = None

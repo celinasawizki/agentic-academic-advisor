@@ -68,12 +68,15 @@ export const api = {
     ),
   preferences: (id: string, body: unknown) =>
     request<{ applied: string[] }>(`/api/plans/${id}/preferences`, { method: "POST", body: JSON.stringify(body) }),
+  resolve: (id: string, relaxes: string, credits?: number) =>
+    request<{ applied: string[] }>(`/api/plans/${id}/resolve`, { method: "POST", body: JSON.stringify({ relaxes, credits }) }),
+  regenerate: (id: string) => request<{ applied: string[] }>(`/api/plans/${id}/regenerate`, { method: "POST" }),
   validate: (id: string, section_ids: string[]) =>
     request<ValidateResult>(`/api/plans/${id}/validate`, { method: "POST", body: JSON.stringify({ section_ids }) }),
-  saveDraft: (plan_id: string, option_id: string) =>
+  saveDraft: (plan_id: string, option_id: string, student_approved: boolean) =>
     request<{ draft: { draft_id: string; crns: string[]; environment: string }; validation: { messages: string[] }; notice: string }>(
       "/api/integration/tuportal/drafts",
-      { method: "POST", body: JSON.stringify({ plan_id, option_id, student_approved: true }) },
+      { method: "POST", body: JSON.stringify({ plan_id, option_id, student_approved }) },
     ),
   integrationStatus: () => request<Record<string, { note: string; live?: boolean; mock?: boolean; enabled?: boolean; model?: string | null }>>("/api/integration/status"),
   advisorOverview: () => request<AdvisorStudent[]>("/api/advisor/overview", { headers: { "X-Demo-Role": "advisor" } }),

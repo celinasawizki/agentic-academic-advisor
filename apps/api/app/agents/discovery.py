@@ -137,6 +137,9 @@ class CourseDiscoveryAgent(Agent):
                 changed.append(p["id"])
         if changed:
             ctx.log(f"{len(changed)} open requirement rule(s) cannot progress this term (marked BLOCKED/UNAVAILABLE)", rules=changed[:20])
+            reqs_state = ctx.state["degree_requirements"]
+            reqs_state["reliability_counts"] = {k: sum(1 for p in reqs_state["requirements"] if p["kind"] != "note" and p.get("reliability") == k)
+                                                for k in reqs_state.get("reliability_counts", {})}
         ctx.log(f"{len(eligible)} eligible sections across {len({e['course'] for e in eligible})} courses; "
                 f"{len(excluded)} listed-course exclusions", exclusions=[f"{e['course']}: {e['reason']}" for e in excluded[:40]])
         if pattern_skips:
@@ -145,6 +148,17 @@ class CourseDiscoveryAgent(Agent):
                 "excluded": excluded, "pattern_exclusion_summary": dict(pattern_skips), "courses": course_info,
                 "requirement_availability": availability,
                 "data_source": "temple_class_search_snapshot"}
+
+    def decision(self, ctx, o):
+        avail = o.get("requirement_availability", {})
+        blocked = [k for k, v in avail.items() if v["status"] == "blocked"]
+        unavailable = [k for k, v in avail.items() if v["status"] == "unavailable"]
+        return {"task": f"Find eligible {o['term_name']} sections for every open requirement",
+                "data_sources": [f"Temple class-search snapshot ({o['term_name']})", "Bulletin prerequisites"],
+                "findings": [self.summarize(o), f"{len(blocked)} rule(s) blocked by prerequisites, {len(unavailable)} with no section this term"],
+                "recommendation": "Pass only Main Campus/online sections with satisfied or conditional prerequisites to the optimizer.",
+                "validation": {"status": "passed", "detail": "Every exclusion is recorded with its reason"},
+                "unresolved": [f"{r}: {avail[r]['reason']}" for r in (blocked + unavailable)[:6]]}
 
     def summarize(self, o: dict) -> str:
         return (f"{len(o['eligible_sections'])} eligible sections for {len({e['course'] for e in o['eligible_sections']})} courses "

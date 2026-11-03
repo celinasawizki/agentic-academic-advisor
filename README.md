@@ -43,6 +43,14 @@ Language models interpret and explain; **they never decide validity**. Conflicts
 - **Transparency.** Every recommendation shows which bulletin rule it may satisfy (pending verification), how it matches interests (AI suggestion vs. concept match), why this section beat the others, and provenance (CRN, snapshot date, bulletin link).
 - **Mock TUportal adapter** saves draft schedules to a clearly labeled mock environment. Nobody is ever registered.
 
+### Trust, safety and transparency (audit, Nov 2026)
+
+- **Record separation**: fictional demo students are shared; real student records are owner-only (per-student token standing in for Temple SSO, behind a pluggable `AuthProvider`); the demo advisor role sees fictional students only. See [AUDIT_REPORT.md](AUDIT_REPORT.md).
+- **Requirement reliability**: VERIFIED (human registry only) / PENDING VERIFICATION / AMBIGUOUS / UNAVAILABLE / BLOCKED.
+- **Course roles**: Required course / Degree elective / Interest-based elective (never counted as a requirement) / Optional enrichment.
+- **Decision log**: each agent records task, sources, findings, recommendation, validation and unresolved concerns from its real output.
+- **Tradeoffs**: students accept solver-verified resolutions (soft preferences, deferring a course, fewer credits); hard availability and F-1 rules are never relaxed automatically. Mock TUportal export requires explicit approval.
+
 ## Repository layout
 
 ```
@@ -71,7 +79,7 @@ cp .env.example .env              # optional: add ANTHROPIC_API_KEY
 cd apps/api
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --port 8000  # creates SQLite and loads data/temple on first start (~3 s)
+uvicorn app.main:app --port 8000  # creates SQLite and loads data/temple on first start (~3 s); later schema changes migrate additively
 
 # Web (new terminal)
 cd apps/web
@@ -80,7 +88,7 @@ echo "NEXT_PUBLIC_API_URL=http://127.0.0.1:8000" > .env.local
 npm run dev                       # http://localhost:3000
 ```
 
-The API reloads the catalog automatically whenever files in `data/temple` change (students and plans are kept). If you upgrade from an earlier checkout, delete `apps/api/academic_planner.db` once — the schema changed.
+The API reloads the catalog automatically whenever files in `data/temple` change (students and plans are kept), and adds new columns to existing SQLite databases automatically. Real students created through onboarding receive an access token stored in the browser; without it their records return 404.
 
 Without `ANTHROPIC_API_KEY` every agent uses its deterministic fallback and the workspace labels each agent "Deterministic". With a key, Interest Matching, Explanation and change-request parsing call `claude-opus-5-5` with schema-validated structured outputs and server-side refusal fallbacks.
 

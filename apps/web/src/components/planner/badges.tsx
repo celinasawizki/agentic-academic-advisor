@@ -49,3 +49,39 @@ export function F1Badge({ status }: { status: string }) {
   const [tone, label] = map[status] ?? ["neutral", status]
   return <Pill tone={tone} icon={ShieldAlert}>{label}</Pill>
 }
+
+const RELIABILITY: Record<string, [Tone, string, string]> = {
+  VERIFIED: ["success", "Verified", "Checked by a person against an authoritative source"],
+  PENDING_VERIFICATION: ["warning", "Pending verification", "Parsed from the bulletin; not yet checked against your degree audit"],
+  AMBIGUOUS: ["danger", "Ambiguous", "Free text or unusual layout; an advisor must interpret it"],
+  UNAVAILABLE: ["neutral", "Unavailable this term", "No eligible Main Campus/online section in the snapshot"],
+  BLOCKED: ["info", "Blocked", "Offered, but you don't have the prerequisites yet"],
+}
+
+export function ReliabilityBadge({ status, title }: { status?: string; title?: string }) {
+  const [tone, label, hint] = RELIABILITY[status ?? "PENDING_VERIFICATION"] ?? RELIABILITY.PENDING_VERIFICATION
+  return <span title={title ?? hint}><Pill tone={tone}>{label}</Pill></span>
+}
+
+export function ReliabilityLegend({ counts }: { counts?: Record<string, number> }) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {Object.entries(RELIABILITY).map(([k, [tone, label, hint]]) => (
+        <span key={k} title={hint}><Pill tone={tone}>{label}{counts ? ` · ${counts[k] ?? 0}` : ""}</Pill></span>
+      ))}
+    </div>
+  )
+}
+
+const CATEGORY: Record<string, [Tone, string]> = {
+  REQUIRED: ["cherry", "Required course"],
+  DEGREE_ELECTIVE: ["info", "Degree elective"],
+  INTEREST_ELECTIVE: ["warning", "Interest-based elective"],
+  OPTIONAL_ENRICHMENT: ["neutral", "Optional enrichment"],
+}
+
+export function CategoryBadge({ category, label }: { category?: string; label?: string }) {
+  if (!category) return null
+  const [tone, text] = CATEGORY[category] ?? ["neutral", category]
+  return <Pill tone={tone}>{label ?? text}</Pill>
+}

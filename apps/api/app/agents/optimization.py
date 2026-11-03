@@ -209,6 +209,19 @@ class ScheduleOptimizationAgent(Agent):
                 "conflict_set": [{**g.__dict__, "description": g.description.replace(f"Unavailable: {PREF_PREFIX}", "Preference: ")} for g in res.conflict_set],
                 "resolutions": resolutions}
 
+    def decision(self, ctx, o):
+        ideal = o["ideal_analysis"]
+        return {"task": "Solve the schedule with CP-SAT for three strategies and analyze infeasibility",
+                "data_sources": ["Google OR-Tools CP-SAT", "Constraints Agent output", "Eligible sections and interest electives"],
+                "findings": [f"{x['label']}: {x['credits']:g} credits, {len({s['course'] for s in x['sections']})} courses, {len(x['soft_violations'])} preference conflict(s)"
+                             for x in o["options"]] + [f"{i['label']}: infeasible" for i in o["infeasible_strategies"]],
+                "recommendation": ("All preferences satisfiable." if ideal["perfect_exists"] else
+                                   "No schedule satisfies everything; solver-verified resolutions offered."),
+                "validation": {"status": "passed" if o["options"] else "failed",
+                               "detail": ("Irreducible conflict set: " + "; ".join(g["description"] for g in ideal.get("conflict_set", [])))
+                               if not ideal["perfect_exists"] else "Optimal or feasible solutions found"},
+                "unresolved": [r["title"] for r in ideal.get("resolutions", [])][:4]}
+
     def summarize(self, o: dict) -> str:
         msg = f"{len(o['options'])} schedule option(s) generated with CP-SAT"
         if o["infeasible_strategies"]:

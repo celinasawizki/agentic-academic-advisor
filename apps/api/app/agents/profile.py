@@ -50,6 +50,16 @@ class AcademicProfileAgent(Agent):
             "f1_status": s.f1_status, "campus": s.campus, "warnings": warnings,
         }
 
+    def decision(self, ctx, o):
+        c = o["courses"]
+        return {"task": "Classify the student's academic record and resolve the catalog year",
+                "data_sources": ["Student-entered or degree-audit-PDF transcript rows"],
+                "findings": [f"{len(c['completed'])} completed, {len(c['transfer'])} transfer, {len(c['in_progress'])} in progress ({o['earned_credits']:g} credits earned)",
+                             f"Catalog year {o['catalog_year']} ({o['catalog_year_source']})"],
+                "recommendation": "Treat in-progress courses as conditional, never as completed.",
+                "validation": {"status": "warnings" if o["warnings"] else "passed", "detail": f"{len(o['warnings'])} data warning(s)"},
+                "unresolved": o["warnings"][:6]}
+
     def summarize(self, o: dict) -> str:
         c = o["courses"]
         return (f"{len(c['completed']) + len(c['transfer'])} completed/transfer courses ({o['earned_credits']} credits), "

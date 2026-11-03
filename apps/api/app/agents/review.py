@@ -143,5 +143,14 @@ class AcademicReviewAgent(Agent):
         for c in checks:
             ctx.db.add(ValidationResult(option_id=opt["id"], check=c["check"], passed=c["passed"], severity=c["severity"], detail=c["detail"]))
 
+    def decision(self, ctx, o):
+        labels = {x["id"]: x["label"] for x in ctx.state["schedule_optimization"]["options"]}
+        return {"task": "Independently re-verify each option with deterministic checks",
+                "data_sources": ["Rules engine (not optimizer state)", "Class-search snapshot", "Bulletin prerequisites"],
+                "findings": [f"{labels.get(k, k)}: {v['status'].replace('_', ' ')} ({v['errors']} error(s), {v['warnings']} warning(s))" for k, v in o["reviews"].items()],
+                "recommendation": "Reject any option with an error; show warnings to the student.",
+                "validation": {"status": "failed" if o["rejected"] else "passed", "detail": f"{len(o['rejected'])} option(s) rejected"},
+                "unresolved": sorted({c["detail"][:120] for v in o["reviews"].values() for c in v["checks"] if not c["passed"] and c["severity"] == "warning"})[:5]}
+
     def summarize(self, o: dict) -> str:
         return f"Reviewed {len(o['reviews'])} option(s); {len(o['rejected'])} rejected."

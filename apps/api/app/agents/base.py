@@ -57,3 +57,9 @@ class Agent:
 
     def summarize(self, output: dict) -> str:
         return ""
+
+    def decision(self, ctx: "PlanContext", output: dict) -> dict:
+        """Structured, evidence-backed decision record derived from this agent's output.
+        Never free-form reasoning: only facts the agent computed."""
+        return {"task": self.responsibility, "data_sources": [], "findings": [self.summarize(output)],
+                "recommendation": "", "validation": {"status": "n/a", "detail": ""}, "unresolved": []}

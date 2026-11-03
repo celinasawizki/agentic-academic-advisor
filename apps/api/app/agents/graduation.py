@@ -96,6 +96,15 @@ class GraduationPlanningAgent(Agent):
                 "priorities": priorities, "critical_courses": critical, "risks": risks, "assumptions": assumptions,
                 "on_track": not any(r["severity"] == "high" for r in risks)}
 
+    def decision(self, ctx, o):
+        return {"task": "Assess prerequisite sequencing and pace toward the target graduation date",
+                "data_sources": ["Bulletin prerequisites", "Open requirement rules", "Student target graduation"],
+                "findings": [self.summarize(o), *[c["reason"] for c in o["critical_courses"][:4]]],
+                "recommendation": ("Prioritize " + ", ".join(c["course"] for c in o["critical_courses"]) + " this term.") if o["critical_courses"]
+                else "No graduation-critical course this term.",
+                "validation": {"status": "passed" if o["on_track"] else "warnings", "detail": "On track" if o["on_track"] else "High-severity risk detected"},
+                "unresolved": [r["issue"] for r in o["risks"]] + o["assumptions"][:2]}
+
     def summarize(self, o: dict) -> str:
         crit = ", ".join(c["course"] for c in o["critical_courses"][:5]) or "none"
         return f"{o['semesters_remaining']} semesters left, ~{o['courses_per_term_needed']} courses/term needed. Critical: {crit}."

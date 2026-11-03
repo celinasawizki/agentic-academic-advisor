@@ -77,6 +77,7 @@ export default function Onboarding() {
   const [newCourse, setNewCourse] = useState("")
   const [newStatus, setNewStatus] = useState<Status>("completed")
   const [interests, setInterests] = useState("")
+  const [career, setCareer] = useState("")
   const [tags, setTags] = useState<string[]>([])
   const [availability, setAvailability] = useState<AvailBlock[]>([])
   const [credits, setCredits] = useState({ target: 15, min: 12, max: 18 })
@@ -92,6 +93,7 @@ export default function Onboarding() {
   const prefill = () => {
     setName(DEMO.name); setYear(DEMO.academic_year); setGrad(DEMO.expected_graduation); setCatalogYear(DEMO.catalog_year)
     setSelected(DEMO.programs); setInterests(DEMO.interests); setAvailability(DEMO.availability); setCredits({ target: 15, min: 12, max: 18 })
+    setCareer("People analytics or HR technology at a startup")
     setRows(DEMO.rows.map(([course, status, grade]) => ({ course, status, grade, term: null, source: "manual", confidence: 1, verified: true })))
     setF1("yes"); setConsent(true)
     toast.success("Filled with fictional demo values")
@@ -148,7 +150,7 @@ export default function Onboarding() {
         name, academic_year: year, expected_graduation: grad, catalog_year: catalogYear || null, planning_term: term,
         programs: selected.filter((id) => programs.find((p) => p.id === id)?.supported), campus, f1_status: f1,
         interests_text: [interests, tags.length ? `Interested in: ${tags.join(", ")}.` : ""].filter(Boolean).join(" "),
-        interest_tags: tags, credit_target: credits.target, credit_min: credits.min, credit_max: credits.max,
+        career_interests: career, interest_tags: tags, credit_target: credits.target, credit_min: credits.min, credit_max: credits.max,
         transcript: rows.map((r) => ({ course: r.course, status: r.status, grade: r.grade, term: r.term, source: r.source,
           confidence: r.confidence, verified_by_student: r.verified })),
         availability, consent_to_process: consent,
@@ -336,6 +338,11 @@ export default function Onboarding() {
               <Textarea value={interests} onChange={(e) => setInterests(e.target.value)} rows={6} maxLength={4000} className="text-base"
                 placeholder="I'm studying Psychology, but I'm especially interested in Industrial-Organizational Psychology, workplace behavior, artificial intelligence, and how technology affects human decision-making." />
               <div>
+                <Label className="mb-1.5 block">Career interests (optional)</Label>
+                <Textarea value={career} onChange={(e) => setCareer(e.target.value)} rows={2} maxLength={2000}
+                  placeholder="e.g. People analytics, UX research, starting my own company" />
+              </div>
+              <div>
                 <div className="mb-2 text-xs text-muted-foreground">Optional suggestions — you&apos;re not limited to these.</div>
                 <div className="flex flex-wrap gap-2">
                   {SUGGESTED.map((t) => {
@@ -358,9 +365,10 @@ export default function Onboarding() {
                 Click and drag to paint. <b className="text-foreground">Unavailable</b> times are hard constraints the planner will never violate.
                 <b className="text-foreground"> Prefer to avoid</b> is a soft preference that can only be relaxed with your approval.
               </p>
+              <DaysOff availability={availability} onChange={setAvailability} />
               <div className="flex flex-wrap gap-2">
-                <Button type="button" variant="outline" size="sm" onClick={() => setAvailability([...availability.filter((b) => b.label !== "Prefer Fridays off"), { day: "F", start: "07:00", end: "22:00", kind: "soft", label: "Prefer Fridays off" }])}>
-                  + Prefer Fridays off
+                <Button type="button" variant="outline" size="sm" onClick={() => setAvailability([...availability.filter((b) => b.label !== "Preferred: afternoons"), ...["M", "T", "W", "R", "F"].map((d) => ({ day: d, start: "12:00", end: "17:00", kind: "preferred", label: "Preferred: afternoons" }) as AvailBlock)])}>
+                  + Prefer afternoons
                 </Button>
                 <Button type="button" variant="outline" size="sm" onClick={() => setAvailability([...availability, ...["M", "T", "W", "R", "F"].map((d) => ({ day: d, start: "07:00", end: "10:00", kind: "soft", label: "No early classes" }) as AvailBlock)])}>
                   + Avoid classes before 10 AM
@@ -468,5 +476,35 @@ function NativeSelect({ value, onChange, options, labels, small }: {
       className={cn("w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50", small ? "h-7" : "h-8")}>
       {options.map((o) => <option key={o} value={o}>{labels?.[o] ?? o}</option>)}
     </select>
+  )
+}
+
+const WEEKDAY_NAMES: [AvailBlock["day"], string][] = [["M", "Monday"], ["T", "Tuesday"], ["W", "Wednesday"], ["R", "Thursday"], ["F", "Friday"]]
+
+function DaysOff({ availability, onChange }: { availability: AvailBlock[]; onChange: (b: AvailBlock[]) => void }) {
+  const stateOf = (d: string) => availability.find((b) => b.day === d && b.start === "07:00" && b.end === "22:00")?.kind
+  const cycle = (d: AvailBlock["day"], name: string) => {
+    const cur = stateOf(d)
+    const rest = availability.filter((b) => !(b.day === d && b.start === "07:00" && b.end === "22:00"))
+    if (!cur) onChange([...rest, { day: d, start: "07:00", end: "22:00", kind: "soft", label: `Prefer ${name}s off` }])
+    else if (cur === "soft") onChange([...rest, { day: d, start: "07:00", end: "22:00", kind: "hard", label: `${name}s off (required)` }])
+    else onChange(rest)
+  }
+  return (
+    <div className="rounded-xl border p-3">
+      <div className="mb-2 text-sm font-medium">Days off <span className="text-xs font-normal text-muted-foreground">— click to cycle: none → prefer off (soft) → must be off (hard)</span></div>
+      <div className="flex flex-wrap gap-2">
+        {WEEKDAY_NAMES.map(([d, name]) => {
+          const st = stateOf(d)
+          return (
+            <button key={d} type="button" onClick={() => cycle(d, name)}
+              className={cn("rounded-lg border px-3 py-1.5 text-sm transition-colors",
+                st === "hard" ? "border-primary bg-primary text-primary-foreground" : st === "soft" ? "border-warning/40 bg-warning-soft text-warning" : "hover:bg-muted")}>
+              {name.slice(0, 3)}{st === "hard" ? " · must be off" : st === "soft" ? " · prefer off" : ""}
+            </button>
+          )
+        })}
+      </div>
+    </div>
   )
 }

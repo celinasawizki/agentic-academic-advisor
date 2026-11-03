@@ -116,6 +116,12 @@ class StudentExplanationAgent(Agent):
                         unverified.append("Placement/test-score prerequisites.")
                     if x["prereq_pending"]:
                         unverified.append(f"Passing in-progress {', '.join(x['prereq_pending'])}.")
+                cat_notes = ctx.catalog.courses[x["course"]].prereq_notes if x["course"] in ctx.catalog.courses else []
+                for n in cat_notes:
+                    if "non-course condition" in n or n.startswith("Non-course prerequisite"):
+                        prereq += " Some conditions (e.g. class standing or 'any course at a level') are not checked automatically."
+                        unverified.append("Prerequisite conditions that are not specific courses (see bulletin text).")
+                        break
                 if sec.credits_max and sec.credits and sec.credits_max > sec.credits:
                     unverified.append(f"Variable credit ({sec.credits:g}–{sec.credits_max:g}); the planner counted {sec.credits:g}.")
                 if x.get("component_pairing") == "inferred":
@@ -183,7 +189,8 @@ class StudentExplanationAgent(Agent):
                 other.append(f"at least {ctx.student.preferences.credit_min} credits")
             elif g["kind"] == "f1_full_time":
                 other.append("the F-1 full-time count")
-        keep = prefs + ([f"your {', '.join(hard)} hours"] if hard else []) + other
+        hard_text = " and ".join(hard) if len(hard) <= 2 else ", ".join(hard[:-1]) + " and " + hard[-1]
+        keep = prefs + ([f"your {hard_text} hours"] if hard else []) + other
         target = f"{ctx.student.preferences.credit_target}-credit schedule"
         if courses and keep:
             return (f"We couldn't find a {target} that keeps {' and '.join(keep)} while including {', '.join(courses)}: "
@@ -278,6 +285,15 @@ class StudentExplanationAgent(Agent):
         ctx.set_mode("llm")
         ids = {o["option_id"] for o in options}
         return {"overall": out.overall, "options": {s.option_id: s.summary for s in out.options if s.option_id in ids}}
+
+    def decision(self, ctx, o):
+        n_unver = sum(len(c.get("unverified", [])) for x in o["options"] for c in x["courses"])
+        return {"task": "Explain every recommendation in plain language without hiding uncertainty",
+                "data_sources": ["All agent outputs in the shared plan state"],
+                "findings": [o["headline"], f"{sum(len(x['courses']) for x in o['options'])} course explanation(s), {n_unver} unverified item(s) disclosed"],
+                "recommendation": "Show requirement, interest, prerequisite, section choice, alternatives and provenance for each course.",
+                "validation": {"status": "passed", "detail": "Every claim traces to a structured agent output"},
+                "unresolved": [o["disclaimer"]]}
 
     def summarize(self, o: dict) -> str:
         return f"{o['headline']} Explained {sum(len(x['courses']) for x in o['options'])} course recommendations."

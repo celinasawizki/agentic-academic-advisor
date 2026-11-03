@@ -84,6 +84,14 @@ class SchedulingConstraintsAgent(Agent):
         return {"hard": hard, "soft": soft, "academic": academic, "immigration": immigration,
                 "must_courses_graduation_strategy": must, "pre_checks": pre_checks}
 
+    def decision(self, ctx, o):
+        return {"task": "Translate availability, credit load, campus and enrollment rules into typed constraints",
+                "data_sources": ["Student availability and preferences", "F-1 planning rule (configurable)", "Graduation Planning Agent output"],
+                "findings": [self.summarize(o), f"Must-include for Graduation Priority: {', '.join(o['must_courses_graduation_strategy']) or 'none'}"],
+                "recommendation": "Hard constraints are never violated automatically; soft ones only with student approval.",
+                "validation": {"status": "warnings" if o["pre_checks"] else "passed", "detail": f"{len(o['pre_checks'])} pre-check finding(s)"},
+                "unresolved": [p["detail"] for p in o["pre_checks"][:6]]}
+
     def summarize(self, o: dict) -> str:
         return (f"{len(o['hard'])} hard, {len(o['soft'])} soft, {len(o['academic'])} academic, {len(o['immigration'])} immigration constraints; "
                 f"{len(o['pre_checks'])} pre-check warning(s).")

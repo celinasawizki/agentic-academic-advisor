@@ -71,6 +71,16 @@ class DegreeRequirementsAgent(Agent):
             "review_flags": review_flags,
         }
 
+    def decision(self, ctx, o):
+        rc = o.get("reliability_counts", {})
+        return {"task": "Apply each program's bulletin rules to the record and compute what remains",
+                "data_sources": [f"Temple Academic Bulletin — {ctx.catalog.programs[p]['name']}" for p in ctx.student.program_ids if p in ctx.catalog.programs],
+                "findings": [self.summarize(o), "Reliability: " + ", ".join(f"{k.replace('_', ' ').lower()} {v}" for k, v in rc.items() if v)],
+                "recommendation": f"Plan toward {len(o['remaining'])} open rules; do not double count across programs without an explicit rule.",
+                "validation": {"status": "warnings" if o["manual_review"] else "passed",
+                               "detail": "No rule is advisor-verified yet" if not rc.get("VERIFIED") else f"{rc['VERIFIED']} verified rule(s)"},
+                "unresolved": [f"Manual review: {r['program_name']} — {r['name'][:90]}" for r in o["manual_review"][:6]]}
+
     def summarize(self, o: dict) -> str:
         countable = [r for r in o["requirements"] if r["kind"] in ("count", "credits")]
         done = sum(1 for r in countable if r["status"] == "complete")

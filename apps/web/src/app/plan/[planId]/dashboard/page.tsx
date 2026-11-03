@@ -4,7 +4,7 @@ import { AlertTriangle, BookCheck, Filter, GraduationCap, Info, Sparkles, Target
 
 import { useState } from "react"
 
-import { AISuggestion, Pill, PendingVerification, VerifiedFact } from "@/components/planner/badges"
+import { AISuggestion, Pill, ReliabilityBadge, ReliabilityLegend } from "@/components/planner/badges"
 import { WaitFor, usePlan } from "@/components/planner/plan-context"
 
 import type { RequirementPattern, RequirementProgress } from "@/lib/types"
@@ -47,8 +47,12 @@ function DashboardBody() {
         <section className="rounded-2xl border bg-card p-5">
           <header className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 className="flex items-center gap-2 font-semibold"><BookCheck className="size-4.5 text-primary" /> Degree progress</h2>
-            <div className="flex gap-1.5"><VerifiedFact /><PendingVerification /></div>
           </header>
+          <div className="mb-4 rounded-xl bg-muted/40 p-3 text-xs">
+            <div className="mb-1.5 font-medium">How reliable is each rule?</div>
+            <ReliabilityLegend counts={reqs.reliability_counts} />
+            <p className="mt-1.5 text-muted-foreground">Nothing is marked Verified until a person checks it against your official degree audit or department.</p>
+          </div>
           <div className="space-y-6">
             {Object.entries(byProgram).map(([pid, rs]) => <ProgramProgress key={pid} rs={rs} />)}
           </div>
@@ -172,7 +176,7 @@ function ProgramProgress({ rs }: { rs: RequirementProgress[] }) {
               {items.map((r) => (
                 <li key={r.id} className={cn("rounded-lg border px-2.5 py-2 text-xs", r.status === "complete" && "bg-success-soft/40", r.kind === "manual" && "border-warning/40 bg-warning-soft/40")}>
                   <div className="flex items-start justify-between gap-2">
-                    <span className="font-medium">{r.name}</span>
+                    <span className="font-medium">{r.name} <span className="ml-1 inline-block align-middle"><ReliabilityBadge status={r.reliability} title={r.reliability_reason} /></span></span>
                     <Pill tone={r.status === "complete" ? "success" : r.status === "in_progress" ? "info" : r.kind === "manual" ? "warning" : "neutral"}>
                       {r.status === "complete" ? "Complete" : r.status === "in_progress" ? "In progress" : r.kind === "manual" ? "Manual review"
                         : r.kind === "credits" ? `${r.remaining_needed} cr needed` : `${r.remaining_needed} needed`}
