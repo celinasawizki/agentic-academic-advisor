@@ -158,7 +158,7 @@ class ScheduleOptimizationAgent(Agent):
         ctx.log("No schedule satisfies all preferences; CP-SAT irreducible conflict set computed",
                 conflict_set=[g.description for g in res.conflict_set])
         return {"perfect_exists": False, "minimal": res.conflict_set_minimal,
-                "conflict_set": [{**g.__dict__, "description": g.description.replace(PREF_PREFIX, "preference: ")} for g in res.conflict_set],
+                "conflict_set": [{**g.__dict__, "description": g.description.replace(f"Unavailable: {PREF_PREFIX}", "Preference: ")} for g in res.conflict_set],
                 "resolutions": resolutions}
 
     def summarize(self, o: dict) -> str:

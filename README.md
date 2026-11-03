@@ -1,0 +1,95 @@
+# Temple Academic Planning AI
+
+Multi-agent academic planning and constraint-based schedule optimization for Temple University students. Built for Temple's AI Build Challenge 2026 as a hackathon prototype.
+
+> **Prototype notice.** This is planning assistance, not an official degree audit, registration system, or immigration advice. All course, section and requirement data in this repository is a **labeled demo fixture**. It has not been verified against the Temple Academic Bulletin or Temple's course search. All students are fictional.
+
+## What it does
+
+A student completes a 7-step onboarding (programs, academic records, interests in their own words, a drag-to-paint weekly availability grid, credit load, campus, F-1 status). Nine specialized agents then share one planning state:
+
+| # | Agent | Responsibility | Engine |
+|---|---|---|---|
+| 1 | Academic Profile | Separates completed / in-progress / transfer work, resolves catalog year | Deterministic |
+| 2 | Degree Requirements | Computes remaining requirements per program, with sources and catalog year; no double counting without a rule | Deterministic |
+| 3 | Course Discovery | Finds term sections via the course-search adapter; filters campus, prerequisites, seats; logs every exclusion | Deterministic |
+| 4 | Interest Matching | Scores course descriptions against free-text interests | Claude (schema-validated) or concept-expansion fallback |
+| 5 | Graduation Planning | Prerequisite chains, critical courses, pace and risks | Deterministic |
+| 6 | Scheduling & Constraints | Typed hard / soft / academic / immigration constraints; pre-checks | Deterministic |
+| 7 | Schedule Optimization | Google OR-Tools CP-SAT, three strategies, solver-computed conflict sets | CP-SAT |
+| 8 | Academic Review | Independent re-verification; can reject → orchestrator re-optimizes | Deterministic |
+| 9 | Student Explanation | Per-course reasons, tradeoffs, unresolved issues | Templated + optional Claude summary |
+
+Language models interpret and explain; **they never decide validity**. Conflicts, prerequisites, credits, campus and the F-1 counting rule are enforced by code and by the solver.
+
+### Highlights
+
+- **No silent violations.** When no schedule satisfies every preference, CP-SAT runs with each hard constraint behind an assumption literal, returns the responsible assumptions, and a deletion filter shrinks them to an **irreducible conflicting set**. Each resolution (relax a soft preference, change a hard block, defer a course, reduce credits) is re-solved to confirm it actually works before it is offered.
+- **Hard vs. soft vs. academic vs. immigration** constraints are distinct types. Soft preferences can be relaxed only with student approval; hard availability is never scheduled over; the F-1 rule cannot be overridden by preferences.
+- **F-1 rule done carefully.** At most one online course / 3 online credits *count* toward the 12-credit full course of study. Extra online enrollment is allowed but not counted. Hybrid is not assumed to be in-person (configurable) and is flagged for ISSS confirmation.
+- **Conversational changes** ("Give me Fridays off", "I got a job on Tuesdays") are parsed into a typed change set (Claude structured output or a deterministic parser), applied to the planning state, and the affected agents and optimizer re-run. Assumptions (e.g. unspecified work hours) are surfaced.
+- **Transparency.** Every recommendation shows which requirement it may satisfy (pending verification), how it matches interests (AI suggestion vs. concept match), why this section was chosen over the others, and data provenance (source, CRN, retrieval time). The agent workspace shows persisted execution records, logs and sources.
+- **Mock TUportal adapter** saves draft schedules to a clearly labeled mock environment. Nobody is ever registered.
+
+## Repository layout
+
+```
+apps/api        FastAPI + SQLAlchemy + OR-Tools + Anthropic SDK
+  app/agents    nine agents, LLM wrapper, shared context
+  app/adapters  course search, requirements catalog, degree audit PDF, TUportal (mock)
+  app/rules.py  deterministic rules engine
+  app/optimizer.py  CP-SAT model and conflict analysis
+  app/orchestrator.py  state machine over PlanRun.state
+apps/web        Next.js 16 (App Router) + TypeScript + Tailwind 4 + shadcn/ui (Base UI) + Lucide
+packages/shared JSON schema notes shared by both apps
+data/demo       programs, courses/sections (Spring 2027), fictional students
+docs            architecture, integrations, demo walkthrough
+tests           pytest: rules, optimizer, HTTP workflow
+```
+
+## Running locally
+
+Requirements: Python 3.12+ and Node 22+.
+
+```bash
+cp .env.example .env              # optional: add ANTHROPIC_API_KEY
+
+# API
+cd apps/api
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --port 8000  # creates and seeds SQLite on first start
+
+# Web (new terminal)
+cd apps/web
+npm install
+echo "NEXT_PUBLIC_API_URL=http://127.0.0.1:8000" > .env.local
+npm run dev                       # http://localhost:3000
+```
+
+Without `ANTHROPIC_API_KEY` every agent uses its deterministic fallback and the workspace labels each agent "Deterministic". With a key, the Interest Matching, Explanation and change-request parsing steps call `claude-opus-5-5` with schema-validated structured outputs and server-side refusal fallbacks enabled.
+
+### Tests
+
+```bash
+source apps/api/.venv/bin/activate
+python -m pytest tests -q
+```
+
+Covers prerequisite verification (in-progress ≠ completed), credit calculations, time conflicts, hard-constraint enforcement, soft-preference optimization, F-1 online counting (including hybrid), requirement matching and double counting, infeasibility with minimal conflict sets, alternative schedule diversity, upload validation, consent, deletion, the mock TUportal export, and the full planning + natural-language re-planning workflow over HTTP.
+
+## Demo
+
+See [docs/demo-walkthrough.md](docs/demo-walkthrough.md). Short version: open `/demo`, run **Lina Haddad**, watch the agents in the workspace, then open **Schedules**. The only Research Methods section that fits around her Mon/Wed job meets Friday morning, so the planner explains that no perfect schedule exists and offers verified alternatives. Type "Give me Fridays off" to turn the preference into a hard constraint and watch the Graduation strategy become infeasible with an explanation.
+
+## Privacy and security
+
+- Consent required before records are processed; uploads limited to PDFs ≤ 5 MB, parsed in memory, never stored or logged.
+- Student education records are **not** sent to the LLM (`LLM_MAY_RECEIVE_STUDENT_RECORDS=false`); only catalog text, interest text, and de-identified schedule facts are.
+- Untrusted text is wrapped as data, LLM output is schema-validated and filtered against the dataset (unknown course codes are discarded).
+- API keys are server-side only. Students can delete their records (`DELETE /api/students/{id}` removes plans, agent logs, options and validations).
+- The advisor view uses a demo-only role header. Production requires Temple SSO and advisor-student assignment checks. This prototype is not FERPA-certified.
+
+## Incomplete integrations
+
+Documented in [docs/integrations.md](docs/integrations.md): Temple Degree Audit (no public API; PDF upload instead), Academic Bulletin ingestion (fixtures only), Temple course search (no documented open API; demo sections), TUportal (mock adapter only). Non-Main campuses are shown as future functionality.
