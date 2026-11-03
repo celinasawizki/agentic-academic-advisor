@@ -6,16 +6,16 @@ def course(code, credits=3, prereqs=None):
 
 
 def section(sid, course_code, meetings, modality="in_person", campus="Main"):
-    return SectionData(id=sid, course=course_code, term_id="2027-SP", section=sid[-3:], crn=sid, instructor="Staff",
+    return SectionData(id=sid, course=course_code, term_id="202703", section=sid[-3:], crn=sid, instructor="Staff",
                        campus=campus, modality=modality, location="X",
                        meetings=[Meeting(days=d, start=s, end=e) for d, s, e in meetings],
                        seats_available=10, data_source="demo_fixture", retrieved_at="2026-10-15T00:00:00")
 
 
-def req(rid, courses, rule="all", n=None, program="P", ptype="major"):
-    return RequirementData(id=rid, program_id=program, program_name=program, program_type=ptype, name=rid, rule=rule,
-                           choose_count=n, courses=courses, category="core", catalog_year="2024-2025",
-                           verification_status="demo_unverified")
+def req(rid, courses=(), n=1, program="P", ptype="major", kind="count", options=None, patterns=None):
+    return RequirementData(id=rid, program_id=program, program_name=program, program_type=ptype, name=rid, kind=kind,
+                           needed=n, options=options if options is not None else [[c] for c in courses],
+                           patterns=patterns or [], catalog_year="2026-2027", verification_status="parsed")
 
 
 def block(day, start, end, kind="hard", label="Work"):

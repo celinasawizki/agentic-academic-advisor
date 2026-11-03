@@ -20,11 +20,12 @@ def status():
     return {
         "tuportal": {"adapter": "MockTUportalAdapter", "mock": True, "live": False,
                      "note": "No authorized TUportal test environment. Drafts are saved to a local mock store; nobody is registered."},
-        "course_search": {"adapter": "DemoFixtureCourseSearchAdapter", "live": False,
-                          "note": "Temple course search has no documented public API; sections are labeled demo fixtures."},
+        "course_search": {"adapter": "SnapshotCourseSearchAdapter", "live": False, "snapshot": True,
+                          "note": "Point-in-time snapshot of Temple's public class search, taken once with a rate-limited script. Seats and times change; verify in TUportal."},
         "degree_audit": {"adapter": "PDF upload parser", "live": False,
                          "note": "Degree Audit requires university authentication; students upload a PDF which is parsed locally."},
-        "requirements": {"adapter": "DbCatalogAdapter", "live": False, "note": "Requirement fixtures pending bulletin verification."},
+        "requirements": {"adapter": "DbCatalogAdapter", "live": False, "snapshot": True,
+                         "note": "Every undergraduate major, minor and certificate parsed from the public Academic Bulletin. Parsed rules are pending advisor verification; unparseable rules are flagged."},
         "llm": {"enabled": settings.llm_enabled, "model": settings.anthropic_model if settings.llm_enabled else None,
                 "student_records_sent": settings.llm_may_receive_student_records},
     }

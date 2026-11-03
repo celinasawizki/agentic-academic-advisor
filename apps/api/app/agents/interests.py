@@ -77,11 +77,26 @@ def _hits(terms: list[str], text: str) -> list[str]:
     return [term for term in terms if re.search(rf"\b{re.escape(term)}\b", text)]
 
 
-def fallback_scores(themes: list[str], courses: dict[str, dict]) -> dict[str, dict]:
+STOP = set("""a an and are as at be but by for from has have i i'm im in into is it its me my of on or our so that the their them
+this to too was we what when which with you your about also especially interested interest interests like love really want
+studying study major minor how affects affect things stuff learn learning more course courses class classes""".split())
+
+
+def interest_terms(text: str) -> list[str]:
+    words = re.findall(r"[a-z][a-z\-]{3,}", text.lower())
+    return list(dict.fromkeys(w for w in words if w not in STOP))
+
+
+def fallback_scores(themes: list[str], courses: dict[str, dict], free_terms: list[str] | None = None) -> dict[str, dict]:
     out = {}
+    free_terms = free_terms or []
     for code, c in courses.items():
         title, desc = c["title"].lower(), c["description"].lower()
         miss_prob, matched, evidence = 1.0, [], []
+        free_hits = [t for t in free_terms if re.search(rf"\b{re.escape(t)}", title + " " + desc)]
+        if free_hits:
+            miss_prob *= 1 - min(0.6, 0.2 * len(free_hits))
+            evidence += free_hits
         for label in themes:
             terms = THEMES[label]["terms"]
             h_title, h_desc = _hits(terms, title), _hits(terms, desc)
@@ -92,7 +107,8 @@ def fallback_scores(themes: list[str], courses: dict[str, dict]) -> dict[str, di
                 evidence += [h for h in h_title + h_desc if h not in evidence]
         score = round(1 - miss_prob, 3)
         reason = (f"Course description covers {', '.join(repr(e) for e in evidence[:4])}, related to your interest in {', '.join(matched)}."
-                  if matched else "No clear overlap with your stated interests; included for degree progress.")
+                  if matched else f"Course description mentions {', '.join(repr(e) for e in evidence[:4])} from your interests."
+                  if evidence else "No clear overlap with your stated interests; included for degree progress.")
         out[code] = {"score": score, "reason": reason, "matched_themes": matched, "method": "concept_expansion"}
     return out
 
@@ -109,7 +125,10 @@ class InterestMatchingAgent(Agent):
         scores: dict[str, dict] | None = None
         themes: list[dict] = []
 
-        catalog_blob = json.dumps([{"course": k, "title": v["title"], "description": v["description"]} for k, v in courses.items()], indent=0)
+        labels = detect_themes(text, boosts)
+        pre = fallback_scores(labels, courses, interest_terms(text + " " + " ".join(boosts)))
+        shortlist = sorted(courses, key=lambda k: -pre[k]["score"])[:80]
+        catalog_blob = json.dumps([{"course": k, "title": courses[k]["title"], "description": courses[k]["description"]} for k in shortlist], indent=0)
         result = structured_call(
             system=("You are the Interest Matching Agent in a university academic planner. Identify the student's academic "
                     "interest themes and score how relevant each listed course is (0-1), using ONLY the course descriptions "
@@ -120,10 +139,13 @@ class InterestMatchingAgent(Agent):
         )
         if result is not None:
             valid = {s.course: s for s in result.scores if s.course in courses}
-            if len(valid) >= len(courses) * 0.8:
+            if len(valid) >= len(shortlist) * 0.8:
                 ctx.set_mode("llm")
                 scores = {k: {"score": max(0.0, min(1.0, v.score)), "reason": v.reason,
                               "matched_themes": v.matched_themes, "method": "llm_semantic"} for k, v in valid.items()}
+                for k in courses:
+                    if k not in scores:
+                        scores[k] = {**pre[k], "score": min(pre[k]["score"], 0.2)}
                 themes = [{"label": t.label, "evidence": t.evidence} for t in result.themes]
                 dropped = [s.course for s in result.scores if s.course not in courses]
                 if dropped:
@@ -132,9 +154,8 @@ class InterestMatchingAgent(Agent):
                 ctx.log("LLM output did not cover enough courses; using deterministic concept matching")
         if scores is None:
             ctx.set_mode("llm_fallback" if result is None and ctx.state.get("_llm_enabled") else "deterministic")
-            labels = detect_themes(text, boosts)
             themes = [{"label": l, "evidence": "matched from your description"} for l in labels]
-            scores = fallback_scores(labels, courses)
+            scores = pre
         for code in courses:
             scores.setdefault(code, {"score": 0.0, "reason": "Not scored", "matched_themes": [], "method": "default"})
         for b in boosts:
@@ -147,7 +168,7 @@ class InterestMatchingAgent(Agent):
         blocked = []
         for code, sc in ranked:
             info = courses[code]
-            if sc["score"] >= 0.5 and info["prereq_status"] == "missing":
+            if sc["score"] >= 0.5 and info["prereq_status"] == "missing" and len(blocked) < 5:
                 need = " and ".join(" or ".join(g) for g in info["prereq_missing"])
                 blocked.append({"course": code, "title": info["title"], "score": sc["score"], "missing_prereq": need})
         ctx.log(f"Identified {len(themes)} interest themes", themes=[t["label"] for t in themes])

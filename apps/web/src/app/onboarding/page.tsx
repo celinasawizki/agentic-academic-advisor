@@ -39,13 +39,14 @@ const SUGGESTED = ["Clinical Psychology", "Industrial-Organizational Psychology"
 const STATUS_LABEL: Record<Status, string> = { completed: "Completed", in_progress: "In progress", transfer: "Transfer", planned: "Planned", unverified: "Unverified" }
 
 const DEMO = {
-  name: "Jordan Rivera (fictional)", academic_year: "Junior", expected_graduation: "2028-05", catalog_year: "2024-2025",
-  programs: ["PSY-BA", "ENTR-MINOR", "CIS-CERT", "GENED"],
+  name: "Jordan Rivera (fictional)", academic_year: "Junior", expected_graduation: "2028-05", catalog_year: "2026-2027",
+  programs: ["psychology-ba", "entrepreneurship-innovation-management-minor", "data-science-computational-analytics-certificate", "gened"],
   interests: "I'm studying Psychology, but I'm especially interested in Industrial-Organizational Psychology, workplace behavior, artificial intelligence, and how technology affects human decision-making.",
   rows: [
-    ["PSY 1001", "completed", "A"], ["PSY 2101", "completed", "B+"], ["PSY 2301", "completed", "A-"], ["PSY 2501", "completed", "A"],
-    ["ENTR 2101", "completed", "A"], ["CIS 1051", "completed", "B"], ["GENED 0812", "transfer", "TR"],
-    ["PSY 2401", "in_progress", null], ["CIS 1068", "in_progress", null], ["ENTR 3101", "in_progress", null],
+    ["PSY 1001", "completed", "A"], ["PSY 1002", "completed", "A"], ["PSY 1003", "completed", "B+"], ["PSY 1004", "completed", "A"],
+    ["PSY 2402", "completed", "A"], ["PSY 2101", "completed", "A-"], ["ECON 1101", "completed", "B+"], ["HRM 1101", "completed", "A"],
+    ["MATH 1041", "completed", "B"], ["ENG 0802", "completed", "B+"], ["IH 0851", "completed", "A-"], ["ARTH 0808", "transfer", "TR"],
+    ["PSY 2301", "in_progress", null], ["PSY 2501", "in_progress", null], ["CIS 1068", "in_progress", null], ["ECON 1102", "in_progress", null],
   ] as [string, Status, string | null][],
   availability: [
     { day: "M", start: "13:00", end: "18:00", kind: "hard", label: "Work" },
@@ -66,9 +67,10 @@ export default function Onboarding() {
   const [year, setYear] = useState("Junior")
   const [grad, setGrad] = useState("2028-05")
   const [catalogYear, setCatalogYear] = useState("")
-  const [term, setTerm] = useState("2027-SP")
-  const [selected, setSelected] = useState<string[]>(["GENED"])
+  const [term, setTerm] = useState("202703")
+  const [selected, setSelected] = useState<string[]>(["gened"])
   const [programQuery, setProgramQuery] = useState("")
+  const [typeFilter, setTypeFilter] = useState<"all" | Program["type"]>("all")
   const [rows, setRows] = useState<Row[]>([])
   const [consent, setConsent] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -95,10 +97,14 @@ export default function Onboarding() {
     toast.success("Filled with fictional demo values")
   }
 
-  const filteredPrograms = useMemo(
-    () => programs.filter((p) => `${p.name} ${p.type} ${p.college}`.toLowerCase().includes(programQuery.toLowerCase())),
-    [programs, programQuery],
-  )
+  const filteredPrograms = useMemo(() => {
+    const q = programQuery.toLowerCase().trim()
+    return programs
+      .filter((p) => (typeFilter === "all" || p.type === typeFilter) && (!q || `${p.name} ${p.type} ${p.college}`.toLowerCase().includes(q)))
+      .sort((a, b) => Number(selected.includes(b.id)) - Number(selected.includes(a.id)) || a.name.localeCompare(b.name))
+  }, [programs, programQuery, typeFilter, selected])
+  const catalogYears = useMemo(() => [...new Set(programs.map((p) => p.catalog_year).filter(Boolean) as string[])].sort().reverse(), [programs])
+  const counts = useMemo(() => programs.reduce<Record<string, number>>((acc, p) => ({ ...acc, [p.type]: (acc[p.type] ?? 0) + 1 }), {}), [programs])
 
   const upload = async (file: File) => {
     if (!consent) return toast.error("Please give consent before uploading academic records.")
@@ -128,7 +134,7 @@ export default function Onboarding() {
   }
 
   const canNext = () => {
-    if (step === 0) return name.trim() && selected.some((id) => programs.find((p) => p.id === id)?.supported && id !== "GENED")
+    if (step === 0) return name.trim() && selected.some((id) => programs.find((p) => p.id === id)?.supported && id !== "gened")
     if (step === 1) return consent && rows.every((r) => r.verified)
     if (step === 4) return credits.min <= credits.target && credits.target <= credits.max
     if (step === 5) return campus === "Main"
@@ -192,7 +198,7 @@ export default function Onboarding() {
                 </Field>
                 <Field label="Expected graduation"><Input type="month" value={grad} onChange={(e) => setGrad(e.target.value)} /></Field>
                 <Field label="Catalog year (if known)" hint="Requirements depend on the year you entered your program.">
-                  <NativeSelect value={catalogYear} onChange={setCatalogYear} options={["", "2024-2025"]} labels={{ "": "I'm not sure" }} />
+                  <NativeSelect value={catalogYear} onChange={setCatalogYear} options={["", ...catalogYears]} labels={{ "": "I'm not sure" }} />
                 </Field>
                 <Field label="Planning semester">
                   <NativeSelect value={term} onChange={setTerm} options={terms.map((t) => t.id)} labels={Object.fromEntries(terms.map((t) => [t.id, t.name]))} />
@@ -200,12 +206,35 @@ export default function Onboarding() {
               </div>
               <div>
                 <Label className="mb-2 block">Programs (majors, minors, certificates)</Label>
-                <div className="relative mb-2">
-                  <Search className="absolute top-2.5 left-2.5 size-4 text-muted-foreground" />
-                  <Input value={programQuery} onChange={(e) => setProgramQuery(e.target.value)} placeholder="Search programs…" className="pl-8" />
+                <div className="mb-2 flex flex-col gap-2 sm:flex-row">
+                  <div className="relative flex-1">
+                    <Search className="absolute top-2.5 left-2.5 size-4 text-muted-foreground" />
+                    <Input value={programQuery} onChange={(e) => setProgramQuery(e.target.value)} placeholder={`Search ${programs.length} Temple programs…`} className="pl-8" />
+                  </div>
+                  <div className="flex gap-1 rounded-lg border p-0.5 text-xs">
+                    {(["all", "major", "minor", "certificate"] as const).map((t) => (
+                      <button key={t} type="button" onClick={() => setTypeFilter(t)}
+                        className={cn("rounded-md px-2 py-1 capitalize", typeFilter === t ? "bg-primary text-primary-foreground" : "hover:bg-muted")}>
+                        {t === "all" ? "All" : `${t}s`} <span className="opacity-70">{t === "all" ? programs.length : counts[t] ?? 0}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
+                {selected.length > 0 && (
+                  <div className="mb-2 flex flex-wrap gap-1.5">
+                    {selected.map((id) => {
+                      const p = programs.find((x) => x.id === id)
+                      return p ? (
+                        <button key={id} type="button" onClick={() => setSelected(selected.filter((x) => x !== id))}
+                          className="rounded-full border border-primary/30 bg-cherry-soft px-2.5 py-0.5 text-xs text-primary">
+                          {p.name} ×
+                        </button>
+                      ) : null
+                    })}
+                  </div>
+                )}
                 <div className="grid max-h-72 gap-1.5 overflow-y-auto rounded-xl border p-2 sm:grid-cols-2">
-                  {filteredPrograms.map((p) => {
+                  {filteredPrograms.slice(0, 120).map((p) => {
                     const on = selected.includes(p.id)
                     return (
                       <button key={p.id} type="button" disabled={!p.supported}
@@ -216,12 +245,16 @@ export default function Onboarding() {
                           <span className="block font-medium">{p.name}</span>
                           <span className="block text-[11px] text-muted-foreground capitalize">{p.type === "gened" ? "General education" : p.type} · {p.college}</span>
                         </span>
-                        {p.supported ? (on && <Check className="size-4 text-primary" />) : <Pill>Not yet supported</Pill>}
+                        {p.supported ? (on && <Check className="size-4 shrink-0 text-primary" />) : <Pill>Needs manual review</Pill>}
                       </button>
                     )
                   })}
                 </div>
-                <p className="mt-2 text-xs text-muted-foreground">Only programs with ingested requirement data can be planned. Requirement data in this prototype is a demo fixture pending verification.</p>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {filteredPrograms.length > 120 ? `Showing 120 of ${filteredPrograms.length} — refine your search. ` : ""}
+                  Every undergraduate major, minor and certificate in the Temple Academic Bulletin. Requirements are parsed automatically and are
+                  pending verification; programs whose requirement tables could not be parsed are marked.
+                </p>
               </div>
             </div>
           )}

@@ -33,60 +33,75 @@ class AcademicTerm(Base):
 
 class AcademicProgram(Base):
     __tablename__ = "academic_programs"
-    id: Mapped[str] = mapped_column(String(40), primary_key=True)
-    name: Mapped[str] = mapped_column(String(120))
+    id: Mapped[str] = mapped_column(String(120), primary_key=True)
+    name: Mapped[str] = mapped_column(String(300))
     type: Mapped[str] = mapped_column(String(20))  # major | minor | certificate | gened
     college: Mapped[str] = mapped_column(String(120))
     catalog_year: Mapped[str | None] = mapped_column(String(10))
     supported: Mapped[bool] = mapped_column(Boolean, default=False)
+    total_credit_hours: Mapped[str | None] = mapped_column(String(40))
     source_id: Mapped[int | None] = mapped_column(ForeignKey("research_sources.id"))
     source: Mapped[ResearchSource | None] = relationship()
-    requirements: Mapped[list["ProgramRequirement"]] = relationship(back_populates="program", cascade="all, delete-orphan")
+    requirements: Mapped[list["ProgramRequirement"]] = relationship(back_populates="program", cascade="all, delete-orphan",
+                                                                     order_by="ProgramRequirement.position")
 
 
 class ProgramRequirement(Base):
     __tablename__ = "program_requirements"
-    id: Mapped[str] = mapped_column(String(40), primary_key=True)
+    id: Mapped[str] = mapped_column(String(120), primary_key=True)
     program_id: Mapped[str] = mapped_column(ForeignKey("academic_programs.id"))
     program: Mapped[AcademicProgram] = relationship(back_populates="requirements")
-    name: Mapped[str] = mapped_column(String(120))
-    rule: Mapped[str] = mapped_column(String(10))  # all | choose
-    choose_count: Mapped[int | None] = mapped_column(Integer)
-    courses: Mapped[list[str]] = mapped_column(JSON)
-    category: Mapped[str] = mapped_column(String(20))
-    catalog_year: Mapped[str] = mapped_column(String(10))
-    verification_status: Mapped[str] = mapped_column(String(30), default="demo_unverified")
+    position: Mapped[int] = mapped_column(Integer, default=0)
+    group: Mapped[str] = mapped_column(String(300), default="")
+    name: Mapped[str] = mapped_column(Text)
+    kind: Mapped[str] = mapped_column(String(10))  # count | credits | manual | note
+    needed: Mapped[float] = mapped_column(Float)
+    options: Mapped[list[list[str]]] = mapped_column(JSON, default=list)
+    patterns: Mapped[list[dict]] = mapped_column(JSON, default=list)
+    notes: Mapped[list[str]] = mapped_column(JSON, default=list)
+    catalog_year: Mapped[str | None] = mapped_column(String(10))
+    verification_status: Mapped[str] = mapped_column(String(30), default="parsed")
     source_id: Mapped[int | None] = mapped_column(ForeignKey("research_sources.id"))
 
 
 class Course(Base):
     __tablename__ = "courses"
     code: Mapped[str] = mapped_column(String(20), primary_key=True)
-    subject: Mapped[str] = mapped_column(String(10))
+    subject: Mapped[str] = mapped_column(String(10), index=True)
     number: Mapped[str] = mapped_column(String(10))
-    title: Mapped[str] = mapped_column(String(200))
+    title: Mapped[str] = mapped_column(String(300))
     description: Mapped[str] = mapped_column(Text)
-    credits: Mapped[int] = mapped_column(Integer)
+    credits: Mapped[float] = mapped_column(Float)
+    credits_max: Mapped[float | None] = mapped_column(Float)
+    attributes: Mapped[list[str]] = mapped_column(JSON, default=list)
     prereqs: Mapped[list[list[str]]] = mapped_column(JSON, default=list)  # AND of OR-groups
+    prereq_text: Mapped[str] = mapped_column(Text, default="")
+    prereq_notes: Mapped[list[str]] = mapped_column(JSON, default=list)
+    source_url: Mapped[str | None] = mapped_column(String(300))
     source_id: Mapped[int | None] = mapped_column(ForeignKey("research_sources.id"))
-    sections: Mapped[list["CourseSection"]] = relationship(back_populates="course")
 
 
 class CourseSection(Base):
     __tablename__ = "course_sections"
-    id: Mapped[str] = mapped_column(String(60), primary_key=True)  # stable identifier
-    course_code: Mapped[str] = mapped_column(ForeignKey("courses.code"))
-    course: Mapped[Course] = relationship(back_populates="sections")
-    term_id: Mapped[str] = mapped_column(ForeignKey("academic_terms.id"))
+    id: Mapped[str] = mapped_column(String(60), primary_key=True)  # stable identifier: term-SUBJNUM-seq
+    course_code: Mapped[str] = mapped_column(String(20), index=True)
+    term_id: Mapped[str] = mapped_column(ForeignKey("academic_terms.id"), index=True)
     section: Mapped[str] = mapped_column(String(10))
     crn: Mapped[str] = mapped_column(String(20))
-    instructor: Mapped[str] = mapped_column(String(120))
-    campus: Mapped[str] = mapped_column(String(40))
+    title: Mapped[str | None] = mapped_column(String(300))
+    instructor: Mapped[str] = mapped_column(String(300))
+    campus: Mapped[str] = mapped_column(String(60))
     modality: Mapped[str] = mapped_column(String(20))  # in_person | online | hybrid | unknown
-    location: Mapped[str] = mapped_column(String(120))
+    instructional_method: Mapped[str | None] = mapped_column(String(80))
+    schedule_type: Mapped[str | None] = mapped_column(String(80))
+    location: Mapped[str] = mapped_column(String(160))
     meetings: Mapped[list[dict]] = mapped_column(JSON, default=list)
+    credits: Mapped[float | None] = mapped_column(Float)
     seats_available: Mapped[int | None] = mapped_column(Integer)
-    data_source: Mapped[str] = mapped_column(String(40), default="demo_fixture")
+    max_enrollment: Mapped[int | None] = mapped_column(Integer)
+    linked: Mapped[bool] = mapped_column(Boolean, default=False)
+    attributes: Mapped[list[str]] = mapped_column(JSON, default=list)
+    data_source: Mapped[str] = mapped_column(String(40), default="temple_class_search_snapshot")
     source_id: Mapped[int | None] = mapped_column(ForeignKey("research_sources.id"))
     retrieved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
@@ -213,7 +228,7 @@ class ScheduleCourse(Base):
     __tablename__ = "schedule_courses"
     id: Mapped[int] = mapped_column(primary_key=True)
     option_id: Mapped[str] = mapped_column(ForeignKey("schedule_options.id"))
-    section_id: Mapped[str] = mapped_column(ForeignKey("course_sections.id"))
+    section_id: Mapped[str] = mapped_column(String(60))
     course_code: Mapped[str] = mapped_column(String(20))
     requirement_ids: Mapped[list[str]] = mapped_column(JSON, default=list)
     interest_score: Mapped[float] = mapped_column(Float, default=0)

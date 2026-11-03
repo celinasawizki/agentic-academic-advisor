@@ -38,7 +38,7 @@ export function CourseExplainer({ c }: { c: CourseExplanation }) {
         <Row k="Requirement status" v={c.requirement_status} />
         {c.prerequisites && <Row k="Prerequisites" v={c.prerequisites} />}
         <Row k="Why this section" v={c.section_choice} />
-        <Row k="Data source" v={<span className="inline-flex items-center gap-1"><Database className="size-3" /> {c.data.source.replace("_", " ")} · CRN {c.data.crn} · {new Date(c.data.retrieved_at).toLocaleDateString()}</span>} />
+        <Row k="Data source" v={<span className="inline-flex items-center gap-1"><Database className="size-3" /> {c.data.source === "demo_fixture" ? "demo fixture" : "class-search snapshot"} · CRN {c.data.crn} · retrieved {new Date(c.data.retrieved_at).toLocaleDateString()}</span>} />
       </dl>
     </div>
   )

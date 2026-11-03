@@ -1,10 +1,10 @@
 """Course search adapters.
 
-Temple's public class search (Banner 9 Student Registration SSB at
-prd-xereg.temple.edu/StudentRegistrationSsb/ssb/courseSearch) is a browser
-application backed by session-bound JSON endpoints. It does not publish a
-documented open API, so this prototype does not call it. A real adapter should
-only be built against an endpoint or data export Temple authorizes."""
+Temple's public class search (Banner 9 Student Registration SSB) has no
+documented open API. With the project owner's approval, scripts/import_sections.py
+takes a one-time, rate-limited snapshot of a term into data/temple/sections-<term>.json;
+the app only ever reads that committed snapshot and never calls Temple at runtime.
+A live adapter should only be built against an endpoint Temple authorizes."""
 
 from abc import ABC, abstractmethod
 
@@ -28,30 +28,46 @@ class CourseSearchAdapter(ABC):
     def search_sections(self, term_id: str, course_codes: list[str] | None = None) -> list[SectionData]: ...
 
 
-class DemoFixtureCourseSearchAdapter(CourseSearchAdapter):
-    """Serves the clearly labeled demo fixture ingested into the database."""
+class SnapshotCourseSearchAdapter(CourseSearchAdapter):
+    """Serves the committed course catalog and class-search snapshot from the database.
+    Results are cached per dataset fingerprint because a plan reads thousands of rows."""
 
-    name = "demo_fixture"
+    name = "temple_snapshot"
     is_live = False
+    _cache: dict[tuple, object] = {}
 
     def __init__(self, db: Session):
         self.db = db
+        from app.models import ResearchSource
+        marker = db.query(ResearchSource).filter_by(kind="dataset").first()
+        self.version = marker.description if marker else "none"
 
     def get_term(self, term_id: str) -> AcademicTerm | None:
         return self.db.get(AcademicTerm, term_id)
 
     def get_courses(self) -> dict[str, CourseData]:
-        return {c.code: CourseData(code=c.code, title=c.title, credits=c.credits, description=c.description, prereqs=c.prereqs)
-                for c in self.db.query(Course).all()}
+        key = ("courses", self.version)
+        if key not in self._cache:
+            self._cache[key] = {c.code: CourseData(code=c.code, title=c.title, credits=c.credits, description=c.description,
+                                                   prereqs=c.prereqs, prereq_text=c.prereq_text or "", prereq_notes=c.prereq_notes or [],
+                                                   attributes=c.attributes or [])
+                                for c in self.db.query(Course).all()}
+        return self._cache[key]  # type: ignore[return-value]
 
     def search_sections(self, term_id: str, course_codes: list[str] | None = None) -> list[SectionData]:
-        q = self.db.query(CourseSection).filter(CourseSection.term_id == term_id)
+        key = ("sections", self.version, term_id)
+        if key not in self._cache:
+            self._cache[key] = [SectionData(id=s.id, course=s.course_code, term_id=s.term_id, section=s.section, crn=s.crn,
+                                            instructor=s.instructor, campus=s.campus, modality=s.modality, location=s.location,
+                                            meetings=s.meetings, seats_available=s.seats_available, credits=s.credits,
+                                            schedule_type=s.schedule_type, linked=s.linked, attributes=s.attributes or [],
+                                            data_source=s.data_source, retrieved_at=s.retrieved_at.isoformat())
+                                for s in self.db.query(CourseSection).filter(CourseSection.term_id == term_id).all()]
+        secs: list[SectionData] = self._cache[key]  # type: ignore[assignment]
         if course_codes:
-            q = q.filter(CourseSection.course_code.in_(course_codes))
-        return [SectionData(id=s.id, course=s.course_code, term_id=s.term_id, section=s.section, crn=s.crn,
-                            instructor=s.instructor, campus=s.campus, modality=s.modality, location=s.location,
-                            meetings=s.meetings, seats_available=s.seats_available, data_source=s.data_source,
-                            retrieved_at=s.retrieved_at.isoformat()) for s in q.all()]
+            wanted = set(course_codes)
+            return [s for s in secs if s.course in wanted]
+        return secs
 
 
 class TempleBannerCourseSearchAdapter(CourseSearchAdapter):

@@ -1,28 +1,66 @@
 from app.agents.base import Agent, PlanContext
 from app.domain import AvailBlock, SectionData
 from app.optimizer import STRATEGIES, Candidate, HardGroup, ScheduleModel, Strategy
-from app.rules import f1_assessment
+from app.rules import f1_assessment, overlapping_blocks, section_credits
 
 PREF_PREFIX = "Preference: "
 
 
+MAX_COURSES = 45
+MAX_SECTIONS_PER_COURSE = 6
+
+
 def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> ScheduleModel:
+    """Builds the CP-SAT model over a pruned candidate set: the highest-value
+    courses (degree priority + interest) plus anything the student or the
+    graduation plan requires, with a few sections each."""
     disc = ctx.state["course_discovery"]
     grad = ctx.state["graduation_planning"]
     interest = ctx.state["interest_matching"]["scores"]
     cons = ctx.state["scheduling_constraints"]
-    candidates = [
-        Candidate(section=SectionData(**e["section"]), credits=ctx.catalog.courses[e["course"]].credits,
-                  requirement_ids=e["requirement_ids"],
-                  priority=grad["priorities"].get(e["course"], {}).get("priority", 0.3),
-                  interest=interest.get(e["course"], {}).get("score", 0.0))
-        for e in disc["eligible_sections"]
-    ]
-    caps = {r["id"]: r["remaining_needed"] for r in ctx.state["degree_requirements"]["remaining"]}
-    critical = [c for c in cons["must_courses_graduation_strategy"] if c not in ctx.student.preferences.required_courses]
-    return ScheduleModel(candidates, ctx.catalog.courses, blocks if blocks is not None else ctx.student.availability,
-                         ctx.student.preferences, caps, ctx.student.f1_status == "yes", critical,
-                         student_required=ctx.student.preferences.required_courses)
+    prefs = ctx.student.preferences
+    blocks = blocks if blocks is not None else ctx.student.availability
+    hard = [b for b in blocks if b.kind == "hard"]
+    soft = [b for b in blocks if b.kind == "soft"]
+    critical = [c for c in cons["must_courses_graduation_strategy"] if c not in prefs.required_courses]
+    locked_courses = {e["course"] for e in disc["eligible_sections"] if e["section"]["id"] in prefs.locked_sections}
+    keep_always = set(critical) | set(prefs.required_courses) | locked_courses
+
+    def value(code: str) -> float:
+        return grad["priorities"].get(code, {}).get("priority", 0.3) + interest.get(code, {}).get("score", 0.0)
+
+    by_course: dict[str, list[dict]] = {}
+    for e in disc["eligible_sections"]:
+        by_course.setdefault(e["course"], []).append(e)
+    ranked = sorted(by_course, key=lambda c: -value(c))
+    chosen_courses = list(dict.fromkeys([c for c in ranked if c in keep_always] + ranked[:MAX_COURSES]))
+
+    candidates = []
+    for code in chosen_courses:
+        entries = by_course[code]
+        secs = [(SectionData(**e["section"]), e) for e in entries]
+        secs.sort(key=lambda se: (se[0].id not in prefs.locked_sections, bool(overlapping_blocks(se[0], hard)),
+                                  len(overlapping_blocks(se[0], soft)), se[1].get("time_tba", False)))
+        per_comp: dict[str, int] = {}
+        for sec, e in secs:
+            per_comp[sec.component] = per_comp.get(sec.component, 0) + 1
+            if per_comp[sec.component] > MAX_SECTIONS_PER_COURSE:
+                continue
+            candidates.append(Candidate(section=sec, credits=section_credits(sec, ctx.catalog.courses),
+                                        requirement_ids=e["requirement_ids"],
+                                        priority=grad["priorities"].get(code, {}).get("priority", 0.3),
+                                        interest=interest.get(code, {}).get("score", 0.0)))
+    # Each option counts once toward a requirement: the first course of a bundle (e.g. lecture & lab
+    # pair) carries the weight, its partners count zero; pattern matches count one each.
+    caps = {}
+    for r in ctx.state["degree_requirements"]["remaining"]:
+        weights: dict[str, int] = {}
+        for opt in r["options"]:
+            for i, c in enumerate(opt):
+                weights[c] = max(weights.get(c, 0), 1 if i == 0 else 0)
+        caps[r["id"]] = (max(1, r["remaining_courses"]), weights)
+    return ScheduleModel(candidates, ctx.catalog.courses, blocks, prefs, caps, ctx.student.f1_status == "yes", critical,
+                         student_required=prefs.required_courses)
 
 
 def describe_resolution(ctx: PlanContext, g: HardGroup, res) -> dict:
@@ -72,16 +110,15 @@ def describe_resolution(ctx: PlanContext, g: HardGroup, res) -> dict:
 
 
 def _overlaps(s: SectionData, b: AvailBlock) -> bool:
-    from app.rules import overlapping_blocks
     return bool(overlapping_blocks(s, [b]))
 
 
 def _alternatives(ctx: PlanContext, course: str) -> list[str]:
     alts = []
     for r in ctx.state["degree_requirements"]["remaining"]:
-        if course in r["courses"] and r["rule"] == "choose":
-            alts += [c for c in r["candidate_courses"] if c != course]
-    return sorted(set(alts))
+        if r["kind"] in ("count", "credits") and any(course in o for o in r["options"]) and len(r["options"]) > 1:
+            alts += [o[0] for o in r["options"] if course not in o and o[0] in r["candidate_courses"]]
+    return sorted(set(alts))[:8]
 
 
 class ScheduleOptimizationAgent(Agent):
@@ -123,8 +160,10 @@ class ScheduleOptimizationAgent(Agent):
         return {
             "id": f"{ctx.plan_id}-{strat.key}",
             "strategy": strat.key, "label": strat.label, "rank": rank, "credits": res.credits,
-            "sections": [{**s.model_dump(), "title": ctx.catalog.courses[s.course].title,
-                          "credits": ctx.catalog.courses[s.course].credits,
+            "sections": [{**s.model_dump(), "title": ctx.catalog.courses[s.course].title if s.course in ctx.catalog.courses else s.course,
+                          "credits": section_credits(s, ctx.catalog.courses),
+                          "requires_linked_section": by_section[s.id].get("requires_linked_section", False),
+                          "time_tba": by_section[s.id].get("time_tba", False),
                           "requirement_ids": by_section[s.id]["requirement_ids"],
                           "prereq_status": by_section[s.id]["prereq_status"],
                           "prereq_pending": by_section[s.id]["prereq_pending"],

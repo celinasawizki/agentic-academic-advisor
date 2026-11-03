@@ -48,10 +48,24 @@ class StudentExplanationAgent(Agent):
             courses = []
             for x, sec in zip(opt["sections"], chosen):
                 reasons = []
+                if sec.component != "primary":
+                    fit = "Outside all of your unavailable times." if not overlapping_blocks(sec, hard) else ""
+                    courses.append({
+                        "section_id": sec.id, "course": sec.course, "title": f"{x['title']} — {sec.component}", "credits": 0,
+                        "meeting": meeting_text(x), "modality": sec.modality, "campus": sec.campus, "location": sec.location,
+                        "reasons": [{"kind": "schedule_fit", "verified": True,
+                                     "text": f"Required {sec.component.lower()} component of {sec.course}; scheduled with the course. {fit}".strip()}],
+                        "prerequisites": "", "requirement_status": "Component of a recommended course",
+                        "section_choice": self._section_choice(sec, chosen, [a for a in all_sections if a.component == sec.component], hard, soft),
+                        "data": {"source": sec.data_source, "retrieved_at": sec.retrieved_at, "crn": sec.crn},
+                    })
+                    continue
                 for rid in x["requirement_ids"]:
                     r = reqs[rid]
+                    still = f"{r['remaining_needed']:g} credits still needed" if r["kind"] == "credits" else f"{r['remaining_needed']:g} still needed"
+                    label = r["name"] if not r["group"] or r["group"] in r["name"] else f"{r['group']} — {r['name']}"
                     reasons.append({"kind": "requirement", "verified": False,
-                                    "text": f"May satisfy {r['program_name']} {r['program_type']}: {r['name']} ({r['remaining_needed']} still needed)",
+                                    "text": f"May satisfy {r['program_name']}: {label} ({still})",
                                     "status": "pending_verification", "source": r["source_url"]})
                 sc = interest["scores"].get(x["course"], {})
                 if sc.get("score", 0) >= 0.3:
@@ -62,7 +76,7 @@ class StudentExplanationAgent(Agent):
                     crit = next(c for c in grad["critical_courses"] if c["course"] == x["course"])
                     reasons.append({"kind": "graduation", "verified": True, "text": f"Graduation-critical: {crit['reason']}"})
                 elif pr.get("unlocks"):
-                    reasons.append({"kind": "graduation", "verified": True, "text": f"Unlocks {', '.join(pr['unlocks'])}."})
+                    reasons.append({"kind": "graduation", "verified": True, "text": f"Prerequisite for {', '.join(pr['unlocks'][:5])}."})
                 fit = []
                 if not any(overlapping_blocks(sec, hard)):
                     fit.append("Outside all of your unavailable times")

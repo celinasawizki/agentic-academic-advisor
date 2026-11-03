@@ -1,6 +1,7 @@
 """Deterministic academic rules engine. No LLM calls: these functions are the
 source of truth for eligibility, conflicts, credits and F-1 counting."""
 
+import math
 from dataclasses import dataclass, field
 
 from app.core.config import settings
@@ -9,6 +10,7 @@ from app.domain import AvailBlock, CourseData, RequirementData, SectionData, Tra
 SUPPORTED_CAMPUSES = {"Main", "Online"}
 COMPLETED_STATUSES = {"completed", "transfer"}
 PROGRAM_PRIORITY = {"major": 0, "minor": 1, "certificate": 2, "gened": 3}
+OTHER = "@OTHER"
 
 
 def to_minutes(hhmm: str) -> int:
@@ -52,7 +54,17 @@ def latest_end(section: SectionData) -> int | None:
 
 
 def campus_supported(section: SectionData) -> bool:
-    return section.campus in SUPPORTED_CAMPUSES
+    """Main Campus sections, plus online sections regardless of the listed campus."""
+    return section.campus in SUPPORTED_CAMPUSES or section.modality == "online"
+
+
+def section_credits(section: SectionData, courses: dict[str, CourseData]) -> float:
+    if section.component != "primary":
+        return 0.0
+    if section.credits:
+        return float(section.credits)
+    c = courses.get(section.course)
+    return float(c.credits) if c else 3.0
 
 
 @dataclass
@@ -60,26 +72,31 @@ class PrereqResult:
     status: str  # satisfied | conditional | missing
     missing_groups: list[list[str]] = field(default_factory=list)
     pending_courses: list[str] = field(default_factory=list)
+    unverifiable: list[list[str]] = field(default_factory=list)
 
 
 def prereq_status(course: CourseData, transcript: list[TranscriptItem]) -> PrereqResult:
     """Prereqs are an AND of OR-groups. In-progress courses are NOT treated as
-    completed; they make the prerequisite 'conditional' on passing them."""
+    completed; they make the prerequisite 'conditional' on passing them. A group
+    that can also be met by placement/test scores (@OTHER) cannot be checked, so
+    it is 'conditional' rather than 'missing'."""
     done = {t.course for t in transcript if t.status in COMPLETED_STATUSES}
     in_prog = {t.course for t in transcript if t.status == "in_progress"}
-    missing, pending = [], []
+    missing, pending, unverifiable = [], [], []
     for group in course.prereqs:
         if any(c in done for c in group):
             continue
         ip = [c for c in group if c in in_prog]
         if ip:
             pending.append(ip[0])
+        elif OTHER in group:
+            unverifiable.append([c for c in group if c != OTHER])
         else:
             missing.append(group)
     if missing:
-        return PrereqResult("missing", missing, pending)
-    if pending:
-        return PrereqResult("conditional", [], pending)
+        return PrereqResult("missing", missing, pending, unverifiable)
+    if pending or unverifiable:
+        return PrereqResult("conditional", [], pending, unverifiable)
     return PrereqResult("satisfied")
 
 
@@ -88,20 +105,21 @@ class RequirementProgress:
     requirement: RequirementData
     completed: list[str]
     in_progress: list[str]
-    remaining_needed: int
+    remaining_needed: float  # courses for count, credits for credits
+    remaining_courses: int  # schedulable course slots still needed
     candidate_courses: list[str]
-    status: str  # complete | in_progress | incomplete
+    status: str  # complete | in_progress | incomplete | manual | note
     notes: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict:
         r = self.requirement
         return {
-            "id": r.id, "program_id": r.program_id, "program_name": r.program_name,
-            "program_type": r.program_type, "name": r.name, "rule": r.rule, "needed": r.needed, "courses": r.courses,
-            "category": r.category, "catalog_year": r.catalog_year,
+            "id": r.id, "program_id": r.program_id, "program_name": r.program_name, "program_type": r.program_type,
+            "group": r.group, "name": r.name, "kind": r.kind, "needed": r.needed, "options": r.options,
+            "patterns": r.patterns, "requirement_notes": r.notes, "catalog_year": r.catalog_year,
             "verification_status": r.verification_status, "source_url": r.source_url,
-            "completed": self.completed, "in_progress": self.in_progress,
-            "remaining_needed": self.remaining_needed, "candidate_courses": self.candidate_courses,
+            "completed": self.completed, "in_progress": self.in_progress, "remaining_needed": self.remaining_needed,
+            "remaining_courses": self.remaining_courses, "candidate_courses": self.candidate_courses,
             "status": self.status, "notes": self.notes,
         }
 
@@ -110,55 +128,82 @@ def requirement_progress(
     requirements: list[RequirementData],
     transcript: list[TranscriptItem],
     double_count_allowed: set[frozenset[str]] | None = None,
+    courses: dict[str, CourseData] | None = None,
 ) -> list[RequirementProgress]:
     """Allocate transcript courses to requirements. A course counts once per
     program; it only counts across programs when a double-count rule allows it.
     Without an explicit rule we do not assume double counting."""
     double_count_allowed = double_count_allowed or set()
-    status_of = {t.course: t.status for t in transcript}
+    courses = courses or {}
+    status_of = {t.course: t.status for t in transcript if t.status not in ("planned", "unverified")}
     used_by_program: dict[str, set[str]] = {}
     owner: dict[str, str] = {}
-    ordered = sorted(requirements, key=lambda r: (PROGRAM_PRIORITY.get(r.program_type, 9), r.id))
+    ordered = sorted(requirements, key=lambda r: (PROGRAM_PRIORITY.get(r.program_type, 9), r.kind == "credits", bool(r.patterns), r.id))
     out: list[RequirementProgress] = []
+
+    def available(code: str, req: RequirementData, notes: list[str]) -> bool:
+        if code not in status_of or code in used_by_program.setdefault(req.program_id, set()):
+            return False
+        other = owner.get(code)
+        if other and other != req.program_id and frozenset({other, req.program_id}) not in double_count_allowed:
+            notes.append(f"{code} already applied to another program; double counting not assumed.")
+            return False
+        return True
+
+    def take(code: str, req: RequirementData) -> None:
+        used_by_program.setdefault(req.program_id, set()).add(code)
+        owner.setdefault(code, req.program_id)
+
     for req in ordered:
-        used = used_by_program.setdefault(req.program_id, set())
-        completed, in_progress, notes = [], [], []
-        for c in req.courses:
-            st = status_of.get(c)
-            if st is None or st in ("planned", "unverified"):
-                continue
-            if c in used:
-                continue
-            other = owner.get(c)
-            if other and other != req.program_id and frozenset({other, req.program_id}) not in double_count_allowed:
-                notes.append(f"{c} already applied to {other}; double counting not verified for this program.")
-                continue
-            if len(completed) + len(in_progress) >= req.needed:
+        notes: list[str] = []
+        if req.kind in ("note", "manual"):
+            out.append(RequirementProgress(req, [], [], 0, 0, [], req.kind, list(req.notes)))
+            continue
+        completed, in_progress = [], []
+        got = 0.0
+        unit = (lambda codes: sum(courses[c].credits if c in courses else 3 for c in codes)) if req.kind == "credits" else (lambda codes: 1)
+        for opt in req.options:
+            if got >= req.needed:
                 break
-            (completed if st in COMPLETED_STATUSES else in_progress).append(c)
-            used.add(c)
-            owner.setdefault(c, req.program_id)
-        remaining = max(0, req.needed - len(completed) - len(in_progress))
+            if all(available(c, req, notes) for c in opt):
+                for c in opt:
+                    take(c, req)
+                    (completed if status_of[c] in COMPLETED_STATUSES else in_progress).append(c)
+                got += unit(opt)
+        if req.patterns and got < req.needed:
+            for code in list(status_of):
+                if got >= req.needed:
+                    break
+                c = courses.get(code)
+                if c and req.pattern_matches(c) and available(code, req, []):
+                    take(code, req)
+                    (completed if status_of[code] in COMPLETED_STATUSES else in_progress).append(code)
+                    got += unit([code])
+        remaining = max(0.0, req.needed - got)
+        if req.kind == "credits":
+            slots = math.ceil(remaining / 3) if remaining else 0
+        else:
+            slots = int(math.ceil(remaining))
         taken = set(completed) | set(in_progress)
-        candidates = [c for c in req.courses if c not in taken and status_of.get(c) not in COMPLETED_STATUSES | {"in_progress"}] if remaining else []
+        candidates = [c for c in dict.fromkeys(req.courses) if c not in taken and c not in status_of] if remaining else []
         status = "complete" if not remaining and not in_progress else ("in_progress" if not remaining else "incomplete")
-        out.append(RequirementProgress(req, completed, in_progress, remaining, candidates, status, notes))
+        out.append(RequirementProgress(req, completed, in_progress, remaining, slots, candidates, status, notes))
     return out
 
 
-def total_credits(sections: list[SectionData], courses: dict[str, CourseData]) -> int:
-    return sum(courses[s.course].credits for s in sections)
+def total_credits(sections: list[SectionData], courses: dict[str, CourseData]) -> float:
+    return sum(section_credits(s, courses) for s in sections)
 
 
 @dataclass
 class F1Assessment:
     applies: bool
-    in_person_credits: int = 0
-    online_credits: int = 0
-    hybrid_credits: int = 0
-    unknown_credits: int = 0
-    online_credits_counted: int = 0
-    credits_toward_full_time: int = 0
+    in_person_credits: float = 0
+    online_credits: float = 0
+    hybrid_credits: float = 0
+    unknown_credits: float = 0
+    online_credits_counted: float = 0
+    credits_toward_full_time: float = 0
     full_time_required: int = 0
     status: str = "not_applicable"  # meets | below | needs_confirmation | not_applicable
     notes: list[str] = field(default_factory=list)
@@ -175,7 +220,7 @@ def f1_assessment(sections: list[SectionData], courses: dict[str, CourseData], f
         return F1Assessment(applies=False)
     a = F1Assessment(applies=True, full_time_required=settings.f1_full_time_credits)
     for s in sections:
-        cr = courses[s.course].credits
+        cr = section_credits(s, courses)
         if s.modality == "in_person":
             a.in_person_credits += cr
         elif s.modality == "online":
@@ -197,7 +242,7 @@ def f1_assessment(sections: list[SectionData], courses: dict[str, CourseData], f
         a.notes.append("Meets the full-time minimum only if hybrid/unknown-modality courses count as in-person. Confirm with Temple's International Student and Scholar Services (ISSS).")
     else:
         a.status = "below"
-        a.notes.append(f"Only {a.credits_toward_full_time} credits count toward the {a.full_time_required}-credit full course of study.")
+        a.notes.append(f"Only {a.credits_toward_full_time:g} credits count toward the {a.full_time_required}-credit full course of study.")
     if a.online_credits > settings.f1_max_online_credits_counted:
-        a.notes.append(f"{a.online_credits} online credits scheduled; only {settings.f1_max_online_credits_counted} count toward full-time status. Additional online credits are allowed but do not count.")
+        a.notes.append(f"{a.online_credits:g} online credits scheduled; only {settings.f1_max_online_credits_counted} count toward full-time status. Additional online credits are allowed but do not count.")
     return a

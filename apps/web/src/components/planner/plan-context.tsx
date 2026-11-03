@@ -25,12 +25,15 @@ export function PlanShell({ planId, children }: { planId: string; children: Reac
     let t: ReturnType<typeof setTimeout> | undefined
     const poll = async () => {
       try {
-        const p = await api.plan(planId)
+        const light = await api.plan(planId, false)
         if (cancelled) return
-        setPlan(p)
+        const running = light.status === "pending" || light.status === "running"
+        const p = running ? light : await api.plan(planId)
+        if (cancelled) return
+        setPlan((prev) => (running && prev ? { ...light, state: { ...prev.state, ...light.state } } : p))
         if (p.status === "complete") setStable(p)
         setError(null)
-        if (p.status === "pending" || p.status === "running") t = setTimeout(poll, 700)
+        if (running) t = setTimeout(poll, 800)
       } catch (e) {
         if (cancelled) return
         setError((e as Error).message)

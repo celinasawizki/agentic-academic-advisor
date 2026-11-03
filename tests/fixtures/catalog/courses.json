@@ -1,0 +1,458 @@
+{
+ "_meta": {
+  "notice": "SYNTHETIC TEST FIXTURE"
+ },
+ "courses": [
+  {
+   "code": "PSY 1001",
+   "title": "Introduction to Psychology",
+   "credits": 3,
+   "prereqs": [],
+   "description": "Survey of the science of behavior and mental processes, including learning, cognition, development, social behavior and psychological disorders.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 2101",
+   "title": "Statistics in Psychology",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 1001"
+    ]
+   ],
+   "description": "Descriptive and inferential statistics used in psychological research, hypothesis testing, correlation and regression.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 2201",
+   "title": "Research Methods in Psychology",
+   "credits": 4,
+   "prereqs": [
+    [
+     "PSY 2101"
+    ]
+   ],
+   "description": "Design, conduct and reporting of psychological research; experimental and survey methods, measurement, research ethics, and scientific writing.",
+   "attributes": [],
+   "credits_max": 4,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 2301",
+   "title": "Social Psychology",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 1001"
+    ]
+   ],
+   "description": "How people think about, influence and relate to one another: attitudes, persuasion, group dynamics, conformity and prejudice.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 2401",
+   "title": "Developmental Psychology",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 1001"
+    ]
+   ],
+   "description": "Physical, cognitive and social development across the lifespan.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 2501",
+   "title": "Cognitive Psychology",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 1001"
+    ]
+   ],
+   "description": "Attention, perception, memory, language, reasoning and decision making from an information-processing perspective.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 2601",
+   "title": "Biological Bases of Behavior",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 1001"
+    ]
+   ],
+   "description": "Neural and hormonal foundations of behavior, brain structure and function, sensation and motivation.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 2701",
+   "title": "Abnormal Psychology",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 1001"
+    ]
+   ],
+   "description": "Classification, causes and treatment of psychological disorders.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 3301",
+   "title": "Industrial-Organizational Psychology",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 2101"
+    ]
+   ],
+   "description": "Psychology applied to the workplace: personnel selection, performance appraisal, training, leadership, work teams, job attitudes and organizational culture.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 3321",
+   "title": "Psychology of Work Motivation",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 2301"
+    ]
+   ],
+   "description": "Theories of motivation at work, goal setting, engagement, burnout, and employee well-being in modern organizations.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 3510",
+   "title": "Human Factors and Engineering Psychology",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 2501"
+    ]
+   ],
+   "description": "Designing systems, interfaces and automation around human capabilities; human-automation trust, usability, error and workload.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 3520",
+   "title": "Judgment and Decision Making",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 2501"
+    ]
+   ],
+   "description": "Heuristics, biases and rational choice; how people and algorithms make decisions under uncertainty.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 3610",
+   "title": "Cognitive Neuroscience",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 2601"
+    ]
+   ],
+   "description": "Neural mechanisms of perception, memory, attention and executive function; neuroimaging methods.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 3710",
+   "title": "Clinical Psychology",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 2701"
+    ]
+   ],
+   "description": "Assessment, psychotherapy approaches and professional practice in clinical psychology.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 4996",
+   "title": "Capstone: Research in Organizational Psychology",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 2201"
+    ]
+   ],
+   "description": "Writing-intensive capstone in which students design and conduct an original research project on workplace behavior.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "PSY 4997",
+   "title": "Capstone: Clinical Science",
+   "credits": 3,
+   "prereqs": [
+    [
+     "PSY 2201"
+    ],
+    [
+     "PSY 2701"
+    ]
+   ],
+   "description": "Writing-intensive capstone in clinical science research.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "ENTR 2101",
+   "title": "Foundations of Entrepreneurship",
+   "credits": 3,
+   "prereqs": [],
+   "description": "Introduction to the entrepreneurial mindset, venture creation and innovation.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "ENTR 3101",
+   "title": "Opportunity Discovery",
+   "credits": 3,
+   "prereqs": [
+    [
+     "ENTR 2101"
+    ]
+   ],
+   "description": "Identifying and validating new venture opportunities through customer discovery.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "ENTR 3201",
+   "title": "Technology Entrepreneurship",
+   "credits": 3,
+   "prereqs": [
+    [
+     "ENTR 2101"
+    ]
+   ],
+   "description": "Launching technology and AI-driven ventures: product-market fit, software business models and intellectual property.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "ENTR 3301",
+   "title": "Entrepreneurial Finance",
+   "credits": 3,
+   "prereqs": [
+    [
+     "ENTR 2101"
+    ]
+   ],
+   "description": "Financing new ventures, valuation, venture capital and financial planning for startups.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "ENTR 3401",
+   "title": "Social Entrepreneurship",
+   "credits": 3,
+   "prereqs": [
+    [
+     "ENTR 2101"
+    ]
+   ],
+   "description": "Creating ventures that address social problems; impact measurement and mission-driven organizations.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "MKTG 2101",
+   "title": "Marketing Management",
+   "credits": 3,
+   "prereqs": [],
+   "description": "Marketing strategy, consumer behavior, segmentation and the marketing mix.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "CIS 1051",
+   "title": "Introduction to Problem Solving and Programming in Python",
+   "credits": 3,
+   "prereqs": [],
+   "description": "Programming fundamentals in Python, algorithmic problem solving.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "CIS 1068",
+   "title": "Program Design and Abstraction",
+   "credits": 4,
+   "prereqs": [
+    [
+     "CIS 1051"
+    ]
+   ],
+   "description": "Object-oriented program design, data abstraction and testing.",
+   "attributes": [],
+   "credits_max": 4,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "CIS 2109",
+   "title": "Database Management Systems",
+   "credits": 3,
+   "prereqs": [
+    [
+     "CIS 1051"
+    ]
+   ],
+   "description": "Relational data modeling, SQL and database application design.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "CIS 3203",
+   "title": "Introduction to Artificial Intelligence",
+   "credits": 3,
+   "prereqs": [
+    [
+     "CIS 1068"
+    ]
+   ],
+   "description": "Search, knowledge representation, machine learning and neural networks; ethics and societal impact of AI systems.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "CIS 3715",
+   "title": "Principles of Data Science",
+   "credits": 3,
+   "prereqs": [
+    [
+     "CIS 1051"
+    ]
+   ],
+   "description": "Data wrangling, visualization, statistical modeling and machine learning with Python.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "CIS 4340",
+   "title": "Human-Computer Interaction",
+   "credits": 3,
+   "prereqs": [
+    [
+     "CIS 1068"
+    ]
+   ],
+   "description": "User-centered design, usability evaluation, prototyping and the psychology of how people interact with technology.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "GENED 0801",
+   "title": "Art of the Cinema",
+   "credits": 3,
+   "prereqs": [],
+   "description": "Film form, history and criticism.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "GENED 0812",
+   "title": "Creative Acts",
+   "credits": 3,
+   "prereqs": [],
+   "description": "Exploring creativity through making and analyzing art.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "GENED 0855",
+   "title": "Technology and the Global Economy",
+   "credits": 3,
+   "prereqs": [],
+   "description": "How digital technology, automation and AI reshape global work and economies.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  },
+  {
+   "code": "GENED 0868",
+   "title": "World Society in Literature and Film",
+   "credits": 3,
+   "prereqs": [],
+   "description": "Global perspectives through literature and film.",
+   "attributes": [],
+   "credits_max": 3,
+   "prereq_text": "",
+   "prereq_notes": []
+  }
+ ]
+}

@@ -9,7 +9,7 @@ import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { AvailabilityGrid } from "@/components/planner/availability-grid"
-import { DemoData, F1Badge, Pill, ReviewBadge } from "@/components/planner/badges"
+import { F1Badge, Pill, ReviewBadge, SnapshotData } from "@/components/planner/badges"
 import { CourseExplainer } from "@/components/planner/course-explainer"
 import { WaitFor, usePlan } from "@/components/planner/plan-context"
 import { WeekCalendar, dayHas } from "@/components/planner/week-calendar"
@@ -89,7 +89,10 @@ function Builder() {
   const swap = async (section: OptionSection, altId: string) => {
     const alt = st.course_discovery!.eligible_sections.find((e) => e.section.id === altId)
     if (!alt) return
-    const next = sections.map((s) => (s.id === section.id ? { ...s, ...alt.section, id: alt.section.id } : s))
+    const next = sections.map((s) => (s.id === section.id
+      ? { ...s, ...alt.section, id: alt.section.id, credits: alt.section.credits ?? s.credits,
+          requires_linked_section: alt.requires_linked_section, time_tba: alt.time_tba }
+      : s))
     setEdited(next)
     setFocusSection(altId)
     try {
@@ -150,7 +153,7 @@ function Builder() {
                 <h2 className="text-lg font-semibold">{selected.label}</h2>
                 <ReviewBadge status={reviews[selected.id]?.status} />
                 <F1Badge status={selected.f1.status} />
-                <DemoData />
+                <SnapshotData />
               </div>
               <div className="flex flex-wrap gap-2">
                 <Button variant="outline" size="sm" onClick={() => setAvailOpen(true)}><CalendarCog /> Availability</Button>
@@ -190,25 +193,29 @@ function Builder() {
 
           <aside className="space-y-3">
             <div className="rounded-2xl border bg-card">
-              <div className="border-b px-4 py-3 text-sm font-semibold">Courses · {sections.reduce((s, x) => s + x.credits, 0)} credits</div>
+              <div className="border-b px-4 py-3 text-sm font-semibold">Courses · {sections.reduce((s, x) => s + ((x.component ?? "primary") === "primary" ? x.credits : 0), 0)} credits</div>
               <ul className="divide-y">
                 {sections.map((s) => {
-                  const alts = st.course_discovery!.eligible_sections.filter((e) => e.course === s.course && e.section.id !== s.id)
+                  const alts = st.course_discovery!.eligible_sections.filter((e) => e.course === s.course && e.section.id !== s.id
+                    && (e.section.component ?? "primary") === (s.component ?? "primary")).slice(0, 8)
+                  const isComponent = (s.component ?? "primary") !== "primary"
                   const isLocked = prefs.locked_sections.includes(s.id)
                   return (
                     <li key={s.id} className={cn("px-4 py-3 text-sm", focusSection === s.id && "bg-cherry-soft/50")}>
                       <button type="button" className="w-full text-left" onClick={() => setFocusSection(s.id)}>
                         <div className="flex items-center justify-between gap-2">
-                          <span className="font-semibold">{s.course} <span className="font-normal text-muted-foreground">§{s.section}</span></span>
-                          <span className="text-xs text-muted-foreground">{s.credits} cr</span>
+                          <span className="font-semibold">{s.course}{isComponent && <span className="font-normal"> {s.component}</span>} <span className="font-normal text-muted-foreground">§{s.section} · CRN {s.crn}</span></span>
+                          <span className="text-xs text-muted-foreground">{isComponent ? "with course" : `${s.credits} cr`}</span>
                         </div>
                         <div className="text-xs">{s.title}</div>
                         <div className="mt-0.5 text-[11px] text-muted-foreground">
-                          {s.meetings.length ? s.meetings.map((m) => meetingLabel(m.days, m.start, m.end)).join("; ") : "Online asynchronous"} · {s.modality.replace("_", "-")} · {s.campus}
+                          {s.meetings.length ? s.meetings.map((m) => meetingLabel(m.days, m.start, m.end)).join("; ") : s.modality === "online" ? "Online asynchronous" : "Time TBA"} · {s.modality.replace("_", "-")} · {s.campus} · {s.instructor}
                         </div>
                       </button>
                       <div className="mt-2 flex flex-wrap gap-1.5">
-                        {s.prereq_status === "conditional" && <Pill tone="warning">Conditional on {s.prereq_pending.join(", ")}</Pill>}
+                        {s.prereq_status === "conditional" && <Pill tone="warning">{s.prereq_pending.length ? `Conditional on ${s.prereq_pending.join(", ")}` : "Prereq may need placement"}</Pill>}
+                        {s.requires_linked_section && <Pill tone="warning">+ linked recitation/lab</Pill>}
+                        {s.time_tba && <Pill tone="warning">Time TBA</Pill>}
                         {selected.critical_included.includes(s.course) && <Pill tone="cherry">Graduation-critical</Pill>}
                         {s.interest_score >= 0.5 && <Pill tone="info"><Sparkles className="size-3" /> {Math.round(s.interest_score * 100)}% interest</Pill>}
                       </div>
@@ -216,7 +223,7 @@ function Builder() {
                         <Button size="xs" variant="outline" disabled={busy || !!edited} onClick={() => toggleLock(s.id)}>
                           {isLocked ? <LockOpen /> : <Lock />} {isLocked ? "Unlock" : "Lock"}
                         </Button>
-                        <Button size="xs" variant="outline" disabled={busy || !!edited} onClick={() => removeCourse(s.course)}><Trash2 /> Remove</Button>
+                        {!isComponent && <Button size="xs" variant="outline" disabled={busy || !!edited} onClick={() => removeCourse(s.course)}><Trash2 /> Remove</Button>}
                         {alts.map((a) => (
                           <Button key={a.section.id} size="xs" variant="ghost" onClick={() => swap(s, a.section.id)}
                             title={a.section.meetings.length ? a.section.meetings.map((m) => meetingLabel(m.days, m.start, m.end)).join("; ") : "Online"}>
@@ -277,7 +284,7 @@ function OptionCard({ o, active, review, onClick }: { o: ScheduleOption; active:
         <ReviewBadge status={review} />
       </div>
       <div className="mt-1 text-lg font-semibold">{o.label}</div>
-      <div className="mt-0.5 text-xs text-muted-foreground">{o.sections.map((s) => s.course).join(" · ")}</div>
+      <div className="mt-0.5 text-xs text-muted-foreground">{[...new Set(o.sections.map((s) => s.course))].join(" · ")}</div>
       <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
         <Metric label="Credits" value={`${o.credits}`} />
         <Metric label="Degree progress" value={o.scores.degree_progress.toFixed(1)} />

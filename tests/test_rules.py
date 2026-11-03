@@ -104,7 +104,7 @@ def test_f1_not_applicable_for_domestic():
 # --- requirement matching --------------------------------------------------
 
 def test_requirement_progress_choose_n():
-    r = req("R1", ["A 1", "A 2", "A 3", "A 4"], rule="choose", n=2)
+    r = req("R1", ["A 1", "A 2", "A 3", "A 4"], n=2)
     [p] = requirement_progress([r], [t("A 1", "completed")])
     assert p.remaining_needed == 1 and p.status == "incomplete"
     assert set(p.candidate_courses) == {"A 2", "A 3", "A 4"}
@@ -114,6 +114,42 @@ def test_requirement_in_progress_not_complete():
     r = req("R1", ["A 1"])
     [p] = requirement_progress([r], [t("A 1", "in_progress")])
     assert p.remaining_needed == 0 and p.status == "in_progress"
+
+
+def test_or_alternatives_satisfy_single_requirement():
+    r = req("R1", options=[["PSY 1001"], ["PSY 1901"]])
+    [p] = requirement_progress([r], [t("PSY 1901", "completed")])
+    assert p.status == "complete" and p.completed == ["PSY 1901"]
+
+
+def test_bundle_requires_every_course():
+    r = req("R1", options=[["CHEM 1031", "CHEM 1033"]])
+    [p] = requirement_progress([r], [t("CHEM 1031", "completed")])
+    assert p.remaining_needed == 1 and set(p.candidate_courses) == {"CHEM 1033"}
+    [p] = requirement_progress([r], [t("CHEM 1031", "completed"), t("CHEM 1033", "completed")])
+    assert p.status == "complete"
+
+
+def test_credit_based_requirement():
+    courses = {c: course(c, cr) for c, cr in [("S 1", 3), ("S 2", 4), ("S 3", 3)]}
+    r = req("R1", ["S 1", "S 2", "S 3"], n=9, kind="credits")
+    [p] = requirement_progress([r], [t("S 2", "completed")], courses=courses)
+    assert p.remaining_needed == 5 and p.remaining_courses == 2
+
+
+def test_course_range_and_gened_attribute_patterns():
+    courses = {"PSY 3172": course("PSY 3172"), "ART 1001": course("ART 1001")}
+    courses["ART 1001"].attributes.append("GA")
+    adv = req("ADV", n=1, patterns=[{"subject": "PSY", "min": 3000, "max": 3620}])
+    arts = req("GA", n=1, program="GENED", ptype="gened", patterns=[{"attribute": "GA"}])
+    out = {p.requirement.id: p for p in requirement_progress([adv, arts], [t("PSY 3172", "completed"), t("ART 1001", "completed")], courses=courses)}
+    assert out["ADV"].status == "complete" and out["GA"].status == "complete"
+
+
+def test_manual_rules_are_not_guessed():
+    r = req("R1", kind="manual", n=6)
+    [p] = requirement_progress([r], [])
+    assert p.status == "manual" and p.remaining_courses == 0
 
 
 def test_no_double_counting_across_programs_without_rule():
@@ -129,3 +165,18 @@ def test_double_counting_when_explicitly_allowed():
     minor = req("N1", ["X 1"], program="MIN", ptype="minor")
     out = {p.requirement.id: p for p in requirement_progress([major, minor], [t("X 1", "completed")], {frozenset({"MAJ", "MIN"})})}
     assert out["N1"].completed == ["X 1"]
+
+
+def test_placement_alternative_is_conditional_not_missing():
+    c = course("PSY 1003", prereqs=[["MATH 0701", "@OTHER"]])
+    r = prereq_status(c, [])
+    assert r.status == "conditional" and r.unverifiable == [["MATH 0701"]]
+
+
+def test_change_request_parser_handles_multiple_days_and_times():
+    from app.agents.constraints import _regex_parse
+    got = [(c.day, c.start, c.end) for c in _regex_parse("I got a job on Tuesdays and Thursdays from 9 to 5").changes]
+    assert got == [("T", "09:00", "17:00"), ("R", "09:00", "17:00")]
+    assert [(c.day, c.start, c.end) for c in _regex_parse("practice wednesdays 6-9").changes] == [("W", "18:00", "21:00")]
+    [c] = _regex_parse("I got a job on Tuesdays.").changes
+    assert c.assumption  # unstated hours are an explicit, surfaced assumption

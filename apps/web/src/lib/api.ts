@@ -43,7 +43,7 @@ export const api = {
   },
   createPlan: (student_id: string) =>
     request<{ plan_id: string }>("/api/plans", { method: "POST", body: JSON.stringify({ student_id }) }),
-  plan: (id: string) => request<Plan>(`/api/plans/${id}`),
+  plan: (id: string, full = true) => request<Plan>(`/api/plans/${id}${full ? "" : "?full=false"}`),
   modify: (id: string, message: string) =>
     request<{ applied: string[]; assumptions: string[]; unclear: string[]; mode: string; rerun: boolean }>(
       `/api/plans/${id}/modify`,

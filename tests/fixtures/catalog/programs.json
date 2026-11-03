@@ -1,0 +1,389 @@
+{
+ "_meta": {
+  "notice": "SYNTHETIC TEST FIXTURE. Not Temple data."
+ },
+ "programs": [
+  {
+   "id": "PSY-BA",
+   "name": "Psychology",
+   "type": "major",
+   "college": "College of Liberal Arts",
+   "catalog_year": "2024-2025",
+   "supported": true,
+   "source_url": "https://bulletin.temple.edu/undergraduate/liberal-arts/psychology/",
+   "retrieved_at": "2026-10-15T00:00:00Z",
+   "requirements": [
+    {
+     "id": "PSY-R1-PSY1001",
+     "group": "Psychology Foundations",
+     "name": "PSY 1001",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "PSY 1001"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "PSY-R2-PSY2101",
+     "group": "Statistics & Research Methods",
+     "name": "PSY 2101",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "PSY 2101"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "PSY-R2-PSY2201",
+     "group": "Statistics & Research Methods",
+     "name": "PSY 2201",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "PSY 2201"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "PSY-R3",
+     "group": "Core Content Areas",
+     "name": "Select 4 of the following",
+     "kind": "count",
+     "needed": 4,
+     "options": [
+      [
+       "PSY 2301"
+      ],
+      [
+       "PSY 2401"
+      ],
+      [
+       "PSY 2501"
+      ],
+      [
+       "PSY 2601"
+      ],
+      [
+       "PSY 2701"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "PSY-R4",
+     "group": "Upper-Level Electives",
+     "name": "Select 3 of the following",
+     "kind": "count",
+     "needed": 3,
+     "options": [
+      [
+       "PSY 3301"
+      ],
+      [
+       "PSY 3321"
+      ],
+      [
+       "PSY 3510"
+      ],
+      [
+       "PSY 3520"
+      ],
+      [
+       "PSY 3610"
+      ],
+      [
+       "PSY 3710"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "PSY-R5",
+     "group": "Capstone",
+     "name": "Select 1 of the following",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "PSY 4996"
+      ],
+      [
+       "PSY 4997"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    }
+   ],
+   "total_credit_hours": []
+  },
+  {
+   "id": "ENTR-MINOR",
+   "name": "Entrepreneurship",
+   "type": "minor",
+   "college": "Fox School of Business",
+   "catalog_year": "2024-2025",
+   "supported": true,
+   "source_url": "https://bulletin.temple.edu/undergraduate/fox-business-management/entrepreneurship-innovation-management/",
+   "retrieved_at": "2026-10-15T00:00:00Z",
+   "requirements": [
+    {
+     "id": "ENTR-R1-ENTR2101",
+     "group": "Foundations of Entrepreneurship",
+     "name": "ENTR 2101",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "ENTR 2101"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "ENTR-R2-ENTR3101",
+     "group": "Opportunity Discovery",
+     "name": "ENTR 3101",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "ENTR 3101"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "ENTR-R3",
+     "group": "Entrepreneurship Electives",
+     "name": "Select 2 of the following",
+     "kind": "count",
+     "needed": 2,
+     "options": [
+      [
+       "ENTR 3201"
+      ],
+      [
+       "ENTR 3301"
+      ],
+      [
+       "ENTR 3401"
+      ],
+      [
+       "MKTG 2101"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    }
+   ],
+   "total_credit_hours": []
+  },
+  {
+   "id": "CIS-CERT",
+   "name": "Computer Science",
+   "type": "certificate",
+   "college": "College of Science and Technology",
+   "catalog_year": "2024-2025",
+   "supported": true,
+   "source_url": "https://bulletin.temple.edu/undergraduate/science-technology/computer-information-sciences/",
+   "retrieved_at": "2026-10-15T00:00:00Z",
+   "requirements": [
+    {
+     "id": "CIS-R1-CIS1051",
+     "group": "Programming Foundations",
+     "name": "CIS 1051",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "CIS 1051"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "CIS-R2-CIS1068",
+     "group": "Program Design",
+     "name": "CIS 1068",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "CIS 1068"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "CIS-R3",
+     "group": "Applied Computing Electives",
+     "name": "Select 2 of the following",
+     "kind": "count",
+     "needed": 2,
+     "options": [
+      [
+       "CIS 2109"
+      ],
+      [
+       "CIS 3203"
+      ],
+      [
+       "CIS 3715"
+      ],
+      [
+       "CIS 4340"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    }
+   ],
+   "total_credit_hours": []
+  },
+  {
+   "id": "GENED",
+   "name": "General Education",
+   "type": "gened",
+   "college": "University",
+   "catalog_year": "2024-2025",
+   "supported": true,
+   "source_url": "https://bulletin.temple.edu/undergraduate/general-education/",
+   "retrieved_at": "2026-10-15T00:00:00Z",
+   "requirements": [
+    {
+     "id": "GEN-GA",
+     "group": "GenEd Arts",
+     "name": "Select 1 of the following",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "GENED 0801"
+      ],
+      [
+       "GENED 0812"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    },
+    {
+     "id": "GEN-GG",
+     "group": "GenEd Global/World Society",
+     "name": "Select 1 of the following",
+     "kind": "count",
+     "needed": 1,
+     "options": [
+      [
+       "GENED 0855"
+      ],
+      [
+       "GENED 0868"
+      ]
+     ],
+     "patterns": [],
+     "notes": [],
+     "verification_status": "parsed"
+    }
+   ],
+   "total_credit_hours": []
+  },
+  {
+   "id": "MKTG-BBA",
+   "name": "Marketing",
+   "type": "major",
+   "college": "Fox School of Business",
+   "catalog_year": null,
+   "supported": false,
+   "source_url": null,
+   "retrieved_at": null,
+   "requirements": [],
+   "total_credit_hours": []
+  },
+  {
+   "id": "CIS-BS",
+   "name": "Computer Science",
+   "type": "major",
+   "college": "College of Science and Technology",
+   "catalog_year": null,
+   "supported": false,
+   "source_url": null,
+   "retrieved_at": null,
+   "requirements": [],
+   "total_credit_hours": []
+  },
+  {
+   "id": "DATA-MINOR",
+   "name": "Data Science",
+   "type": "minor",
+   "college": "College of Science and Technology",
+   "catalog_year": null,
+   "supported": false,
+   "source_url": null,
+   "retrieved_at": null,
+   "requirements": [],
+   "total_credit_hours": []
+  },
+  {
+   "id": "NEURO-BS",
+   "name": "Neuroscience",
+   "type": "major",
+   "college": "College of Liberal Arts",
+   "catalog_year": null,
+   "supported": false,
+   "source_url": null,
+   "retrieved_at": null,
+   "requirements": [],
+   "total_credit_hours": []
+  }
+ ],
+ "double_count_rules": [
+  {
+   "programs": [
+    "PSY-BA",
+    "GENED"
+   ],
+   "allowed": false,
+   "note": "Demo assumption: major courses do not double count toward GenEd. Needs verification."
+  },
+  {
+   "programs": [
+    "ENTR-MINOR",
+    "PSY-BA"
+   ],
+   "allowed": false,
+   "note": "Demo assumption: minor courses may not double count toward the major. Needs verification."
+  }
+ ]
+}

@@ -84,3 +84,24 @@ def test_alternative_schedules_differ():
     first = m.solve(GRAD)
     second = m.solve(INTEREST, exclude_sets=[{s.course for s in first.sections}])
     assert {s.course for s in first.sections} != {s.course for s in second.sections}
+
+
+def test_course_components_are_scheduled_together_without_clashing():
+    lec = cand(section("lec1", "PHYS 1061", [("TR", "11:00", "12:20")]), credits=4)
+    lab_clash = section("lab1", "PHYS 1061", [("T", "11:30", "13:30")])
+    lab_ok = section("lab2", "PHYS 1061", [("W", "09:00", "11:00")])
+    labs = [cand(lab_clash.model_copy(update={"component": "Lab"}), credits=0),
+            cand(lab_ok.model_copy(update={"component": "Lab"}), credits=0)]
+    res = model([lec, *labs], p=prefs(credit_min=4, credit_target=4)).solve(INTEREST)
+    assert res.feasible and {s.id for s in res.sections} == {"lec1", "lab2"} and res.credits == 4
+
+
+def test_select_one_requirement_takes_one_option_even_with_bundles():
+    phys = cand(section("p", "PHYS 1021", [("M", "09:00", "10:00")]), req_ids=("SCI",), interest=1)
+    biol = cand(section("b", "BIOL 1111", [("T", "09:00", "10:00")]), req_ids=("SCI",), interest=1)
+    chem = cand(section("c", "CHEM 1031", [("W", "09:00", "10:00")]), req_ids=("SCI",), interest=1)
+    chem_lab = cand(section("cl", "CHEM 1033", [("R", "09:00", "10:00")]), req_ids=("SCI",), interest=1)
+    caps = {"SCI": (1, {"PHYS 1021": 1, "BIOL 1111": 1, "CHEM 1031": 1, "CHEM 1033": 0})}
+    res = model([phys, biol, chem, chem_lab], caps=caps, p=prefs(credit_min=3, credit_target=12)).solve(INTEREST)
+    taken = {s.course for s in res.sections}
+    assert len(taken & {"PHYS 1021", "BIOL 1111", "CHEM 1031"}) == 1

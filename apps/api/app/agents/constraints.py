@@ -107,25 +107,39 @@ class ChangeSetOut(BaseModel):
     unclear: list[str]
 
 
+TIME_RANGE_RE = re.compile(r"(\d{1,2})(?::(\d\d))?\s*(am|pm)?\s*(?:-|–|to|until|till)\s*(\d{1,2})(?::(\d\d))?\s*(am|pm)?")
+
+
+def _parse_range(t: str) -> tuple[str, str] | None:
+    m = TIME_RANGE_RE.search(t)
+    if not m:
+        return None
+    sh, sm, sa, eh, em, ea = int(m.group(1)), m.group(2) or "00", m.group(3), int(m.group(4)), m.group(5) or "00", m.group(6)
+    if (sa == "pm" and sh < 12) or (sa is None and sh < 7):
+        sh += 12
+    if (ea == "pm" and eh < 12) or (ea is None and eh < sh and eh + 12 > sh):
+        eh += 12
+    if not (0 <= sh < 24 and 0 < eh <= 24 and sh < eh):
+        return None
+    return f"{sh:02d}:{sm}", f"{eh:02d}:{em}"
+
+
 def _regex_parse(text: str) -> ChangeSetOut:
     t = text.lower()
     changes: list[ChangeOut] = []
     unclear: list[str] = []
+    job = re.search(r"\b(job|work|internship|practice|shift|rehearsal|volunteer)\w*", t)
     for name, d in DAY_NAMES.items():
         if re.search(rf"{name}s? off|no (classes )?on {name}|free {name}", t):
             strength = "soft" if re.search(r"prefer|ideally|if possible|would like", t) else "hard"
             changes.append(ChangeOut(action="day_off", day=d, strength=strength, label=f"{name.title()}s off"))
-        m = re.search(rf"(job|work|internship|practice|shift)\w*\s+(on\s+)?{name}s?", t) or re.search(rf"{name}s?.{{0,20}}(job|work|internship)", t)
-        if m:
-            tm = re.search(r"(\d{1,2})(?::(\d\d))?\s*(am|pm)?\s*(?:-|to|until)\s*(\d{1,2})(?::(\d\d))?\s*(am|pm)", t)
-            if tm:
-                sh = int(tm.group(1)) % 12 + (12 if (tm.group(3) or tm.group(6)) == "pm" else 0)
-                eh = int(tm.group(4)) % 12 + (12 if tm.group(6) == "pm" else 0)
-                changes.append(ChangeOut(action="add_unavailable", day=d, start=f"{sh:02d}:{tm.group(2) or '00'}",
-                                         end=f"{eh:02d}:{tm.group(5) or '00'}", strength="hard", label=f"{m.group(1).title()} ({name.title()})"))
+        elif job and re.search(rf"\b{name}s?\b", t):
+            rng = _parse_range(t)
+            label = f"{job.group(1).title()}"
+            if rng:
+                changes.append(ChangeOut(action="add_unavailable", day=d, start=rng[0], end=rng[1], strength="hard", label=label))
             else:
-                changes.append(ChangeOut(action="add_unavailable", day=d, start="09:00", end="17:00", strength="hard",
-                                         label=f"{m.group(1).title()} ({name.title()})",
+                changes.append(ChangeOut(action="add_unavailable", day=d, start="09:00", end="17:00", strength="hard", label=label,
                                          assumption=f"Hours not specified; assumed 9:00 AM-5:00 PM on {name.title()}. Adjust in the availability editor."))
     if m := re.search(r"(\d{1,2})\s*credits?", t):
         changes.append(ChangeOut(action="set_credits", credits=int(m.group(1))))

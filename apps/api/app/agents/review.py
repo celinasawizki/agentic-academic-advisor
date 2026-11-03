@@ -1,7 +1,7 @@
 from app.agents.base import Agent, PlanContext
 from app.domain import SectionData
 from app.models import ScheduleCourse, ScheduleOption, ValidationResult
-from app.rules import campus_supported, f1_assessment, overlapping_blocks, prereq_status, sections_conflict
+from app.rules import campus_supported, f1_assessment, overlapping_blocks, prereq_status, section_credits, sections_conflict
 
 
 def review_sections(ctx: PlanContext, sections: list[SectionData], requirement_ids: dict[str, list[str]]) -> list[dict]:
@@ -12,30 +12,49 @@ def review_sections(ctx: PlanContext, sections: list[SectionData], requirement_i
     def add(check: str, passed: bool, severity: str, detail: str):
         checks.append({"check": check, "passed": passed, "severity": "info" if passed else severity, "detail": detail})
 
-    codes = [x.course for x in sections]
-    add("unique_courses", len(codes) == len(set(codes)), "error", "Each course appears once." if len(codes) == len(set(codes)) else "Duplicate course in schedule.")
+    keys = [(x.course, x.component) for x in sections]
+    add("unique_courses", len(keys) == len(set(keys)), "error", "Each course (and course component) appears once." if len(keys) == len(set(keys)) else "Duplicate course in schedule.")
+    primaries = {x.course for x in sections if x.component == "primary"}
+    orphans = sorted({x.course for x in sections if x.component != "primary"} - primaries)
+    add("components", not orphans, "error", "Every lab/recitation is paired with its course." if not orphans else f"Lab/recitation without its course: {orphans}")
     clashes = [(a.id, b.id) for i, a in enumerate(sections) for b in sections[i + 1:] if sections_conflict(a, b)]
     add("time_conflicts", not clashes, "error", "No overlapping meetings." if not clashes else f"Overlapping sections: {clashes}")
     hard_hits = [(x.course, b.label) for x in sections for b in overlapping_blocks(x, [b for b in s.availability if b.kind == "hard"])]
     add("hard_availability", not hard_hits, "error", "Respects all hard availability blocks." if not hard_hits else f"Violates hard availability: {hard_hits}")
-    total = sum(courses[x.course].credits for x in sections)
-    add("credit_range", p.credit_min <= total <= p.credit_max, "error", f"{total} credits (allowed {p.credit_min}-{p.credit_max}).")
+    total = sum(section_credits(x, courses) for x in sections)
+    add("credit_range", p.credit_min <= total <= p.credit_max, "error", f"{total:g} credits (allowed {p.credit_min}-{p.credit_max}).")
     for x in sections:
+        if x.component != "primary":
+            continue
+        if x.course not in courses:
+            add(f"catalog:{x.course}", False, "warning", f"{x.course} is not in the ingested bulletin course catalog.")
+            continue
         pre = prereq_status(courses[x.course], s.transcript)
         if pre.status == "missing":
             add(f"prereq:{x.course}", False, "error", f"{x.course} prerequisite not met.")
         elif pre.status == "conditional":
-            add(f"prereq:{x.course}", False, "warning", f"{x.course} depends on in-progress {', '.join(pre.pending_courses)}; enrollment is conditional on passing.")
+            parts = []
+            if pre.pending_courses:
+                parts.append(f"depends on in-progress {', '.join(pre.pending_courses)} (conditional on passing)")
+            if pre.unverifiable:
+                parts.append("has a prerequisite that may be met by placement/test scores, which the planner cannot verify")
+            add(f"prereq:{x.course}", False, "warning", f"{x.course} {'; '.join(parts)}.")
+        if x.linked:
+            add(f"linked:{x.course}", False, "warning", f"{x.course} §{x.section} has a linked recitation/lab that must also be chosen in TUportal; its time was not checked.")
+        if not x.meetings and x.modality != "online":
+            add(f"tba:{x.course}", False, "warning", f"{x.course} §{x.section} has no published meeting time in the snapshot (TBA).")
         if not campus_supported(x):
             add(f"campus:{x.course}", False, "error", f"{x.id} is at unsupported campus {x.campus}.")
         if x.term_id != ctx.catalog.term_id:
             add(f"term:{x.course}", False, "error", f"{x.id} is not in {ctx.catalog.term_name}.")
         if not requirement_ids.get(x.course):
             add(f"requirement:{x.course}", False, "warning", f"{x.course} is not linked to a remaining requirement.")
-    if any(x.data_source != "verified" for x in sections):
-        add("section_provenance", False, "warning", "Section times come from a labeled demo fixture, not live Temple course search. Verify in Self-Service Banner before registering.")
-    if any(r["verification_status"] != "verified" for r in ctx.state["degree_requirements"]["requirements"]):
-        add("requirement_provenance", False, "warning", "Requirement data is a demo fixture pending verification against the official bulletin / degree audit.")
+    if any(x.data_source == "demo_fixture" for x in sections):
+        add("section_provenance", False, "warning", "Some section times come from a labeled demo fixture, not Temple course search.")
+    elif sections:
+        stamp = min(x.retrieved_at for x in sections)[:10]
+        add("section_provenance", False, "warning", f"Sections come from a class-search snapshot taken {stamp}. Seats and times change; verify in TUportal before registering.")
+    add("requirement_provenance", False, "warning", "Requirements were parsed automatically from the Academic Bulletin and are pending verification against your official degree audit.")
     f1 = f1_assessment(sections, courses, s.f1_status)
     if f1.applies:
         sev = {"meets": "info", "needs_confirmation": "warning", "below": "error"}[f1.status]

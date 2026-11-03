@@ -20,3 +20,6 @@ next-env.d.ts
 
 # os
 .DS_Store
+
+# crawl cache (raw pages, not redistributed)
+data/temple/.cache/

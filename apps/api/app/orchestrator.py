@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 
 from app.adapters.catalog import DbCatalogAdapter
-from app.adapters.course_search import DemoFixtureCourseSearchAdapter
+from app.adapters.course_search import SnapshotCourseSearchAdapter
 from app.agents.base import Agent, Catalog, PlanContext
 from app.agents.constraints import SchedulingConstraintsAgent
 from app.agents.discovery import CourseDiscoveryAgent
@@ -58,7 +58,7 @@ def student_profile(db: Session, student_id: str) -> StudentProfile:
 
 
 def load_catalog(db: Session, term_id: str, program_ids: list[str]) -> Catalog:
-    cs = DemoFixtureCourseSearchAdapter(db)
+    cs = SnapshotCourseSearchAdapter(db)
     cat = DbCatalogAdapter(db)
     term = cs.get_term(term_id)
     if term is None:

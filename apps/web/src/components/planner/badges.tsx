@@ -30,7 +30,7 @@ export function Pill({ tone = "neutral", icon: Icon, children, className }: {
 export const VerifiedFact = () => <Pill tone="success" icon={BadgeCheck}>Computed by rules engine</Pill>
 export const AISuggestion = () => <Pill tone="info" icon={Bot}>AI suggestion</Pill>
 export const PendingVerification = () => <Pill tone="warning" icon={CircleDashed}>Pending verification</Pill>
-export const DemoData = () => <Pill tone="neutral" icon={Database}>Demo data</Pill>
+export const SnapshotData = ({ label = "Temple class-search snapshot" }: { label?: string }) => <Pill tone="neutral" icon={Database}>{label}</Pill>
 
 export function ReviewBadge({ status }: { status?: string }) {
   if (status === "rejected") return <Pill tone="danger" icon={XCircle}>Rejected by review</Pill>

@@ -10,15 +10,19 @@ from ortools.sat.python import cp_model
 
 from app.core.config import settings
 from app.domain import AvailBlock, CourseData, PlanningPreferences, SectionData
-from app.rules import earliest_start, overlapping_blocks, sections_conflict, to_minutes
+from app.rules import earliest_start, overlapping_blocks, to_minutes
 
 SCALE = 100
+
+
+def _tenths(credits: float) -> int:
+    return int(round(credits * 10))
 
 
 @dataclass
 class Candidate:
     section: SectionData
-    credits: int
+    credits: float
     requirement_ids: list[str]
     priority: float  # 0..1 degree-progress value from Graduation agent
     interest: float  # 0..1 from Interest agent
@@ -53,7 +57,7 @@ class HardGroup:
 class SolveResult:
     feasible: bool
     sections: list[SectionData] = field(default_factory=list)
-    credits: int = 0
+    credits: float = 0
     objective: float = 0
     breakdown: dict = field(default_factory=dict)
     soft_violations: list[dict] = field(default_factory=list)
@@ -68,7 +72,7 @@ class ScheduleModel:
         courses: dict[str, CourseData],
         blocks: list[AvailBlock],
         prefs: PlanningPreferences,
-        requirement_caps: dict[str, int],
+        requirement_caps: dict[str, int | tuple[int, dict[str, int]]],
         f1: bool,
         must_courses: list[str],
         student_required: list[str] | None = None,
@@ -81,6 +85,26 @@ class ScheduleModel:
         self.f1 = f1
         self.must = [c for c in must_courses if c not in (student_required or [])]
         self.student_required = student_required or []
+
+    def _conflict_pairs(self) -> list[tuple[str, str]]:
+        if getattr(self, "_pairs", None) is None:
+            by_day: dict[str, list[tuple[int, int, str, str]]] = {}
+            for cand in self.c:
+                for mt in cand.section.meetings:
+                    for d in mt.days:
+                        by_day.setdefault(d, []).append((to_minutes(mt.start), to_minutes(mt.end), cand.section.id,
+                                                         f"{cand.section.course}|{cand.section.component}"))
+            pairs: set[tuple[str, str]] = set()
+            for items in by_day.values():
+                items.sort()
+                for i, (s1, e1, id1, c1) in enumerate(items):
+                    for s2, e2, id2, c2 in items[i + 1:]:
+                        if s2 >= e1:
+                            break
+                        if c1 != c2:
+                            pairs.add((min(id1, id2), max(id1, id2)))
+            self._pairs = sorted(pairs)
+        return self._pairs
 
     def hard_groups(self) -> list[HardGroup]:
         groups: dict[str, HardGroup] = {}
@@ -104,26 +128,28 @@ class ScheduleModel:
         m = cp_model.CpModel()
         x = {cand.section.id: m.NewBoolVar(cand.section.id) for cand in self.c}
         lit = {g.key: m.NewBoolVar(g.key) for g in self.hard_groups()}
-        by_course: dict[str, list[str]] = {}
+        by_course: dict[str, dict[str, list[str]]] = {}
         for cand in self.c:
-            by_course.setdefault(cand.section.course, []).append(cand.section.id)
+            by_course.setdefault(cand.section.course, {}).setdefault(cand.section.component, []).append(cand.section.id)
         y = {}
-        for course, sids in by_course.items():
+        for course, comps in by_course.items():
             y[course] = m.NewBoolVar(f"y_{course}")
-            m.Add(sum(x[s] for s in sids) == y[course])
+            if "primary" not in comps:
+                m.Add(y[course] == 0)
+            for sids in comps.values():
+                # one section of every component (lecture, lab, recitation) when the course is taken
+                m.Add(sum(x[s] for s in sids) == y[course])
 
-        for i, a in enumerate(self.c):
-            for b in self.c[i + 1:]:
-                if a.section.course != b.section.course and sections_conflict(a.section, b.section):
-                    m.Add(x[a.section.id] + x[b.section.id] <= 1)
+        for a_id, b_id in self._conflict_pairs():
+            m.Add(x[a_id] + x[b_id] <= 1)
 
         for cand in self.c:
             for blk in overlapping_blocks(cand.section, [b for b in self.blocks if b.kind == "hard"]):
                 m.Add(x[cand.section.id] == 0).OnlyEnforceIf(lit[f"avail:{blk.label or 'Unavailable'}"])
 
-        credits = sum(cand.credits * x[cand.section.id] for cand in self.c)
-        m.Add(credits >= self.prefs.credit_min).OnlyEnforceIf(lit["credit_min"])
-        m.Add(credits <= self.prefs.credit_max).OnlyEnforceIf(lit["credit_max"])
+        credits = sum(_tenths(cand.credits) * x[cand.section.id] for cand in self.c if cand.section.component == "primary")
+        m.Add(credits >= self.prefs.credit_min * 10).OnlyEnforceIf(lit["credit_min"])
+        m.Add(credits <= self.prefs.credit_max * 10).OnlyEnforceIf(lit["credit_max"])
 
         for prefix, codes in (("must", self.must), ("req", self.student_required)):
             for c in codes:
@@ -137,18 +163,25 @@ class ScheduleModel:
             else:
                 m.AddBoolOr([]).OnlyEnforceIf(lit[f"lock:{s}"])
 
-        for req_id, cap in self.caps.items():
-            members = [y[c] for c in by_course if any(req_id in cand.requirement_ids for cand in self.c if cand.section.course == c)]
-            if members:
-                m.Add(sum(members) <= cap)
+        course_reqs: dict[str, set[str]] = {}
+        for cand in self.c:
+            if cand.section.component != "primary":
+                continue
+            course_reqs.setdefault(cand.section.course, set()).update(cand.requirement_ids)
+        for req_id, spec in self.caps.items():
+            cap, weights = spec if isinstance(spec, tuple) else (spec, {})
+            members = [(weights.get(c, 1), y[c]) for c, rids in course_reqs.items() if req_id in rids]
+            if sum(w for w, _ in members) > cap:
+                m.Add(sum(w * v for w, v in members) <= cap)
 
         if self.f1:
-            in_person = sum(cand.credits * x[cand.section.id] for cand in self.c if cand.section.modality == "in_person"
+            prim = [cand for cand in self.c if cand.section.component == "primary"]
+            in_person = sum(_tenths(cand.credits) * x[cand.section.id] for cand in prim if cand.section.modality == "in_person"
                             or (cand.section.modality == "hybrid" and settings.f1_hybrid_counts_as_in_person))
-            online = sum(cand.credits * x[cand.section.id] for cand in self.c if cand.section.modality == "online")
-            counted = m.NewIntVar(0, settings.f1_max_online_credits_counted, "online_counted")
+            online = sum(_tenths(cand.credits) * x[cand.section.id] for cand in prim if cand.section.modality == "online")
+            counted = m.NewIntVar(0, settings.f1_max_online_credits_counted * 10, "online_counted")
             m.Add(counted <= online)
-            m.Add(in_person + counted >= settings.f1_full_time_credits).OnlyEnforceIf(lit["f1"])
+            m.Add(in_person + counted >= settings.f1_full_time_credits * 10).OnlyEnforceIf(lit["f1"])
 
         for prev in exclude_sets:
             present = [y[c] for c in prev if c in y]
@@ -158,14 +191,14 @@ class ScheduleModel:
         soft_terms = []
         for cand in self.c:
             soft_terms.append(self._soft_penalty(cand.section) * x[cand.section.id])
-        dev = m.NewIntVar(0, 30, "dev")
-        m.Add(dev >= credits - self.prefs.credit_target)
-        m.Add(dev >= self.prefs.credit_target - credits)
+        dev = m.NewIntVar(0, 400, "dev")
+        m.Add(dev >= credits - self.prefs.credit_target * 10)
+        m.Add(dev >= self.prefs.credit_target * 10 - credits)
 
         req_terms = sum(int(cand.priority * SCALE) * x[cand.section.id] for cand in self.c)
         int_terms = sum(int(cand.interest * SCALE) * x[cand.section.id] for cand in self.c)
         m.Maximize(strategy.w_req * req_terms + strategy.w_int * int_terms
-                   - strategy.w_soft * sum(soft_terms) - strategy.w_dev * SCALE * dev)
+                   - strategy.w_soft * sum(soft_terms) - strategy.w_dev * (SCALE // 10) * dev)
 
         assumptions = [lit[k] for k in lit if k in enabled]
         for k, v in lit.items():
@@ -216,7 +249,7 @@ class ScheduleModel:
         chosen = [cand for cand in self.c if solver.Value(x[cand.section.id])]
         sections = [cand.section for cand in chosen]
         return SolveResult(
-            True, sections=sections, credits=sum(c.credits for c in chosen), objective=solver.ObjectiveValue(),
+            True, sections=sections, credits=round(sum(c.credits for c in chosen if c.section.component == "primary"), 1), objective=solver.ObjectiveValue(),
             breakdown={
                 "degree_progress": round(sum(c.priority for c in chosen), 2),
                 "interest_alignment": round(sum(c.interest for c in chosen) / max(1, len(chosen)), 2),

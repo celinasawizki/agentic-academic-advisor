@@ -78,7 +78,7 @@ def test_credit_change(client):
 def test_manual_validation_detects_conflict(client):
     plan = run_plan(client)
     r = client.post(f"/api/plans/{plan['id']}/validate",
-                    json={"section_ids": ["2027SP-PSY3301-001", "2027SP-PSY2201-001"]})
+                    json={"section_ids": ["202703-PSY3301-001", "202703-PSY2201-001"]})
     body = r.json()
     assert not body["valid"]
     assert any(c["check"] == "hard_availability" and not c["passed"] for c in body["checks"])
@@ -111,7 +111,7 @@ def test_upload_validation(client):
 
 
 def test_onboarding_requires_consent_and_supported_campus(client):
-    base = {"name": "Test", "academic_year": "Junior", "expected_graduation": "2028-05", "planning_term": "2027-SP",
+    base = {"name": "Test", "academic_year": "Junior", "expected_graduation": "2028-05", "planning_term": "202703",
             "programs": ["PSY-BA"], "credit_target": 15, "credit_min": 12, "credit_max": 18, "consent_to_process": False}
     assert client.post("/api/students", json=base).status_code == 400
     assert client.post("/api/students", json={**base, "consent_to_process": True, "campus": "Rome"}).status_code == 422

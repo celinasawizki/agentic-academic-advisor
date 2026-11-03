@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=(REPO_ROOT / ".env", ".env"), extra="ignore")
 
     database_url: str = f"sqlite:///{REPO_ROOT / 'apps' / 'api' / 'academic_planner.db'}"
-    data_dir: Path = REPO_ROOT / "data" / "demo"
+    data_dir: Path = REPO_ROOT / "data" / "temple"
     upload_dir: Path = REPO_ROOT / "apps" / "api" / "uploads"
 
     anthropic_api_key: str | None = None

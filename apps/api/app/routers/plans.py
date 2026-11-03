@@ -65,10 +65,12 @@ def create(body: CreatePlanIn, bg: BackgroundTasks, db: Session = Depends(get_db
 
 
 @router.get("/{plan_id}")
-def get_plan(plan_id: str, db: Session = Depends(get_db)):
+def get_plan(plan_id: str, full: bool = True, db: Session = Depends(get_db)):
+    """`full=false` returns agent status only (cheap enough to poll while agents run)."""
     plan = _get_plan(db, plan_id)
     execs = db.query(AgentExecution).filter_by(plan_id=plan_id).order_by(AgentExecution.id).all()
-    state = {k: v for k, v in plan.state.items() if k not in ("_review_rejected_sets",)}
+    keep = None if full else {"_student", "_iteration", "_history", "_error"}
+    state = {k: v for k, v in plan.state.items() if k != "_review_rejected_sets" and (keep is None or k in keep)}
     return {
         "id": plan.id, "status": plan.status, "term_id": plan.term_id, "student_id": plan.student_id,
         "iteration": plan.state.get("_iteration", 1),

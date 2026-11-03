@@ -27,6 +27,11 @@ class SectionData(BaseModel):
     location: str
     meetings: list[Meeting] = []
     seats_available: int | None = None
+    credits: float | None = None
+    schedule_type: str | None = None
+    component: str = "primary"  # or the separate component type that must also be taken (Lab, Recitation)
+    linked: bool = False
+    attributes: list[str] = []
     data_source: str
     retrieved_at: str
 
@@ -34,9 +39,20 @@ class SectionData(BaseModel):
 class CourseData(BaseModel):
     code: str
     title: str
-    credits: int
+    credits: float
     description: str
     prereqs: list[list[str]] = []
+    prereq_text: str = ""
+    prereq_notes: list[str] = []
+    attributes: list[str] = []
+
+    @property
+    def subject(self) -> str:
+        return self.code.split()[0]
+
+    @property
+    def number(self) -> int:
+        return int(self.code.split()[1])
 
 
 class RequirementData(BaseModel):
@@ -44,18 +60,29 @@ class RequirementData(BaseModel):
     program_id: str
     program_name: str
     program_type: str
+    group: str = ""
     name: str
-    rule: Literal["all", "choose"]
-    choose_count: int | None = None
-    courses: list[str]
-    category: str
-    catalog_year: str
+    kind: Literal["count", "credits", "manual", "note"]
+    needed: float
+    options: list[list[str]] = []
+    patterns: list[dict] = []
+    notes: list[str] = []
+    catalog_year: str | None = None
     verification_status: str
     source_url: str | None = None
 
     @property
-    def needed(self) -> int:
-        return len(self.courses) if self.rule == "all" else (self.choose_count or 1)
+    def courses(self) -> list[str]:
+        return [c for opt in self.options for c in opt]
+
+    def pattern_matches(self, course: "CourseData", section_attrs: list[str] | None = None) -> bool:
+        for p in self.patterns:
+            if "attribute" in p:
+                if p["attribute"] in course.attributes or p["attribute"] in (section_attrs or []):
+                    return True
+            elif p.get("subject") == course.subject and p.get("min", 0) <= course.number <= p.get("max", 9999):
+                return True
+        return False
 
 
 class TranscriptItem(BaseModel):

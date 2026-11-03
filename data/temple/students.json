@@ -1,0 +1,104 @@
+{
+  "_notice": "FICTIONAL STUDENTS. No real student records. Course codes and programs are real Temple codes from the Academic Bulletin.",
+  "students": [
+    {
+      "id": "demo-lina",
+      "name": "Lina Haddad (fictional)",
+      "academic_year": "Junior",
+      "expected_graduation": "2028-05",
+      "catalog_year": null,
+      "planning_term": "202703",
+      "programs": ["psychology-ba", "entrepreneurship-innovation-management-minor", "data-science-computational-analytics-certificate", "gened"],
+      "campus": "Main",
+      "f1_status": "yes",
+      "interests_text": "I'm studying Psychology, but I'm especially interested in Industrial-Organizational Psychology, workplace behavior, artificial intelligence, and how technology affects human decision-making.",
+      "credit_target": 15,
+      "credit_min": 12,
+      "credit_max": 18,
+      "transcript": [
+        {"course": "PSY 1001", "status": "completed", "grade": "A", "term": "202536"},
+        {"course": "PSY 1002", "status": "completed", "grade": "A", "term": "202536"},
+        {"course": "ENG 0802", "status": "completed", "grade": "B+", "term": "202536"},
+        {"course": "MATH 1041", "status": "completed", "grade": "B", "term": "202536"},
+        {"course": "IH 0851", "status": "completed", "grade": "A-", "term": "202536"},
+        {"course": "PSY 1003", "status": "completed", "grade": "B+", "term": "202603"},
+        {"course": "PSY 1004", "status": "completed", "grade": "A", "term": "202603"},
+        {"course": "PSY 2402", "status": "completed", "grade": "A", "term": "202603"},
+        {"course": "PSY 2101", "status": "completed", "grade": "A-", "term": "202603"},
+        {"course": "ECON 1101", "status": "completed", "grade": "B+", "term": "202603"},
+        {"course": "HRM 1101", "status": "completed", "grade": "A", "term": "202603"},
+        {"course": "CIS 0823", "status": "completed", "grade": "A", "term": "202603"},
+        {"course": "BIOL 1001", "status": "completed", "grade": "B", "term": "202620"},
+        {"course": "ARTH 0808", "status": "transfer", "grade": "TR", "term": "202520"},
+        {"course": "PSY 2301", "status": "in_progress", "grade": null, "term": "202636"},
+        {"course": "PSY 2501", "status": "in_progress", "grade": null, "term": "202636"},
+        {"course": "ECON 1102", "status": "in_progress", "grade": null, "term": "202636"},
+        {"course": "CIS 1068", "status": "in_progress", "grade": null, "term": "202636"},
+        {"course": "IH 0852", "status": "in_progress", "grade": null, "term": "202636"}
+      ],
+      "availability": [
+        {"day": "M", "start": "13:00", "end": "18:00", "kind": "hard", "label": "Work (campus job)"},
+        {"day": "W", "start": "13:00", "end": "18:00", "kind": "hard", "label": "Work (campus job)"},
+        {"day": "F", "start": "07:00", "end": "22:00", "kind": "soft", "label": "Prefer Fridays off"}
+      ]
+    },
+    {
+      "id": "demo-priya",
+      "name": "Priya Shah (fictional)",
+      "academic_year": "Sophomore",
+      "expected_graduation": "2029-05",
+      "catalog_year": "2026-2027",
+      "planning_term": "202703",
+      "programs": ["computer-science-bs", "mathematics-minor", "entrepreneurship-innovation-management-certificate", "gened"],
+      "campus": "Main",
+      "f1_status": "no",
+      "interests_text": "Machine learning, cybersecurity and building startups. I like math-heavy courses and want to learn how to launch a product.",
+      "credit_target": 16,
+      "credit_min": 12,
+      "credit_max": 18,
+      "transcript": [
+        {"course": "CIS 1051", "status": "completed", "grade": "A", "term": "202536"},
+        {"course": "MATH 1041", "status": "completed", "grade": "A-", "term": "202536"},
+        {"course": "ENG 0802", "status": "completed", "grade": "B+", "term": "202536"},
+        {"course": "CIS 1068", "status": "completed", "grade": "A", "term": "202603"},
+        {"course": "CIS 1166", "status": "completed", "grade": "B+", "term": "202603"},
+        {"course": "MATH 1042", "status": "completed", "grade": "B", "term": "202603"},
+        {"course": "CIS 2168", "status": "in_progress", "grade": null, "term": "202636"},
+        {"course": "CIS 2107", "status": "in_progress", "grade": null, "term": "202636"},
+        {"course": "MATH 2043", "status": "in_progress", "grade": null, "term": "202636"}
+      ],
+      "availability": [
+        {"day": "M", "start": "07:00", "end": "10:00", "kind": "soft", "label": "No early classes"},
+        {"day": "T", "start": "07:00", "end": "10:00", "kind": "soft", "label": "No early classes"},
+        {"day": "W", "start": "07:00", "end": "10:00", "kind": "soft", "label": "No early classes"},
+        {"day": "R", "start": "07:00", "end": "10:00", "kind": "soft", "label": "No early classes"},
+        {"day": "F", "start": "07:00", "end": "10:00", "kind": "soft", "label": "No early classes"},
+        {"day": "R", "start": "17:00", "end": "21:00", "kind": "hard", "label": "Hackathon club"}
+      ]
+    },
+    {
+      "id": "demo-marcus",
+      "name": "Marcus Bell (fictional)",
+      "academic_year": "Sophomore",
+      "expected_graduation": "2029-05",
+      "catalog_year": "2026-2027",
+      "planning_term": "202703",
+      "programs": ["psychology-ba", "gened"],
+      "campus": "Main",
+      "f1_status": "no",
+      "interests_text": "Clinical psychology and neuroscience, maybe pre-med.",
+      "credit_target": 15,
+      "credit_min": 12,
+      "credit_max": 17,
+      "transcript": [
+        {"course": "PSY 1001", "status": "completed", "grade": "A", "term": "202603"},
+        {"course": "ENG 0802", "status": "completed", "grade": "B", "term": "202603"},
+        {"course": "PSY 1003", "status": "in_progress", "grade": null, "term": "202636"},
+        {"course": "PSY 1004", "status": "in_progress", "grade": null, "term": "202636"}
+      ],
+      "availability": [
+        {"day": "T", "start": "07:00", "end": "12:00", "kind": "hard", "label": "Internship"}
+      ]
+    }
+  ]
+}

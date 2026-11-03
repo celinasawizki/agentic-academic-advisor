@@ -25,8 +25,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </Suspense>
           <main className="flex-1">{children}</main>
           <footer className="border-t py-6 text-center text-xs text-muted-foreground">
-            Hackathon prototype · Planning assistance only — not an official degree audit, registration system, or immigration advice. All
-            course and requirement data shown is labeled demo data.
+            Hackathon prototype · Planning assistance only — not an official degree audit, registration system, or immigration advice.
+            Requirements are parsed from the public Temple Academic Bulletin; sections are a point-in-time snapshot of Temple&apos;s public class search.
           </footer>
           <Toaster richColors position="bottom-right" />
         </TooltipProvider>

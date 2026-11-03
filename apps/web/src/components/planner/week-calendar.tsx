@@ -104,7 +104,7 @@ export function WeekCalendar({
                     style={{ top, height: h }}
                   >
                     <div className="flex items-center gap-1 text-[11px] leading-tight font-semibold">
-                      {s.course}
+                      {s.course}{s.component && s.component !== "primary" ? ` ${s.component}` : ""}
                       {isLocked && <Lock className="size-2.5" />}
                     </div>
                     {!compact && h > 38 && <div className="truncate text-[10px] leading-tight opacity-80">{s.title}</div>}
@@ -130,7 +130,7 @@ export function WeekCalendar({
               className={cn("flex items-center gap-1.5 rounded-md border-l-[3px] px-2 py-1 text-[11px] font-medium", colorFor(s.course, courses),
                 selected === s.id && "ring-2 ring-primary ring-offset-1")}
             >
-              <MonitorPlay className="size-3" /> {s.course} · Online asynchronous
+              <MonitorPlay className="size-3" /> {s.course} · {s.modality === "online" ? "Online asynchronous" : "Time TBA"}
             </button>
           ))}
         </div>

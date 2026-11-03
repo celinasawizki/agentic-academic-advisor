@@ -7,6 +7,7 @@ export type Program = {
   college: string
   catalog_year: string | null
   supported: boolean
+  total_credit_hours: string | null
   source_url: string | null
   retrieved_at: string | null
 }
@@ -29,6 +30,11 @@ export type Section = {
   location: string
   meetings: Meeting[]
   seats_available: number | null
+  credits?: number | null
+  schedule_type?: string | null
+  component?: string
+  linked?: boolean
+  attributes?: string[]
   data_source: string
   retrieved_at: string
 }
@@ -36,6 +42,8 @@ export type Section = {
 export type OptionSection = Section & {
   title: string
   credits: number
+  requires_linked_section?: boolean
+  time_tba?: boolean
   requirement_ids: string[]
   prereq_status: "satisfied" | "conditional" | "missing"
   prereq_pending: string[]
@@ -93,24 +101,29 @@ export type Resolution = {
   alternative_note?: string
 }
 
+export type RequirementPattern = { subject?: string; min?: number; max?: number; attribute?: string }
+
 export type RequirementProgress = {
   id: string
   program_id: string
   program_name: string
   program_type: string
+  group: string
   name: string
-  rule: "all" | "choose"
+  kind: "count" | "credits" | "manual" | "note"
   needed: number
-  courses: string[]
-  category: string
-  catalog_year: string
+  options: string[][]
+  patterns: RequirementPattern[]
+  requirement_notes: string[]
+  catalog_year: string | null
   verification_status: string
   source_url: string | null
   completed: string[]
   in_progress: string[]
   remaining_needed: number
+  remaining_courses: number
   candidate_courses: string[]
-  status: "complete" | "in_progress" | "incomplete"
+  status: "complete" | "in_progress" | "incomplete" | "manual" | "note"
   notes: string[]
 }
 
@@ -181,13 +194,14 @@ export type PlanState = {
   _history: { message: string; applied: string[]; assumptions: string[]; mode: string }[]
   _error?: string
   academic_profile?: Loose
-  degree_requirements?: { requirements: RequirementProgress[]; remaining: RequirementProgress[]; courses_needed: number; review_flags: { requirement: string; issue: string }[] }
+  degree_requirements?: { requirements: RequirementProgress[]; remaining: RequirementProgress[]; courses_needed: number; manual_review: RequirementProgress[]; review_flags: { requirement: string; issue: string }[] }
   course_discovery?: {
     term_id: string
     term_name: string
-    eligible_sections: { section: Section; course: string; requirement_ids: string[]; prereq_status: string; prereq_pending: string[] }[]
+    eligible_sections: { section: Section; course: string; requirement_ids: string[]; prereq_status: string; prereq_pending: string[]; requires_linked_section?: boolean; time_tba?: boolean }[]
     excluded: { course: string; section?: string; reason: string; kind?: string }[]
-    courses: Record<string, { code: string; title: string; credits: number; description: string; requirement_ids: string[]; prereq_status: string }>
+    pattern_exclusion_summary?: Record<string, number>
+    courses: Record<string, { code: string; title: string; credits: number; description: string; requirement_ids: string[]; prereq_status: string; prereq_text?: string; offered?: boolean }>
   }
   interest_matching?: {
     themes: { label: string; evidence: string }[]

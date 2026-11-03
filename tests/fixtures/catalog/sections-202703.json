@@ -1,0 +1,619 @@
+{
+ "_meta": {
+  "term": "202703",
+  "source": "SYNTHETIC TEST FIXTURE",
+  "data_source": "demo_fixture",
+  "kind": "demo_fixture",
+  "retrieved_at": "2026-10-15T00:00:00Z"
+ },
+ "sections": [
+  {
+   "id": "202703-PSY2201-001",
+   "course": "PSY 2201",
+   "section": "001",
+   "crn": "D10001",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 101",
+   "meetings": [
+    {
+     "days": "MW",
+     "start": "14:00",
+     "end": "15:50"
+    }
+   ],
+   "seats_available": 4,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY2201-002",
+   "course": "PSY 2201",
+   "section": "002",
+   "crn": "D10002",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 101",
+   "meetings": [
+    {
+     "days": "F",
+     "start": "09:00",
+     "end": "11:50"
+    }
+   ],
+   "seats_available": 12,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY2601-001",
+   "course": "PSY 2601",
+   "section": "001",
+   "crn": "D10003",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 212",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "09:30",
+     "end": "10:50"
+    }
+   ],
+   "seats_available": 20,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY2601-002",
+   "course": "PSY 2601",
+   "section": "002",
+   "crn": "D10004",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 212",
+   "meetings": [
+    {
+     "days": "MWF",
+     "start": "10:00",
+     "end": "10:50"
+    }
+   ],
+   "seats_available": 18,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY2701-001",
+   "course": "PSY 2701",
+   "section": "001",
+   "crn": "D10005",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Gladfelter Hall 3",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "12:30",
+     "end": "13:50"
+    }
+   ],
+   "seats_available": 25,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY2701-701",
+   "course": "PSY 2701",
+   "section": "701",
+   "crn": "D10006",
+   "instructor": "Staff",
+   "campus": "Online",
+   "modality": "online",
+   "location": "Online (asynchronous)",
+   "meetings": [],
+   "seats_available": 40,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY3301-001",
+   "course": "PSY 3301",
+   "section": "001",
+   "crn": "D10007",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 304",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "11:00",
+     "end": "12:20"
+    }
+   ],
+   "seats_available": 9,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY3301-002",
+   "course": "PSY 3301",
+   "section": "002",
+   "crn": "D10008",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 304",
+   "meetings": [
+    {
+     "days": "MW",
+     "start": "15:00",
+     "end": "16:20"
+    }
+   ],
+   "seats_available": 15,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY3301-A01",
+   "course": "PSY 3301",
+   "section": "A01",
+   "crn": "D10009",
+   "instructor": "Staff",
+   "campus": "Ambler",
+   "modality": "in_person",
+   "location": "Ambler Learning Center",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "09:30",
+     "end": "10:50"
+    }
+   ],
+   "seats_available": 10,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY3321-001",
+   "course": "PSY 3321",
+   "section": "001",
+   "crn": "D10010",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 210",
+   "meetings": [
+    {
+     "days": "MW",
+     "start": "10:00",
+     "end": "11:20"
+    }
+   ],
+   "seats_available": 11,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY3510-001",
+   "course": "PSY 3510",
+   "section": "001",
+   "crn": "D10011",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 110",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "14:00",
+     "end": "15:20"
+    }
+   ],
+   "seats_available": 7,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY3520-001",
+   "course": "PSY 3520",
+   "section": "001",
+   "crn": "D10012",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "hybrid",
+   "location": "Weiss Hall 110 / Online",
+   "meetings": [
+    {
+     "days": "M",
+     "start": "11:30",
+     "end": "12:50"
+    }
+   ],
+   "seats_available": 14,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY3610-001",
+   "course": "PSY 3610",
+   "section": "001",
+   "crn": "D10013",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 406",
+   "meetings": [
+    {
+     "days": "F",
+     "start": "10:00",
+     "end": "12:50"
+    }
+   ],
+   "seats_available": 16,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY3710-001",
+   "course": "PSY 3710",
+   "section": "001",
+   "crn": "D10014",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 212",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "09:30",
+     "end": "10:50"
+    }
+   ],
+   "seats_available": 22,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-PSY4996-001",
+   "course": "PSY 4996",
+   "section": "001",
+   "crn": "D10015",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Weiss Hall 301",
+   "meetings": [
+    {
+     "days": "T",
+     "start": "15:30",
+     "end": "18:00"
+    }
+   ],
+   "seats_available": 8,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-ENTR3201-001",
+   "course": "ENTR 3201",
+   "section": "001",
+   "crn": "D10016",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Alter Hall 231",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "15:30",
+     "end": "16:50"
+    }
+   ],
+   "seats_available": 13,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-ENTR3201-701",
+   "course": "ENTR 3201",
+   "section": "701",
+   "crn": "D10017",
+   "instructor": "Staff",
+   "campus": "Online",
+   "modality": "online",
+   "location": "Online (asynchronous)",
+   "meetings": [],
+   "seats_available": 30,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-ENTR3301-001",
+   "course": "ENTR 3301",
+   "section": "001",
+   "crn": "D10018",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Alter Hall 604",
+   "meetings": [
+    {
+     "days": "MW",
+     "start": "17:30",
+     "end": "18:50"
+    }
+   ],
+   "seats_available": 20,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-ENTR3401-001",
+   "course": "ENTR 3401",
+   "section": "001",
+   "crn": "D10019",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "hybrid",
+   "location": "Alter Hall 031 / Online",
+   "meetings": [
+    {
+     "days": "R",
+     "start": "17:00",
+     "end": "18:20"
+    }
+   ],
+   "seats_available": 18,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-MKTG2101-001",
+   "course": "MKTG 2101",
+   "section": "001",
+   "crn": "D10020",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Alter Hall A031",
+   "meetings": [
+    {
+     "days": "MW",
+     "start": "09:00",
+     "end": "10:20"
+    }
+   ],
+   "seats_available": 35,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-MKTG2101-701",
+   "course": "MKTG 2101",
+   "section": "701",
+   "crn": "D10021",
+   "instructor": "Staff",
+   "campus": "Online",
+   "modality": "online",
+   "location": "Online (asynchronous)",
+   "meetings": [],
+   "seats_available": 50,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-CIS2109-001",
+   "course": "CIS 2109",
+   "section": "001",
+   "crn": "D10022",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "SERC 306",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "17:00",
+     "end": "18:20"
+    }
+   ],
+   "seats_available": 24,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-CIS3203-001",
+   "course": "CIS 3203",
+   "section": "001",
+   "crn": "D10023",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "SERC 116",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "12:30",
+     "end": "13:50"
+    }
+   ],
+   "seats_available": 6,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-CIS3715-701",
+   "course": "CIS 3715",
+   "section": "701",
+   "crn": "D10024",
+   "instructor": "Staff",
+   "campus": "Online",
+   "modality": "online",
+   "location": "Online (asynchronous)",
+   "meetings": [],
+   "seats_available": 40,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-CIS4340-001",
+   "course": "CIS 4340",
+   "section": "001",
+   "crn": "D10025",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "SERC 358",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "15:30",
+     "end": "16:50"
+    }
+   ],
+   "seats_available": 10,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-GENED0801-001",
+   "course": "GENED 0801",
+   "section": "001",
+   "crn": "D10026",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Annenberg Hall 2",
+   "meetings": [
+    {
+     "days": "MW",
+     "start": "09:00",
+     "end": "10:20"
+    }
+   ],
+   "seats_available": 60,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-GENED0812-701",
+   "course": "GENED 0812",
+   "section": "701",
+   "crn": "D10027",
+   "instructor": "Staff",
+   "campus": "Online",
+   "modality": "online",
+   "location": "Online (asynchronous)",
+   "meetings": [],
+   "seats_available": 60,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-GENED0855-001",
+   "course": "GENED 0855",
+   "section": "001",
+   "crn": "D10028",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Tuttleman 101",
+   "meetings": [
+    {
+     "days": "TR",
+     "start": "08:00",
+     "end": "09:20"
+    }
+   ],
+   "seats_available": 80,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  },
+  {
+   "id": "202703-GENED0868-001",
+   "course": "GENED 0868",
+   "section": "001",
+   "crn": "D10029",
+   "instructor": "Staff",
+   "campus": "Main",
+   "modality": "in_person",
+   "location": "Tuttleman 304",
+   "meetings": [
+    {
+     "days": "W",
+     "start": "10:30",
+     "end": "12:50"
+    }
+   ],
+   "seats_available": 45,
+   "credits": null,
+   "schedule_type": "Lecture",
+   "linked": false,
+   "attributes": []
+  }
+ ]
+}

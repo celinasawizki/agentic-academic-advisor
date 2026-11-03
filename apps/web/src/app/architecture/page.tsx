@@ -52,15 +52,15 @@ export default function Architecture() {
       <ul className="space-y-2 text-sm">
         <li className="rounded-xl border bg-card p-4">
           <a className="inline-flex items-center gap-1 font-medium text-primary hover:underline" href="https://sites.temple.edu/degreeaudit/" target="_blank" rel="noreferrer">Degree Audit <ExternalLink className="size-3" /></a>
-          <p className="text-muted-foreground">Behind university authentication with no public API. MVP: student-uploaded PDF parsed locally, then verified row-by-row by the student.</p>
+          <p className="text-muted-foreground">Behind university authentication with no public API. Students upload a PDF that is parsed locally and verified row by row.</p>
         </li>
         <li className="rounded-xl border bg-card p-4">
           <a className="inline-flex items-center gap-1 font-medium text-primary hover:underline" href="https://bulletin.temple.edu/" target="_blank" rel="noreferrer">Academic Bulletin <ExternalLink className="size-3" /></a>
-          <p className="text-muted-foreground">Requirements are stored with source URL, retrieval timestamp and catalog year. MVP programs are demo fixtures marked pending verification.</p>
+          <p className="text-muted-foreground">All 435 undergraduate majors, minors and certificates (2026-2027 catalog) and 6,800+ undergraduate courses were crawled politely (robots.txt respected, 1 request/second) and parsed into structured rules: required courses, &ldquo;or&rdquo; alternatives, lecture+lab bundles, &ldquo;select N&rdquo; and credit-based groups, course ranges, GenEd attributes and prerequisite logic. Rules the parser cannot interpret are flagged for manual review, never guessed.</p>
         </li>
         <li className="rounded-xl border bg-card p-4">
           <a className="inline-flex items-center gap-1 font-medium text-primary hover:underline" href="https://prd-xereg.temple.edu/StudentRegistrationSsb/ssb/courseSearch/courseSearch" target="_blank" rel="noreferrer">Course Search <ExternalLink className="size-3" /></a>
-          <p className="text-muted-foreground">Session-based Banner application without a documented open API. A CourseSearchAdapter interface isolates it; the MVP serves labeled demo sections.</p>
+          <p className="text-muted-foreground">No documented open API. With the project owner&apos;s approval, a one-time, rate-limited snapshot of all 8,690 Spring 2027 sections (times, modality, seats, instructors, GenEd attributes) was taken and committed. The app never calls Temple at runtime; seats and times may have changed since the snapshot.</p>
         </li>
       </ul>
 
