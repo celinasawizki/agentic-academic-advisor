@@ -31,4 +31,4 @@ for r in (catalog.router, students.router, plans.router, integration.router, adv
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "llm_enabled": settings.llm_enabled, "data_mode": "demo_fixture"}
+    return {"ok": True, "llm_enabled": settings.llm_enabled, "data_mode": "temple_snapshot"}
