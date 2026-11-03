@@ -97,6 +97,7 @@ class CourseSection(Base):
     location: Mapped[str] = mapped_column(String(160))
     meetings: Mapped[list[dict]] = mapped_column(JSON, default=list)
     credits: Mapped[float | None] = mapped_column(Float)
+    credits_max: Mapped[float | None] = mapped_column(Float)
     seats_available: Mapped[int | None] = mapped_column(Integer)
     max_enrollment: Mapped[int | None] = mapped_column(Integer)
     linked: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -122,6 +123,8 @@ class Student(Base):
     credit_min: Mapped[int] = mapped_column(Integer, default=12)
     credit_max: Mapped[int] = mapped_column(Integer, default=18)
     consent_to_process: Mapped[bool] = mapped_column(Boolean, default=False)
+    access_token_hash: Mapped[str | None] = mapped_column(String(64), index=True)
+    preferences: Mapped[dict] = mapped_column(JSON, default=dict)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
     transcript: Mapped[list["TranscriptEntry"]] = relationship(cascade="all, delete-orphan")
     interests: Mapped[list["StudentInterest"]] = relationship(cascade="all, delete-orphan")
@@ -207,6 +210,7 @@ class AgentExecution(Base):
     summary: Mapped[str] = mapped_column(Text, default="")
     log: Mapped[list[dict]] = mapped_column(JSON, default=list)
     sources: Mapped[list[dict]] = mapped_column(JSON, default=list)
+    decision: Mapped[dict] = mapped_column(JSON, default=dict)
     error: Mapped[str | None] = mapped_column(Text)
 
 

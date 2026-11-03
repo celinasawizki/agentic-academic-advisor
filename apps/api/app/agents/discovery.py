@@ -4,18 +4,59 @@ from app.agents.base import Agent, PlanContext
 from app.domain import RequirementData, SectionData
 from app.rules import campus_supported, prereq_status
 
-SECONDARY_TYPES = ("recitation", "laboratory", "lab", "discussion")
 ARRANGED_TYPES = ("independent study", "dissertation", "research", "thesis", "private instruction", "internship",
                   "practicum", "field", "clinical", "student teaching", "directed")
 
 
-def component_of(sec: SectionData, all_types: set[str]) -> str:
-    """'primary' for the main meeting (lecture / lecture+lab ...); otherwise the separate
-    component type (Lab, Recitation, ...) that must also be scheduled."""
-    t = (sec.schedule_type or "").strip()
-    if t.lower() in SECONDARY_TYPES and any(x.lower() not in SECONDARY_TYPES for x in all_types):
-        return t
-    return "primary"
+def course_record(c, pre, req_ids: list[str], offered: bool) -> dict:
+    return {"code": c.code, "title": c.title, "credits": c.credits, "description": c.description[:600],
+            "requirement_ids": req_ids, "prereq_status": pre.status, "prereq_missing": pre.missing_groups,
+            "prereq_pending": pre.pending_courses, "prereq_unverifiable": pre.unverifiable, "prereq_notes": pre.notes,
+            "prereq_text": c.prereq_text, "attributes": c.attributes, "offered": offered}
+
+
+def evaluate_course(c, secs: list[SectionData], student, excluded_courses: set[str], term_name: str) -> dict:
+    """Deterministic eligibility of one course for the planning term. Returns usable section
+    entries, or the reason the course cannot be scheduled. Shared by Course Discovery and
+    the Interest Matching Agent's elective search."""
+    pre = prereq_status(c, student.transcript)
+    out = {"prereq": pre, "eligible": [], "reason": None, "notes": [], "blocked": False}
+    if not secs:
+        out["reason"] = f"Not offered in {term_name} (no sections in the class-search snapshot)"
+        return out
+    if c.code in excluded_courses:
+        out["reason"] = "Excluded at the student's request"
+        return out
+    if pre.status == "missing":
+        need = " and ".join("(" + " or ".join(g) + ")" for g in pre.missing_groups)
+        out["reason"], out["blocked"] = f"Prerequisite not completed: {need}" + (f" — {'; '.join(pre.notes)}" if pre.notes else ""), True
+        return out
+    arranged = [x for x in secs if not x.meetings and any(t in (x.schedule_type or "").lower() for t in ARRANGED_TYPES)]
+    secs = [x for x in secs if x not in arranged]
+    if not secs:
+        out["reason"] = "Arranged individually (independent study/research/internship) — needs instructor or department approval"
+        return out
+    campus_bad = [s for s in secs if not campus_supported(s)]
+    full = [s for s in secs if campus_supported(s) and s.seats_available is not None and s.seats_available <= 0]
+    usable = [s for s in secs if campus_supported(s) and s not in full]
+    comps = {x.component for x in secs}
+    usable_comps = {x.component for x in usable}
+    if campus_bad:
+        out["notes"].append({"reason": f"{len(campus_bad)} section(s) at unsupported campuses ({', '.join(sorted({s.campus for s in campus_bad}))})"})
+    if full:
+        out["notes"].append({"reason": f"{len(full)} section(s) full in the snapshot (seat counts are as of the snapshot date, not live)"})
+    if not usable:
+        out["reason"] = "No open Main Campus or online section"
+        return out
+    if usable_comps != comps:
+        out["reason"] = f"No open Main Campus/online section for component(s): {', '.join(sorted(comps - usable_comps))}"
+        return out
+    for sec in usable:
+        out["eligible"].append({"section": sec.model_dump(), "course": c.code, "prereq_status": pre.status,
+                                "prereq_pending": pre.pending_courses, "component": sec.component,
+                                "components": sorted(usable_comps), "component_pairing": "inferred" if len(usable_comps) > 1 else "single",
+                                "requires_linked_section": sec.linked, "time_tba": not sec.meetings and sec.modality != "online"})
+    return out
 
 
 class CourseDiscoveryAgent(Agent):
@@ -61,59 +102,48 @@ class CourseDiscoveryAgent(Agent):
         for code, req_ids in wanted.items():
             c = courses.get(code)
             is_explicit = code in explicit
-            note = (lambda reason, **kw: excluded.append({"course": code, "reason": reason, **kw})) if is_explicit else (lambda reason, **kw: pattern_skips.update([reason.split(":")[0]]))
             if c is None:
-                note("Not found in the bulletin course catalog")
+                (excluded.append({"course": code, "reason": "Not found in the bulletin course catalog"}) if is_explicit
+                 else pattern_skips.update(["Not found in the bulletin course catalog"]))
                 continue
-            pre = prereq_status(c, ctx.student.transcript)
-            course_info[code] = {"code": code, "title": c.title, "credits": c.credits, "description": c.description[:600],
-                                 "requirement_ids": req_ids, "prereq_status": pre.status, "prereq_missing": pre.missing_groups,
-                                 "prereq_pending": pre.pending_courses, "prereq_unverifiable": pre.unverifiable,
-                                 "prereq_text": c.prereq_text, "attributes": c.attributes, "offered": code in by_course}
-            secs = by_course.get(code, [])
-            if not secs:
-                note(f"Not offered in {ctx.catalog.term_name} (no sections in the class-search snapshot)")
+            ev = evaluate_course(c, by_course.get(code, []), ctx.student, excluded_courses, ctx.catalog.term_name)
+            course_info[code] = course_record(c, ev["prereq"], req_ids, code in by_course)
+            if is_explicit:
+                excluded.extend({"course": code, **n} for n in ev["notes"])
+            if ev["reason"]:
+                if is_explicit:
+                    excluded.append({"course": code, "reason": ev["reason"], **({"kind": "prerequisite"} if ev["blocked"] else {})})
+                else:
+                    pattern_skips.update([ev["reason"].split(":")[0]])
                 continue
-            if code in excluded_courses:
-                note("Excluded at the student's request")
-                continue
-            if pre.status == "missing":
-                need = " and ".join("(" + " or ".join(g) + ")" for g in pre.missing_groups)
-                note(f"Prerequisite not completed: {need}", kind="prerequisite")
-                continue
-            arranged = [x for x in secs if not x.meetings and any(t in (x.schedule_type or "").lower() for t in ARRANGED_TYPES)]
-            secs = [x for x in secs if x not in arranged]
-            if not secs:
-                note("Arranged individually (independent study/research/internship) — needs instructor or department approval")
-                continue
-            types = {x.schedule_type or "" for x in secs}
-            campus_bad = [s for s in secs if not campus_supported(s)]
-            full = [s for s in secs if campus_supported(s) and s.seats_available is not None and s.seats_available <= 0]
-            usable = [s for s in secs if campus_supported(s) and s not in full]
-            comps = {component_of(x, types) for x in secs}
-            usable_comps = {component_of(x, types) for x in usable}
-            if usable and usable_comps != comps:
-                note(f"No open Main Campus/online section for required component(s): {', '.join(sorted(comps - usable_comps))}")
-                continue
-            if campus_bad and is_explicit:
-                excluded.append({"course": code, "reason": f"{len(campus_bad)} section(s) at unsupported campuses ({', '.join(sorted({s.campus for s in campus_bad}))})"})
-            if full and is_explicit:
-                excluded.append({"course": code, "reason": f"{len(full)} full section(s) (waitlist only in snapshot)"})
-            if not usable:
-                note("No open Main Campus or online section")
-                continue
-            for sec in usable:
-                tba = not sec.meetings and sec.modality != "online"
-                eligible.append({"section": sec.model_copy(update={"component": component_of(sec, types)}).model_dump(), "course": code, "requirement_ids": req_ids,
-                                 "prereq_status": pre.status, "prereq_pending": pre.pending_courses,
-                                 "component": component_of(sec, types), "components": sorted(usable_comps),
-                                 "requires_linked_section": sec.linked, "time_tba": tba, "explicit": is_explicit})
+            for entry in ev["eligible"]:
+                eligible.append({**entry, "requirement_ids": req_ids, "explicit": is_explicit})
+
+        availability = {}
+        eligible_reqs = {rid for e in eligible for rid in e["requirement_ids"]}
+        for r in remaining:
+            if r["id"] in eligible_reqs:
+                availability[r["id"]] = {"status": "available", "reason": "Eligible sections exist this term."}
+            elif any(course_info.get(c, {}).get("prereq_status") == "missing" and course_info[c]["offered"] for c in r["candidate_courses"]):
+                availability[r["id"]] = {"status": "blocked", "reason": f"Offered courses for this rule are blocked by prerequisites in {ctx.catalog.term_name}."}
+            else:
+                availability[r["id"]] = {"status": "unavailable", "reason": f"No eligible Main Campus/online section in {ctx.catalog.term_name}."}
+        # Shared-state update with evidence: open rules that cannot progress this term.
+        changed = []
+        for p in ctx.state["degree_requirements"]["requirements"]:
+            a = availability.get(p["id"])
+            if a and a["status"] in ("blocked", "unavailable") and p.get("reliability") in ("PENDING_VERIFICATION", "VERIFIED"):
+                p["reliability"], p["reliability_reason"] = a["status"].upper(), a["reason"]
+                changed.append(p["id"])
+        if changed:
+            ctx.log(f"{len(changed)} open requirement rule(s) cannot progress this term (marked BLOCKED/UNAVAILABLE)", rules=changed[:20])
         ctx.log(f"{len(eligible)} eligible sections across {len({e['course'] for e in eligible})} courses; "
                 f"{len(excluded)} listed-course exclusions", exclusions=[f"{e['course']}: {e['reason']}" for e in excluded[:40]])
         if pattern_skips:
             ctx.log("Range/attribute matches skipped (summary)", **dict(pattern_skips.most_common(6)))
         return {"term_id": ctx.catalog.term_id, "term_name": ctx.catalog.term_name, "eligible_sections": eligible,
                 "excluded": excluded, "pattern_exclusion_summary": dict(pattern_skips), "courses": course_info,
+                "requirement_availability": availability,
                 "data_source": "temple_class_search_snapshot"}
 
     def summarize(self, o: dict) -> str:

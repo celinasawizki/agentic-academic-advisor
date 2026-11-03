@@ -10,9 +10,10 @@ from ortools.sat.python import cp_model
 
 from app.core.config import settings
 from app.domain import AvailBlock, CourseData, PlanningPreferences, SectionData
-from app.rules import earliest_start, overlapping_blocks, to_minutes
+from app.rules import earliest_start, overlapping_blocks, to_minutes, within_blocks
 
 SCALE = 100
+FREE_ELECTIVE = "FREE_ELECTIVE"
 
 
 def _tenths(credits: float) -> int:
@@ -37,11 +38,12 @@ class Strategy:
     w_soft: int
     w_dev: int = 4
     enforce_critical: bool = False
+    free_electives: int = 1  # max interest-based electives that satisfy no requirement
 
 
 STRATEGIES = [
-    Strategy("graduation", "Graduation Priority", w_req=10, w_int=2, w_soft=3, enforce_critical=True),
-    Strategy("interest", "Interest Priority", w_req=4, w_int=10, w_soft=3),
+    Strategy("graduation", "Graduation Priority", w_req=10, w_int=2, w_soft=3, enforce_critical=True, free_electives=0),
+    Strategy("interest", "Interest Priority", w_req=4, w_int=10, w_soft=3, free_electives=2),
     Strategy("balance", "Work-Life Balance", w_req=4, w_int=3, w_soft=14),
 ]
 
@@ -183,6 +185,10 @@ class ScheduleModel:
             m.Add(counted <= online)
             m.Add(in_person + counted >= settings.f1_full_time_credits * 10).OnlyEnforceIf(lit["f1"])
 
+        free = [y[c] for c, rids in course_reqs.items() if rids <= {FREE_ELECTIVE}]
+        if free:
+            m.Add(sum(free) <= strategy.free_electives)
+
         for prev in exclude_sets:
             present = [y[c] for c in prev if c in y]
             if present:
@@ -211,6 +217,9 @@ class ScheduleModel:
         p = 0
         for blk in overlapping_blocks(s, [b for b in self.blocks if b.kind == "soft"]):
             p += 60
+        preferred = [b for b in self.blocks if b.kind == "preferred"]
+        if preferred and s.meetings and not within_blocks(s, preferred):
+            p += 25
         start = earliest_start(s)
         if start is not None and self.prefs.avoid_before and start < to_minutes(self.prefs.avoid_before):
             p += 50

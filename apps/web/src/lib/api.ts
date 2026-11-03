@@ -8,12 +8,25 @@ export class ApiError extends Error {
   }
 }
 
+const TOKEN_KEY = "tap_student_token"
+
+function authHeader(): Record<string, string> {
+  try {
+    const t = localStorage.getItem(TOKEN_KEY)
+    return t ? { Authorization: `Bearer ${t}` } : {}
+  } catch {
+    return {}
+  }
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let res: Response
   try {
     res = await fetch(`${API_URL}${path}`, {
       ...init,
-      headers: init?.body instanceof FormData ? init.headers : { "Content-Type": "application/json", ...init?.headers },
+      headers: init?.body instanceof FormData
+        ? { ...authHeader(), ...init.headers }
+        : { "Content-Type": "application/json", ...authHeader(), ...init?.headers },
     })
   } catch {
     throw new ApiError(0, `Cannot reach the planning API at ${API_URL}. Is the backend running?`)
@@ -35,7 +48,11 @@ export const api = {
   terms: () => request<Term[]>("/api/catalog/terms"),
   courses: () => request<{ code: string; title: string; credits: number }[]>("/api/catalog/courses"),
   demoStudents: () => request<{ id: string; name: string; academic_year: string }[]>("/api/students/demo"),
-  createStudent: (body: unknown) => request<{ id: string }>("/api/students", { method: "POST", body: JSON.stringify(body) }),
+  createStudent: async (body: unknown) => {
+    const r = await request<{ id: string; access_token: string }>("/api/students", { method: "POST", body: JSON.stringify(body) })
+    try { localStorage.setItem(TOKEN_KEY, r.access_token) } catch {}
+    return r
+  },
   parseAudit: (file: File) => {
     const fd = new FormData()
     fd.append("file", file)
@@ -56,7 +73,7 @@ export const api = {
   saveDraft: (plan_id: string, option_id: string) =>
     request<{ draft: { draft_id: string; crns: string[]; environment: string }; validation: { messages: string[] }; notice: string }>(
       "/api/integration/tuportal/drafts",
-      { method: "POST", body: JSON.stringify({ plan_id, option_id }) },
+      { method: "POST", body: JSON.stringify({ plan_id, option_id, student_approved: true }) },
     ),
   integrationStatus: () => request<Record<string, { note: string; live?: boolean; mock?: boolean; enabled?: boolean; model?: string | null }>>("/api/integration/status"),
   advisorOverview: () => request<AdvisorStudent[]>("/api/advisor/overview", { headers: { "X-Demo-Role": "advisor" } }),

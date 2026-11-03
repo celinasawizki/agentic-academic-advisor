@@ -1,12 +1,21 @@
 from app.agents.base import Agent, PlanContext
 from app.domain import SectionData
+from app.ingest.sections import components_by_course
 from app.models import ScheduleCourse, ScheduleOption, ValidationResult
-from app.rules import campus_supported, f1_assessment, overlapping_blocks, prereq_status, section_credits, sections_conflict
+from app.rules import campus_supported, f1_assessment, overlapping_blocks, prereq_status, sections_conflict, total_credits
 
 
-def review_sections(ctx: PlanContext, sections: list[SectionData], requirement_ids: dict[str, list[str]]) -> list[dict]:
-    """Independent re-verification. Deliberately does not reuse optimizer state."""
+def review_sections(ctx: PlanContext, sections: list[SectionData], requirement_ids: dict[str, list[str]],
+                    components: dict[str, set[str]] | None = None, free_electives: set[str] | None = None) -> list[dict]:
+    """Independent re-verification shared by the Academic Review Agent and manual schedule
+    validation. Deliberately does not reuse optimizer state.
+
+    requirement_ids: course -> open requirements it may satisfy.
+    components: course -> components the term offers (e.g. {"primary", "Lab"}).
+    free_electives: interest-based courses that satisfy no parsed requirement."""
     s, p, courses = ctx.student, ctx.student.preferences, ctx.catalog.courses
+    components = components or {}
+    free_electives = free_electives or set()
     checks: list[dict] = []
 
     def add(check: str, passed: bool, severity: str, detail: str):
@@ -17,21 +26,45 @@ def review_sections(ctx: PlanContext, sections: list[SectionData], requirement_i
     primaries = {x.course for x in sections if x.component == "primary"}
     orphans = sorted({x.course for x in sections if x.component != "primary"} - primaries)
     add("components", not orphans, "error", "Every lab/recitation is paired with its course." if not orphans else f"Lab/recitation without its course: {orphans}")
+    chosen = {}
+    for x in sections:
+        chosen.setdefault(x.course, set()).add(x.component)
+    for course in sorted(primaries):
+        missing = sorted(components.get(course, {"primary"}) - chosen[course])
+        if missing:
+            add(f"component_missing:{course}", False, "warning",
+                f"{course} is also offered with separate {', '.join(missing)} section(s), which are probably required. "
+                "Temple's class search does not publish lecture/lab linkage, so this is unverified; choose one in TUportal.")
+        extra = sorted(chosen[course] - {"primary"})
+        if extra:
+            add(f"component_pairing:{course}", False, "warning",
+                f"{course}: pairing of the lecture with the selected {', '.join(extra)} section is inferred from schedule types, not "
+                "from published registration links. TUportal may require a specific pairing.")
     clashes = [(a.id, b.id) for i, a in enumerate(sections) for b in sections[i + 1:] if sections_conflict(a, b)]
     add("time_conflicts", not clashes, "error", "No overlapping meetings." if not clashes else f"Overlapping sections: {clashes}")
     hard_hits = [(x.course, b.label) for x in sections for b in overlapping_blocks(x, [b for b in s.availability if b.kind == "hard"])]
     add("hard_availability", not hard_hits, "error", "Respects all hard availability blocks." if not hard_hits else f"Violates hard availability: {hard_hits}")
-    total = sum(section_credits(x, courses) for x in sections)
-    add("credit_range", p.credit_min <= total <= p.credit_max, "error", f"{total:g} credits (allowed {p.credit_min}-{p.credit_max}).")
+    total = total_credits(sections, courses)
+    add("credit_range", p.credit_min <= total <= p.credit_max, "error",
+        f"{total:g} credits (allowed {p.credit_min}-{p.credit_max}); lab/recitation components carry no separate credit.")
     for x in sections:
+        if x.term_id != ctx.catalog.term_id:
+            add(f"term:{x.id}", False, "error", f"{x.id} is not in {ctx.catalog.term_name}.")
+        if not campus_supported(x):
+            add(f"campus:{x.id}", False, "error", f"{x.id} is at {x.campus}; only Main Campus and online sections are supported.")
+        if not x.meetings and x.modality != "online":
+            add(f"tba:{x.id}", False, "warning", f"{x.course} §{x.section} has no published meeting time in the snapshot (TBA).")
+        if x.seats_available is not None and x.seats_available <= 0:
+            add(f"seats:{x.id}", False, "warning", f"{x.course} §{x.section} was full when the snapshot was taken.")
         if x.component != "primary":
             continue
         if x.course not in courses:
-            add(f"catalog:{x.course}", False, "warning", f"{x.course} is not in the ingested bulletin course catalog.")
+            add(f"catalog:{x.course}", False, "error", f"{x.course} is not in the ingested bulletin course catalog; eligibility cannot be checked.")
             continue
         pre = prereq_status(courses[x.course], s.transcript)
         if pre.status == "missing":
-            add(f"prereq:{x.course}", False, "error", f"{x.course} prerequisite not met.")
+            need = " and ".join("(" + " or ".join(g) + ")" for g in pre.missing_groups)
+            add(f"prereq:{x.course}", False, "error", f"{x.course} prerequisite not met: {need}." + (f" {'; '.join(pre.notes)}" if pre.notes else ""))
         elif pre.status == "conditional":
             parts = []
             if pre.pending_courses:
@@ -40,26 +73,28 @@ def review_sections(ctx: PlanContext, sections: list[SectionData], requirement_i
                 parts.append("has a prerequisite that may be met by placement/test scores, which the planner cannot verify")
             add(f"prereq:{x.course}", False, "warning", f"{x.course} {'; '.join(parts)}.")
         if x.linked:
-            add(f"linked:{x.course}", False, "warning", f"{x.course} §{x.section} has a linked recitation/lab that must also be chosen in TUportal; its time was not checked.")
-        if not x.meetings and x.modality != "online":
-            add(f"tba:{x.course}", False, "warning", f"{x.course} §{x.section} has no published meeting time in the snapshot (TBA).")
-        if not campus_supported(x):
-            add(f"campus:{x.course}", False, "error", f"{x.id} is at unsupported campus {x.campus}.")
-        if x.term_id != ctx.catalog.term_id:
-            add(f"term:{x.course}", False, "error", f"{x.id} is not in {ctx.catalog.term_name}.")
-        if not requirement_ids.get(x.course):
-            add(f"requirement:{x.course}", False, "warning", f"{x.course} is not linked to a remaining requirement.")
+            add(f"linked:{x.course}", False, "warning", f"{x.course} §{x.section} has a linked section that must also be chosen in TUportal.")
+        if x.credits_max and x.credits and x.credits_max > x.credits:
+            add(f"variable_credits:{x.course}", False, "warning",
+                f"{x.course} §{x.section} is variable credit ({x.credits:g}–{x.credits_max:g}); the planner counted {x.credits:g}.")
+        if x.course in free_electives:
+            add(f"requirement:{x.course}", False, "warning",
+                f"{x.course} is an interest-based elective: it does not satisfy a parsed degree requirement and would count only toward general/free elective credit. Confirm with your advisor.")
+        elif not requirement_ids.get(x.course):
+            add(f"requirement:{x.course}", False, "warning", f"{x.course} is not linked to any open requirement in your programs.")
     if any(x.data_source == "demo_fixture" for x in sections):
         add("section_provenance", False, "warning", "Some section times come from a labeled demo fixture, not Temple course search.")
     elif sections:
         stamp = min(x.retrieved_at for x in sections)[:10]
-        add("section_provenance", False, "warning", f"Sections come from a class-search snapshot taken {stamp}. Seats and times change; verify in TUportal before registering.")
+        add("section_provenance", False, "warning", f"Sections come from a class-search snapshot taken {stamp}; seats are as of that date, not live. Verify in TUportal before registering.")
+    add("registration_restrictions", False, "warning", "Major, class-level, permit and hold restrictions are not in the snapshot; TUportal enforces them at registration.")
     add("requirement_provenance", False, "warning", "Requirements were parsed automatically from the Academic Bulletin and are pending verification against your official degree audit.")
     f1 = f1_assessment(sections, courses, s.f1_status)
     if f1.applies:
         sev = {"meets": "info", "needs_confirmation": "warning", "below": "error"}[f1.status]
         add("f1_full_course_of_study", f1.status == "meets", sev,
-            f"{f1.credits_toward_full_time}/{f1.full_time_required} credits count toward full course of study. " + " ".join(f1.notes)
+            f"{f1.credits_toward_full_time:g}/{f1.full_time_required} credits count toward full course of study "
+            f"({f1.online_credits_counted:g} of {f1.online_credits:g} online credits counted). " + " ".join(f1.notes)
             + " Planning assistance only; not immigration advice.")
     return checks
 
@@ -74,7 +109,9 @@ class AcademicReviewAgent(Agent):
         reviews, rejected = {}, []
         for opt in opt_out["options"]:
             secs = [SectionData(**{k: v for k, v in x.items() if k in SectionData.model_fields}) for x in opt["sections"]]
-            checks = review_sections(ctx, secs, {x["course"]: x["requirement_ids"] for x in opt["sections"]})
+            checks = review_sections(ctx, secs, {x["course"]: x["requirement_ids"] for x in opt["sections"]},
+                                     components_by_course(ctx.catalog.sections),
+                                     {c["course"] for c in ctx.state.get("interest_matching", {}).get("interest_electives", [])})
             errors = [c for c in checks if not c["passed"] and c["severity"] == "error"]
             warnings = [c for c in checks if not c["passed"] and c["severity"] == "warning"]
             status = "rejected" if errors else ("checks_passed_with_warnings" if warnings else "checks_passed")

@@ -8,6 +8,7 @@ import traceback
 import uuid
 from datetime import datetime, timezone
 
+from sqlalchemy import update
 from sqlalchemy.orm import Session
 
 from app.adapters.catalog import DbCatalogAdapter
@@ -49,11 +50,13 @@ def student_profile(db: Session, student_id: str) -> StudentProfile:
     return StudentProfile(
         id=s.id, name=s.name, is_demo=s.is_demo, academic_year=s.academic_year, expected_graduation=s.expected_graduation,
         catalog_year=s.catalog_year, planning_term=s.planning_term, program_ids=s.program_ids, campus=s.campus,
-        f1_status=s.f1_status, interests_text=" ".join(i.text for i in s.interests),
+        f1_status=s.f1_status, interests_text=" ".join(i.text for i in s.interests if "career" not in (i.tags or [])),
+        career_interests=" ".join(i.text for i in s.interests if "career" in (i.tags or [])),
         transcript=[TranscriptItem(course=t.course_code, status=t.status, grade=t.grade, term=t.term, source=t.source,
                                    confidence=t.confidence) for t in s.transcript],
         availability=[AvailBlock(day=a.day, start=a.start, end=a.end, kind=a.kind, label=a.label) for a in s.availability],
-        preferences=PlanningPreferences(credit_target=s.credit_target, credit_min=s.credit_min, credit_max=s.credit_max),
+        preferences=PlanningPreferences(**{**(s.preferences or {}), "credit_target": s.credit_target,
+                                           "credit_min": s.credit_min, "credit_max": s.credit_max}),
     )
 
 
@@ -65,20 +68,32 @@ def load_catalog(db: Session, term_id: str, program_ids: list[str]) -> Catalog:
         raise ValueError(f"Unknown term {term_id}")
     return Catalog(term_id=term.id, term_name=term.name, courses=cs.get_courses(), sections=cs.search_sections(term_id),
                    requirements=cat.requirements(program_ids), programs=cat.programs(),
-                   double_count_allowed=cat.double_count_allowed())
+                   double_count_allowed=cat.double_count_allowed(), verified_rules=cat.verified_rules())
 
 
 def create_plan(db: Session, student_id: str) -> PlanRun:
     profile = student_profile(db, student_id)
-    plan = PlanRun(id=f"plan-{uuid.uuid4().hex[:10]}", student_id=student_id, term_id=profile.planning_term, status="pending",
+    plan = PlanRun(id=f"plan-{uuid.uuid4().hex[:20]}", student_id=student_id, term_id=profile.planning_term, status="pending",
                    state={"_student": profile.model_dump(), "_iteration": 0, "_history": []})
     db.add(plan)
     db.commit()
     return plan
 
 
-def queue_agents(db: Session, plan: PlanRun, start_from: str | None) -> None:
-    """Create pending AgentExecution rows up front so the UI shows the full workflow."""
+class PlanBusy(Exception):
+    pass
+
+
+def queue_agents(db: Session, plan: PlanRun, start_from: str | None, state_update: dict | None = None) -> None:
+    """Atomically claim the plan, then create pending AgentExecution rows so the UI shows
+    the full workflow. A conditional UPDATE guarantees two concurrent change requests can
+    never both start a run (the loser gets PlanBusy and nothing is written)."""
+    claimed = db.execute(update(PlanRun).where(PlanRun.id == plan.id, PlanRun.status != "running")
+                         .values(status="running")).rowcount
+    db.commit()
+    if not claimed:
+        raise PlanBusy(plan.id)
+    db.refresh(plan)
     iteration = plan.state.get("_iteration", 0) + 1
     start = AGENT_KEYS.index(start_from) if start_from else 0
     for agent in PIPELINE[start:]:
@@ -86,8 +101,7 @@ def queue_agents(db: Session, plan: PlanRun, start_from: str | None) -> None:
     for agent in PIPELINE[:start]:
         db.add(AgentExecution(plan_id=plan.id, agent=agent.key, iteration=iteration, status="skipped",
                               summary="Reused output from the previous iteration (inputs unchanged)."))
-    plan.status = "running"
-    plan.state = {**plan.state, "_iteration": iteration}
+    plan.state = {**plan.state, **(state_update or {}), "_iteration": iteration}
     db.commit()
 
 

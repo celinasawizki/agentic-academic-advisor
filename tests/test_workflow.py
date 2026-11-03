@@ -87,7 +87,8 @@ def test_manual_validation_detects_conflict(client):
 def test_mock_tuportal_export(client):
     plan = run_plan(client)
     opt = plan["state"]["schedule_optimization"]["options"][0]
-    r = client.post("/api/integration/tuportal/drafts", json={"plan_id": plan["id"], "option_id": opt["id"]})
+    assert client.post("/api/integration/tuportal/drafts", json={"plan_id": plan["id"], "option_id": opt["id"]}).status_code == 422
+    r = client.post("/api/integration/tuportal/drafts", json={"plan_id": plan["id"], "option_id": opt["id"], "student_approved": True})
     body = r.json()
     assert body["mock"] is True and body["draft"]["registered"] is False
     assert body["draft"]["draft_id"].startswith("MOCK-DRAFT-")
@@ -117,16 +118,20 @@ def test_onboarding_requires_consent_and_supported_campus(client):
     assert client.post("/api/students", json={**base, "consent_to_process": True, "campus": "Rome"}).status_code == 422
     r = client.post("/api/students", json={**base, "consent_to_process": True,
                                            "transcript": [{"course": "PSY 1001", "status": "completed", "grade": "A"}]})
-    sid = r.json()["id"]
-    plan = run_plan(client, sid)
+    sid, token = r.json()["id"], r.json()["access_token"]
+    auth = {"Authorization": f"Bearer {token}"}
+    assert client.get(f"/api/students/{sid}").status_code == 404  # no credentials
+    r = client.post("/api/plans", json={"student_id": sid}, headers=auth)
+    plan = client.get(f"/api/plans/{r.json()['plan_id']}", headers=auth).json()
     # Only 6 eligible credits exist for this student, so 12+ is infeasible and must be explained, not faked.
     opt = plan["state"]["schedule_optimization"]
     assert opt["options"] == []
     for inf in opt["infeasible_strategies"]:
         assert any(g["kind"] == "credit_min" for g in inf["conflict_set"])
         assert any(r["type"] == "reduce_credits" and r["feasible"] for r in inf["resolutions"])
-    assert client.delete(f"/api/students/{sid}").status_code == 200
-    assert client.get(f"/api/students/{sid}").status_code == 404
+    assert client.delete(f"/api/students/{sid}").status_code == 404
+    assert client.delete(f"/api/students/{sid}", headers=auth).status_code == 200
+    assert client.get(f"/api/students/{sid}", headers=auth).status_code == 404
 
 
 def test_parse_audit_text():
@@ -136,3 +141,46 @@ def test_parse_audit_text():
     assert rows["PSY 1001"]["status"] == "completed"
     assert rows["CIS 1068"]["status"] == "in_progress"
     assert rows["GENED 0812"]["status"] == "transfer"
+
+
+
+def _real_student(client):
+    r = client.post("/api/students", json={"name": "T", "academic_year": "Junior", "expected_graduation": "2028-05",
+                                           "planning_term": "202703", "programs": ["PSY-BA", "GENED"], "credit_target": 12,
+                                           "credit_min": 3, "credit_max": 18, "consent_to_process": True,
+                                           "transcript": [{"course": "PSY 1001", "status": "completed", "grade": "A"}]})
+    return r.json()["id"], {"Authorization": f"Bearer {r.json()['access_token']}"}
+
+
+def test_real_records_require_owner_and_demo_advisor_is_fictional_only(client):
+    sid, auth = _real_student(client)
+    other_sid, other_auth = _real_student(client)
+    pid = client.post("/api/plans", json={"student_id": sid}, headers=auth).json()["plan_id"]
+    for headers in ({}, other_auth, {"X-Demo-Role": "advisor"}):
+        assert client.get(f"/api/plans/{pid}", headers=headers).status_code == 404
+        assert client.post(f"/api/plans/{pid}/modify", json={"message": "I want 12 credits"}, headers=headers).status_code == 404
+        assert client.post("/api/plans", json={"student_id": sid}, headers=headers).status_code == 404
+    assert client.post("/api/advisor/reviews", headers={"X-Demo-Role": "advisor"},
+                       json={"plan_id": pid, "status": "approved"}).status_code == 404
+    assert client.get(f"/api/plans/{pid}", headers=auth).status_code == 200
+
+
+def test_preferences_persist_for_real_students(client):
+    sid, auth = _real_student(client)
+    pid = client.post("/api/plans", json={"student_id": sid}, headers=auth).json()["plan_id"]
+    client.post(f"/api/plans/{pid}/preferences", json={"credit_target": 13}, headers=auth)
+    p2 = client.post("/api/plans", json={"student_id": sid}, headers=auth).json()["plan_id"]
+    assert client.get(f"/api/plans/{p2}", headers=auth).json()["state"]["_student"]["preferences"]["credit_target"] == 13
+
+
+def test_busy_plan_rejects_second_change(client):
+    from app.core.db import SessionLocal
+    from app.models import PlanRun
+    plan = run_plan(client)
+    db = SessionLocal()
+    db.get(PlanRun, plan["id"]).status = "running"
+    db.commit()
+    assert client.post(f"/api/plans/{plan['id']}/modify", json={"message": "I want 12 credits"}).status_code == 409
+    db.get(PlanRun, plan["id"]).status = "complete"
+    db.commit()
+    db.close()

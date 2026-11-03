@@ -22,7 +22,8 @@ class SchedulingConstraintsAgent(Agent):
         s, p = ctx.student, ctx.student.preferences
         hard, soft, academic, immigration = [], [], [], []
         for b in s.availability:
-            item = {"code": f"avail_{b.kind}", "description": f"{b.label or 'Blocked'}: {b.day} {b.start}-{b.end}", "params": b.model_dump()}
+            prefix = "Preferred time" if b.kind == "preferred" else (b.label or "Blocked")
+            item = {"code": f"avail_{b.kind}", "description": f"{prefix}: {b.day} {b.start}-{b.end}", "params": b.model_dump()}
             (hard if b.kind == "hard" else soft if b.kind == "soft" else soft).append(item)
         hard.append({"code": "credit_range", "description": f"Between {p.credit_min} and {p.credit_max} credits", "params": {"min": p.credit_min, "max": p.credit_max}})
         hard.append({"code": "campus", "description": "Main Campus or online sections only (prototype scope)", "params": {"campuses": ["Main", "Online"]}})
@@ -53,7 +54,9 @@ class SchedulingConstraintsAgent(Agent):
             if c not in offered:
                 pre_checks.append({"course": c, "issue": "critical_not_available",
                                    "detail": f"Graduation-critical {c} cannot be taken this term (no eligible section or prerequisite missing)."})
-        must = [c for c in critical if c in offered] + list(p.required_courses)
+        for c in p.deferred_courses:
+            pre_checks.append({"course": c, "issue": "deferred_by_student", "detail": f"You chose to defer {c}; it is not required in this term's plans."})
+        must = [c for c in critical if c in offered and c not in p.deferred_courses] + list(p.required_courses)
         hard_blocks = [b for b in s.availability if b.kind == "hard"]
         soft_blocks = [b for b in s.availability if b.kind == "soft"]
         for c in [c for c in must if c not in p.required_courses]:
@@ -68,6 +71,8 @@ class SchedulingConstraintsAgent(Agent):
                 labels = sorted({b.label for x in free for b in overlapping_blocks(x, soft_blocks)})
                 pre_checks.append({"course": c, "issue": "requires_soft_violation",
                                    "detail": f"The only compatible section(s) of {c} conflict with your preference: {', '.join(labels)}."})
+        for t in p.accepted_tradeoffs:
+            ctx.log(f"Student accepted a tradeoff earlier: gave up '{t}'.")
         for pc in pre_checks:
             ctx.log(f"Pre-check: {pc['detail']}")
 

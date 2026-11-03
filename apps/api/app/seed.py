@@ -8,7 +8,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from sqlalchemy import delete, insert
+from sqlalchemy import delete, insert, inspect, text
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
@@ -22,14 +22,31 @@ SEASON = {"03": "Spring", "36": "Fall", "20": "Summer I", "26": "Summer II"}
 
 def init_db() -> None:
     Base.metadata.create_all(engine)
+    _add_missing_columns()
+
+
+def _add_missing_columns() -> None:
+    """Additive-only migration for prototype databases: add new nullable columns."""
+    insp = inspect(engine)
+    with engine.begin() as conn:
+        for table in Base.metadata.sorted_tables:
+            if not insp.has_table(table.name):
+                continue
+            existing = {c["name"] for c in insp.get_columns(table.name)}
+            for col in table.columns:
+                if col.name not in existing:
+                    conn.execute(text(f'ALTER TABLE {table.name} ADD COLUMN "{col.name}" {col.type.compile(engine.dialect)}'))
 
 
 def term_name(code: str) -> str:
     return f"{SEASON.get(code[4:], code[4:])} {code[:4]}"
 
 
+CATALOG_SCHEMA_VERSION = "2"
+
+
 def _fingerprint(files: list[Path]) -> str:
-    h = hashlib.sha1()
+    h = hashlib.sha1(CATALOG_SCHEMA_VERSION.encode())
     for f in sorted(files):
         st = f.stat()
         h.update(f"{f.name}:{st.st_size}:{int(st.st_mtime)}".encode())
@@ -124,7 +141,7 @@ def load_catalog(db: Session, d: Path) -> None:
             "schedule_type": s.get("schedule_type"),
             "location": s.get("location") or ", ".join(dict.fromkeys(f"{m.get('building') or ''} {(m.get('room') or '').lstrip('0')}".strip() for m in s.get("meetings", []) if m.get("building"))) or ("Online" if s.get("modality") == "online" else "TBA"),
             "meetings": [{"days": m["days"], "start": m["start"], "end": m["end"]} for m in s.get("meetings", [])],
-            "credits": s.get("credits"), "seats_available": s.get("seats_available"), "max_enrollment": s.get("max_enrollment"),
+            "credits": s.get("credits"), "credits_max": s.get("credits_high"), "seats_available": s.get("seats_available"), "max_enrollment": s.get("max_enrollment"),
             "linked": bool(s.get("linked")), "attributes": s.get("attributes", []),
             "data_source": meta.get("data_source", "temple_class_search_snapshot"), "source_id": ssrc.id, "retrieved_at": retrieved,
         } for s in snap["sections"]])
@@ -140,7 +157,8 @@ def upsert_student(db: Session, s: dict, is_demo: bool) -> Student:
                  expected_graduation=s["expected_graduation"], catalog_year=s.get("catalog_year"),
                  planning_term=s["planning_term"], program_ids=s["programs"], campus=s["campus"], f1_status=s["f1_status"],
                  credit_target=s["credit_target"], credit_min=s["credit_min"], credit_max=s["credit_max"],
-                 consent_to_process=s.get("consent_to_process", is_demo))
+                 consent_to_process=s.get("consent_to_process", is_demo), access_token_hash=s.get("access_token_hash"),
+                 preferences=s.get("preferences") or {})
     st.transcript = [TranscriptEntry(course_code=t["course"], status=t["status"], grade=t.get("grade"), term=t.get("term"),
                                      source=t.get("source", "demo" if is_demo else "manual"), confidence=t.get("confidence", 1.0),
                                      verified_by_student=t.get("verified_by_student", is_demo)) for t in s["transcript"]]

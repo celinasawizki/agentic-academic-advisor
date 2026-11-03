@@ -46,6 +46,11 @@ class DbCatalogAdapter(RequirementsCatalogAdapter):
                                            verification_status=r.verification_status, source_url=p.source.url if p.source else None))
         return out
 
+    def verified_rules(self) -> dict[str, dict]:
+        f = settings.data_dir / "verifications.json"
+        data = json.loads(f.read_text()) if f.exists() else {}
+        return {v["rule_id"]: v for v in data.get("verified_rules", []) if v.get("rule_id") and v.get("verified_by") and v.get("evidence")}
+
     def double_count_allowed(self) -> set[frozenset[str]]:
         f = settings.data_dir / "programs.json"
         data = json.loads(f.read_text()) if f.exists() else {}

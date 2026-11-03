@@ -119,7 +119,7 @@ class InterestMatchingAgent(Agent):
     responsibility = "Interprets free-text interests and ranks requirement-eligible courses by semantic relevance to course descriptions."
 
     def run(self, ctx: PlanContext) -> dict:
-        text = ctx.student.interests_text or ""
+        text = " ".join(x for x in (ctx.student.interests_text, ctx.student.career_interests) if x).strip()
         boosts = ctx.student.preferences.interest_boost_terms
         courses = ctx.state["course_discovery"]["courses"]
         scores: dict[str, dict] | None = None
@@ -175,7 +175,47 @@ class InterestMatchingAgent(Agent):
         ctx.log("Top matches", top=[f"{c} ({s['score']:.2f})" for c, s in ranked[:5]])
         if blocked:
             ctx.log("High-interest courses blocked by prerequisites (sent to Explanation Agent)", courses=[b["course"] for b in blocked])
-        return {"themes": themes, "scores": scores, "ranking": [c for c, _ in ranked], "blocked_high_interest": blocked}
+        electives, enrichment = self._elective_search(ctx, labels, interest_terms(text + " " + " ".join(boosts)), courses)
+        for e in electives:
+            scores[e["course"]] = {"score": e["score"], "reason": e["reason"], "matched_themes": e["matched_themes"], "method": e["method"]}
+        enrichment = [{"course": b["course"], "title": b["title"], "score": b["score"], "reason": scores[b["course"]]["reason"],
+                       "why_not": f"Prerequisite not completed: {b['missing_prereq']}"} for b in blocked] + enrichment
+        if electives:
+            ctx.log("Interest-based electives found outside your program requirements (free elective credit only)",
+                    courses=[f"{e['course']} ({e['score']:.2f})" for e in electives])
+        return {"themes": themes, "scores": scores, "ranking": [c for c, _ in ranked], "blocked_high_interest": blocked,
+                "interest_electives": electives, "enrichment": enrichment[:8]}
+
+    def _elective_search(self, ctx: PlanContext, labels: list[str], terms: list[str], requirement_courses: dict) -> tuple[list[dict], list[dict]]:
+        """Search the whole term catalog for courses that match the student's interests but are
+        not tied to any of their requirements. These are labeled interest-based electives and are
+        never presented as satisfying a degree requirement."""
+        from app.agents.discovery import evaluate_course
+        if not labels and not terms:
+            return [], []
+        catalog = ctx.catalog.courses
+        done = {t.course for t in ctx.student.transcript if t.status in ("completed", "transfer", "in_progress")}
+        by_course: dict[str, list] = {}
+        for sec in ctx.catalog.sections:
+            if sec.term_id == ctx.catalog.term_id:
+                by_course.setdefault(sec.course, []).append(sec)
+        pool = {code: {"title": catalog[code].title, "description": catalog[code].description}
+                for code in by_course if code in catalog and code not in requirement_courses and code not in done
+                and catalog[code].number < 5000}
+        scored = fallback_scores(labels, pool, terms)
+        ranked = [c for c in sorted(pool, key=lambda k: -scored[k]["score"]) if scored[c]["score"] >= 0.45][:20]
+        electives, enrichment = [], []
+        excluded = set(ctx.student.preferences.excluded_courses)
+        for code in ranked:
+            ev = evaluate_course(catalog[code], by_course[code], ctx.student, excluded, ctx.catalog.term_name)
+            base = {"course": code, "title": catalog[code].title, "score": scored[code]["score"], "reason": scored[code]["reason"],
+                    "matched_themes": scored[code]["matched_themes"], "method": scored[code]["method"]}
+            if ev["eligible"] and len(electives) < 6:
+                electives.append({**base, "category": "INTEREST_ELECTIVE",
+                                  "sections": [{**e, "requirement_ids": ["FREE_ELECTIVE"], "explicit": False} for e in ev["eligible"]]})
+            elif not ev["eligible"] and len(enrichment) < 6:
+                enrichment.append({**base, "why_not": ev["reason"]})
+        return electives, enrichment
 
     def summarize(self, o: dict) -> str:
         top = ", ".join(o["ranking"][:3])

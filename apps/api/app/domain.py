@@ -28,6 +28,7 @@ class SectionData(BaseModel):
     meetings: list[Meeting] = []
     seats_available: int | None = None
     credits: float | None = None
+    credits_max: float | None = None
     schedule_type: str | None = None
     component: str = "primary"  # or the separate component type that must also be taken (Lab, Recitation)
     linked: bool = False
@@ -49,6 +50,12 @@ class CourseData(BaseModel):
     @property
     def subject(self) -> str:
         return self.code.split()[0]
+
+    @property
+    def min_prereq_grade(self) -> str | None:
+        import re
+        m = re.search(r"(?i)minimum grade of ([A-D][+-]?)\b", self.prereq_text or "")
+        return m.group(1).upper() if m else None
 
     @property
     def number(self) -> int:
@@ -113,6 +120,9 @@ class PlanningPreferences(BaseModel):
     excluded_courses: list[str] = []
     required_courses: list[str] = []  # student asked to include
     interest_boost_terms: list[str] = []
+    deferred_courses: list[str] = []  # graduation-critical courses the student chose to defer
+    accepted_tradeoffs: list[str] = []  # soft preferences the student explicitly gave up
+    avoid_course_sets: list[list[str]] = []  # "show me different options" history
 
 
 class StudentProfile(BaseModel):
@@ -127,6 +137,7 @@ class StudentProfile(BaseModel):
     campus: str
     f1_status: Literal["yes", "no", "prefer_not"]
     interests_text: str
+    career_interests: str = ""
     transcript: list[TranscriptItem]
     availability: list[AvailBlock]
     preferences: PlanningPreferences = Field(default_factory=PlanningPreferences)

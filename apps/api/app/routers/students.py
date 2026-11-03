@@ -7,9 +7,10 @@ from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.orm import Session
 
 from app.adapters.degree_audit import extract_text, parse_audit_text
+from app.core.auth import Principal, authorize_student, get_principal, new_token
 from app.core.config import settings
 from app.core.db import get_db
-from app.models import (AcademicTerm, AdvisorReview, AgentExecution, Course, IntegrationStatus, PlanRun, ScheduleCourse,
+from app.models import (StudentInterest, AcademicTerm, AdvisorReview, AgentExecution, Course, IntegrationStatus, PlanRun, ScheduleCourse,
                         SchedulingConstraint, ScheduleOption, Student, ValidationResult)
 from app.orchestrator import student_profile
 from app.seed import upsert_student
@@ -54,6 +55,7 @@ class OnboardingIn(BaseModel):
     campus: str = "Main"
     f1_status: Literal["yes", "no", "prefer_not"] = "prefer_not"
     interests_text: str = Field(default="", max_length=4000)
+    career_interests: str = Field(default="", max_length=2000)
     interest_tags: list[str] = Field(default_factory=list, max_length=20)
     credit_target: int = Field(ge=1, le=24)
     credit_min: int = Field(ge=0, le=24)
@@ -69,11 +71,9 @@ def demo_students(db: Session = Depends(get_db)):
 
 
 @router.get("/students/{student_id}")
-def get_student(student_id: str, db: Session = Depends(get_db)):
-    try:
-        return student_profile(db, student_id).model_dump()
-    except KeyError:
-        raise HTTPException(404, "Student not found")
+def get_student(student_id: str, db: Session = Depends(get_db), principal: Principal = Depends(get_principal)):
+    authorize_student(db, principal, student_id, "read")
+    return student_profile(db, student_id).model_dump()
 
 
 @router.post("/students")
@@ -86,20 +86,24 @@ def create_student(body: OnboardingIn, db: Session = Depends(get_db)):
         raise HTTPException(422, "Unknown planning term")
     if not (body.credit_min <= body.credit_target <= body.credit_max):
         raise HTTPException(422, "Credit target must be within the acceptable range")
-    sid = f"stu-{uuid.uuid4().hex[:10]}"
-    upsert_student(db, {**body.model_dump(), "id": sid, "transcript": [t.model_dump() for t in body.transcript],
-                        "availability": [a.model_dump() for a in body.availability]}, is_demo=False)
+    sid = f"stu-{uuid.uuid4().hex[:20]}"
+    token, token_hash = new_token()
+    st = upsert_student(db, {**body.model_dump(), "id": sid, "transcript": [t.model_dump() for t in body.transcript],
+                             "availability": [a.model_dump() for a in body.availability], "access_token_hash": token_hash},
+                        is_demo=False)
+    if body.career_interests.strip():
+        st.interests.append(StudentInterest(text=body.career_interests.strip(), tags=["career"]))
     db.commit()
-    return {"id": sid}
+    # The token is shown once; only its hash is stored. It stands in for Temple SSO in this prototype.
+    return {"id": sid, "access_token": token}
 
 
 @router.delete("/students/{student_id}")
-def delete_student(student_id: str, db: Session = Depends(get_db)):
-    s = db.get(Student, student_id)
-    if not s:
-        raise HTTPException(404, "Student not found")
-    if s.is_demo:
+def delete_student(student_id: str, db: Session = Depends(get_db), principal: Principal = Depends(get_principal)):
+    existing = db.get(Student, student_id)
+    if existing is not None and existing.is_demo:
         raise HTTPException(400, "Demo students cannot be deleted")
+    s = authorize_student(db, principal, student_id, "delete")
     for p in db.query(PlanRun).filter_by(student_id=student_id).all():
         option_ids = [o.id for o in db.query(ScheduleOption).filter_by(plan_id=p.id).all()]
         db.query(ValidationResult).filter(ValidationResult.option_id.in_(option_ids)).delete(synchronize_session=False)

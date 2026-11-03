@@ -9,6 +9,24 @@ from app.domain import AvailBlock, CourseData, RequirementData, SectionData, Tra
 
 SUPPORTED_CAMPUSES = {"Main", "Online"}
 COMPLETED_STATUSES = {"completed", "transfer"}
+GRADE_SCALE = ["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"]
+NON_PASSING = {"F", "W", "WF", "WU", "I", "NR", "U", "AU", "X"}
+GENED_MIN_GRADE = "C-"  # Bulletin: "All GenEd courses must be completed with a grade of C- or higher"
+
+
+def grade_ok(grade: str | None, minimum: str | None = None) -> bool:
+    """True when a recorded grade passes and meets an optional minimum. Unknown / pass-type
+    grades (TR, P, CR, S or none recorded) are accepted; they are verified in the degree audit."""
+    g = (grade or "").strip().upper()
+    if g in NON_PASSING:
+        return False
+    if minimum and g in GRADE_SCALE and minimum.upper() in GRADE_SCALE:
+        return GRADE_SCALE.index(g) <= GRADE_SCALE.index(minimum.upper())
+    return True
+
+
+def counts_as_done(t: TranscriptItem, minimum: str | None = None) -> bool:
+    return t.status in COMPLETED_STATUSES and grade_ok(t.grade, minimum)
 PROGRAM_PRIORITY = {"major": 0, "minor": 1, "certificate": 2, "gened": 3}
 OTHER = "@OTHER"
 
@@ -37,6 +55,14 @@ def overlapping_blocks(section: SectionData, blocks: list[AvailBlock]) -> list[A
         if any(d == blk.day and s < be and bs < e for d, s, e in _intervals(section)):
             hits.append(blk)
     return hits
+
+
+def within_blocks(section: SectionData, blocks: list[AvailBlock]) -> bool:
+    """Every meeting falls inside one of the given blocks on its day."""
+    for d, s, e in _intervals(section):
+        if not any(b.day == d and to_minutes(b.start) <= s and e <= to_minutes(b.end) for b in blocks):
+            return False
+    return True
 
 
 def meets_on(section: SectionData, day: str) -> bool:
@@ -73,6 +99,7 @@ class PrereqResult:
     missing_groups: list[list[str]] = field(default_factory=list)
     pending_courses: list[str] = field(default_factory=list)
     unverifiable: list[list[str]] = field(default_factory=list)
+    notes: list[str] = field(default_factory=list)
 
 
 def prereq_status(course: CourseData, transcript: list[TranscriptItem]) -> PrereqResult:
@@ -80,8 +107,12 @@ def prereq_status(course: CourseData, transcript: list[TranscriptItem]) -> Prere
     completed; they make the prerequisite 'conditional' on passing them. A group
     that can also be met by placement/test scores (@OTHER) cannot be checked, so
     it is 'conditional' rather than 'missing'."""
-    done = {t.course for t in transcript if t.status in COMPLETED_STATUSES}
+    minimum = course.min_prereq_grade
+    done = {t.course for t in transcript if counts_as_done(t, minimum)}
     in_prog = {t.course for t in transcript if t.status == "in_progress"}
+    notes = [f"{t.course} grade {t.grade} does not meet the required minimum ({minimum or 'passing'})."
+             for t in transcript if t.status in COMPLETED_STATUSES and not counts_as_done(t, minimum)
+             and any(t.course in g for g in course.prereqs)]
     missing, pending, unverifiable = [], [], []
     for group in course.prereqs:
         if any(c in done for c in group):
@@ -94,10 +125,10 @@ def prereq_status(course: CourseData, transcript: list[TranscriptItem]) -> Prere
         else:
             missing.append(group)
     if missing:
-        return PrereqResult("missing", missing, pending, unverifiable)
+        return PrereqResult("missing", missing, pending, unverifiable, notes)
     if pending or unverifiable:
-        return PrereqResult("conditional", [], pending, unverifiable)
-    return PrereqResult("satisfied")
+        return PrereqResult("conditional", [], pending, unverifiable, notes)
+    return PrereqResult("satisfied", notes=notes)
 
 
 @dataclass
@@ -135,7 +166,10 @@ def requirement_progress(
     Without an explicit rule we do not assume double counting."""
     double_count_allowed = double_count_allowed or set()
     courses = courses or {}
-    status_of = {t.course: t.status for t in transcript if t.status not in ("planned", "unverified")}
+    status_of = {t.course: t.status for t in transcript if t.status not in ("planned", "unverified")
+                 and (t.status == "in_progress" or grade_ok(t.grade))}
+    gened_ok = {t.course for t in transcript if t.status == "in_progress" or grade_ok(t.grade, GENED_MIN_GRADE)}
+    failed = [t for t in transcript if t.status in COMPLETED_STATUSES and not grade_ok(t.grade)]
     used_by_program: dict[str, set[str]] = {}
     owner: dict[str, str] = {}
     ordered = sorted(requirements, key=lambda r: (PROGRAM_PRIORITY.get(r.program_type, 9), r.kind == "credits", bool(r.patterns), r.id))
@@ -143,6 +177,9 @@ def requirement_progress(
 
     def available(code: str, req: RequirementData, notes: list[str]) -> bool:
         if code not in status_of or code in used_by_program.setdefault(req.program_id, set()):
+            return False
+        if req.program_type == "gened" and code not in gened_ok:
+            notes.append(f"{code} grade is below the GenEd minimum ({GENED_MIN_GRADE}).")
             return False
         other = owner.get(code)
         if other and other != req.program_id and frozenset({other, req.program_id}) not in double_count_allowed:
@@ -179,6 +216,9 @@ def requirement_progress(
                     take(code, req)
                     (completed if status_of[code] in COMPLETED_STATUSES else in_progress).append(code)
                     got += unit([code])
+        for t in failed:
+            if any(t.course in o for o in req.options):
+                notes.append(f"{t.course} has a non-passing grade ({t.grade}) and does not count.")
         remaining = max(0.0, req.needed - got)
         if req.kind == "credits":
             slots = math.ceil(remaining / 3) if remaining else 0

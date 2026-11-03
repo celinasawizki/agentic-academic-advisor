@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     # under an institutional data agreement. Only catalog data and interest text are sent.
     llm_may_receive_student_records: bool = False
 
+    # Authorized Temple data feed for live availability (not available to this prototype).
+    temple_data_api_url: str | None = None
+    temple_data_api_token: str | None = None
+
     cors_origins: list[str] = ["http://localhost:3000"]
     max_upload_bytes: int = 5 * 1024 * 1024
 

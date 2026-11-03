@@ -1,0 +1,5 @@
+{
+  "_notice": "Human verification registry. A requirement rule is shown as VERIFIED only when an entry here records who verified it against an authoritative source (official degree audit, department, or advising office), when, and how. The parser never writes to this file.",
+  "schema": {"rule_id": "program requirement id, e.g. psychology-ba-r8", "verified_by": "name and role", "verified_at": "ISO date", "evidence": "what it was checked against"},
+  "verified_rules": []
+}

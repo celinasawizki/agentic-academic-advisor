@@ -17,6 +17,7 @@ class Catalog:
     requirements: list[RequirementData]
     programs: dict[str, dict]
     double_count_allowed: set[frozenset[str]]
+    verified_rules: dict[str, dict] = field(default_factory=dict)
 
 
 @dataclass

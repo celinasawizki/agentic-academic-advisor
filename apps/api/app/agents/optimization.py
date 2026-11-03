@@ -1,4 +1,5 @@
 from app.agents.base import Agent, PlanContext
+from app.agents.categories import all_eligible, classify
 from app.domain import AvailBlock, SectionData
 from app.optimizer import STRATEGIES, Candidate, HardGroup, ScheduleModel, Strategy
 from app.rules import f1_assessment, overlapping_blocks, section_credits
@@ -26,11 +27,16 @@ def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> Sch
     locked_courses = {e["course"] for e in disc["eligible_sections"] if e["section"]["id"] in prefs.locked_sections}
     keep_always = set(critical) | set(prefs.required_courses) | locked_courses
 
+    free_codes = {el["course"] for el in ctx.state["interest_matching"].get("interest_electives", [])}
+
+    def priority(code: str) -> float:
+        return 0.1 if code in free_codes else grad["priorities"].get(code, {}).get("priority", 0.3)
+
     def value(code: str) -> float:
-        return grad["priorities"].get(code, {}).get("priority", 0.3) + interest.get(code, {}).get("score", 0.0)
+        return priority(code) + interest.get(code, {}).get("score", 0.0)
 
     by_course: dict[str, list[dict]] = {}
-    for e in disc["eligible_sections"]:
+    for e in all_eligible(ctx.state):
         by_course.setdefault(e["course"], []).append(e)
     ranked = sorted(by_course, key=lambda c: -value(c))
     chosen_courses = list(dict.fromkeys([c for c in ranked if c in keep_always] + ranked[:MAX_COURSES]))
@@ -48,7 +54,7 @@ def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> Sch
                 continue
             candidates.append(Candidate(section=sec, credits=section_credits(sec, ctx.catalog.courses),
                                         requirement_ids=e["requirement_ids"],
-                                        priority=grad["priorities"].get(code, {}).get("priority", 0.3),
+                                        priority=priority(code),
                                         interest=interest.get(code, {}).get("score", 0.0)))
     # Each option counts once toward a requirement: the first course of a bundle (e.g. lecture & lab
     # pair) carries the weight, its partners count zero; pattern matches count one each.
@@ -129,6 +135,7 @@ class ScheduleOptimizationAgent(Agent):
     def run(self, ctx: PlanContext) -> dict:
         model = build_model(ctx)
         excluded_sets: list[set[str]] = [set(x) for x in ctx.state.get("_review_rejected_sets", [])]
+        excluded_sets += [set(x) for x in ctx.student.preferences.avoid_course_sets]
         options, infeasible = [], []
         for rank, strat in enumerate(STRATEGIES, start=1):
             res = model.solve(strat, exclude_sets=excluded_sets)
@@ -152,7 +159,7 @@ class ScheduleOptimizationAgent(Agent):
         disc = ctx.state["course_discovery"]
         interest = ctx.state["interest_matching"]["scores"]
         grad = ctx.state["graduation_planning"]
-        by_section = {e["section"]["id"]: e for e in disc["eligible_sections"]}
+        by_section = {e["section"]["id"]: e for e in all_eligible(ctx.state)}
         soft_count = max(1, sum(1 for b in ctx.student.availability if b.kind == "soft") + bool(ctx.student.preferences.avoid_before))
         violated_prefs = {v["preference"] for v in res.soft_violations}
         critical = [c["course"] for c in grad["critical_courses"]]
@@ -165,6 +172,8 @@ class ScheduleOptimizationAgent(Agent):
                           "requires_linked_section": by_section[s.id].get("requires_linked_section", False),
                           "time_tba": by_section[s.id].get("time_tba", False),
                           "requirement_ids": by_section[s.id]["requirement_ids"],
+                          "category": classify(s.course, by_section[s.id]["requirement_ids"], ctx.state),
+                          "component_pairing": by_section[s.id].get("component_pairing", "single"),
                           "prereq_status": by_section[s.id]["prereq_status"],
                           "prereq_pending": by_section[s.id]["prereq_pending"],
                           "interest_score": interest.get(s.course, {}).get("score", 0),

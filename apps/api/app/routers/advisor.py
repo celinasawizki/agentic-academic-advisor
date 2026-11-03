@@ -1,20 +1,22 @@
 from typing import Literal
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
+from app.core.auth import Principal, get_principal
 from app.core.db import get_db
 from app.models import AdvisorReview, PlanRun, Student
 
 router = APIRouter(prefix="/api/advisor", tags=["advisor"])
 
 
-def require_advisor(x_demo_role: str | None = Header(default=None)) -> None:
-    """Demo-only role gate. A real deployment must use Temple SSO and
-    advisor-student assignment checks before exposing any student data."""
-    if x_demo_role != "advisor":
+def require_advisor(principal: Principal = Depends(get_principal)) -> Principal:
+    """Demo advisor role: fictional students only. Advising real students requires Temple SSO
+    plus an advisor-to-student assignment check, which this prototype does not have."""
+    if principal.kind != "demo_advisor":
         raise HTTPException(403, "Advisor role required")
+    return principal
 
 
 class ReviewIn(BaseModel):
@@ -58,7 +60,9 @@ def overview(db: Session = Depends(get_db)):
 
 @router.post("/reviews", dependencies=[Depends(require_advisor)])
 def add_review(body: ReviewIn, db: Session = Depends(get_db)):
-    if not db.get(PlanRun, body.plan_id):
+    plan = db.get(PlanRun, body.plan_id)
+    student = db.get(Student, plan.student_id) if plan else None
+    if plan is None or student is None or not student.is_demo:
         raise HTTPException(404, "Plan not found")
     db.add(AdvisorReview(plan_id=body.plan_id, advisor_name=body.advisor_name, status=body.status, note=body.note))
     db.commit()

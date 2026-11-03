@@ -2,6 +2,25 @@ from app.agents.base import Agent, PlanContext
 from app.rules import requirement_progress
 
 
+RELIABILITY = ("VERIFIED", "PENDING_VERIFICATION", "AMBIGUOUS", "UNAVAILABLE", "BLOCKED")
+
+
+def reliability(p: dict, verified: dict[str, dict], year_mismatch: bool, year_assumed: bool) -> tuple[str, str]:
+    """How much the planner can rely on a requirement rule. UNAVAILABLE/BLOCKED are applied later
+    by Course Discovery from this term's sections. VERIFIED only comes from a human registry."""
+    if p["kind"] == "manual":
+        return "AMBIGUOUS", "Written as free text in the bulletin; the parser could not interpret it. An advisor must review it."
+    if p["verification_status"] == "needs_review":
+        return "AMBIGUOUS", "Parsed from prose or an unusual table layout; needs advisor review."
+    if year_mismatch:
+        return "AMBIGUOUS", "Your catalog year differs from the ingested bulletin year; requirements may differ."
+    if p["id"] in verified:
+        v = verified[p["id"]]
+        return "VERIFIED", f"Verified by {v['verified_by']} on {v.get('verified_at', '?')} against {v['evidence']}."
+    note = " Catalog year was assumed." if year_assumed else ""
+    return "PENDING_VERIFICATION", "Parsed automatically from the Academic Bulletin; not yet checked against your official degree audit." + note
+
+
 class DegreeRequirementsAgent(Agent):
     key = "degree_requirements"
     title = "Degree Requirements Research Agent"
@@ -28,6 +47,11 @@ class DegreeRequirementsAgent(Agent):
 
         progress = requirement_progress(reqs, s.transcript, ctx.catalog.double_count_allowed, ctx.catalog.courses)
         out = [p.to_dict() for p in progress]
+        mismatch = {pid for pid in supported if s.catalog_year and ctx.catalog.programs[pid]["catalog_year"]
+                    and ctx.catalog.programs[pid]["catalog_year"] != s.catalog_year}
+        for p in out:
+            p["reliability"], p["reliability_reason"] = reliability(p, ctx.catalog.verified_rules, p["program_id"] in mismatch,
+                                                                    s.catalog_year is None)
         review_flags = []
         for p in out:
             if p["verification_status"] == "needs_review" or p["kind"] == "manual":
@@ -42,6 +66,7 @@ class DegreeRequirementsAgent(Agent):
             "remaining": remaining,
             "courses_needed": sum(p["remaining_courses"] for p in remaining),
             "manual_review": [p for p in out if p["kind"] == "manual"],
+            "reliability_counts": {k: sum(1 for p in out if p["kind"] != "note" and p["reliability"] == k) for k in RELIABILITY},
             "double_counting_policy": "Courses are not double counted across programs unless an explicit rule allows it.",
             "review_flags": review_flags,
         }

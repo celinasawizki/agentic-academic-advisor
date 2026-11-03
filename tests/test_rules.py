@@ -180,3 +180,30 @@ def test_change_request_parser_handles_multiple_days_and_times():
     assert [(c.day, c.start, c.end) for c in _regex_parse("practice wednesdays 6-9").changes] == [("W", "18:00", "21:00")]
     [c] = _regex_parse("I got a job on Tuesdays.").changes
     assert c.assumption  # unstated hours are an explicit, surfaced assumption
+
+
+
+def test_failing_and_below_minimum_grades_do_not_count():
+    c = course("PSY 3096", prereqs=[["PSY 1001"]])
+    c.prereq_text = "Minimum grade of C- in PSY 1001."
+    for g in ("F", "W", "D"):
+        assert prereq_status(c, [TranscriptItem(course="PSY 1001", status="completed", grade=g)]).status == "missing"
+    assert prereq_status(c, [TranscriptItem(course="PSY 1001", status="completed", grade="C")]).status == "satisfied"
+    r = req("R1", ["PSY 1001"])
+    [p] = requirement_progress([r], [TranscriptItem(course="PSY 1001", status="completed", grade="F")])
+    assert p.status == "incomplete" and p.notes
+
+
+def test_lecture_lab_credits_not_double_counted():
+    from app.rules import total_credits
+    courses = {"PHYS 1021": course("PHYS 1021", 4)}
+    lec = section("lec", "PHYS 1021", [("MW", "10:00", "10:50")])
+    lab = section("lab", "PHYS 1021", [("R", "09:00", "10:50")]).model_copy(update={"component": "Lab"})
+    assert total_credits([lec, lab], courses) == 4
+
+
+def test_preferred_times_shape_soft_penalty():
+    from app.domain import PlanningPreferences
+    from app.optimizer import ScheduleModel
+    m = ScheduleModel([], {}, [block("M", "12:00", "16:00", "preferred", "Preferred")], PlanningPreferences(), {}, False, [])
+    assert m._soft_penalty(section("a", "X 1", [("M", "08:00", "09:15")])) > m._soft_penalty(section("b", "X 1", [("M", "13:00", "14:15")]))

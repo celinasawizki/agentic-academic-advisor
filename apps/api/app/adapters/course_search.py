@@ -8,9 +8,11 @@ A live adapter should only be built against an endpoint Temple authorizes."""
 
 from abc import ABC, abstractmethod
 
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.domain import CourseData, SectionData
+from app.ingest.sections import assign_components
 from app.models import AcademicTerm, Course, CourseSection
 
 
@@ -57,12 +59,13 @@ class SnapshotCourseSearchAdapter(CourseSearchAdapter):
     def search_sections(self, term_id: str, course_codes: list[str] | None = None) -> list[SectionData]:
         key = ("sections", self.version, term_id)
         if key not in self._cache:
-            self._cache[key] = [SectionData(id=s.id, course=s.course_code, term_id=s.term_id, section=s.section, crn=s.crn,
-                                            instructor=s.instructor, campus=s.campus, modality=s.modality, location=s.location,
-                                            meetings=s.meetings, seats_available=s.seats_available, credits=s.credits,
-                                            schedule_type=s.schedule_type, linked=s.linked, attributes=s.attributes or [],
-                                            data_source=s.data_source, retrieved_at=s.retrieved_at.isoformat())
-                                for s in self.db.query(CourseSection).filter(CourseSection.term_id == term_id).all()]
+            self._cache[key] = assign_components([
+                SectionData(id=s.id, course=s.course_code, term_id=s.term_id, section=s.section, crn=s.crn,
+                            instructor=s.instructor, campus=s.campus, modality=s.modality, location=s.location,
+                            meetings=s.meetings, seats_available=s.seats_available, credits=s.credits, credits_max=s.credits_max,
+                            schedule_type=s.schedule_type, linked=s.linked, attributes=s.attributes or [],
+                            data_source=s.data_source, retrieved_at=s.retrieved_at.isoformat())
+                for s in self.db.query(CourseSection).filter(CourseSection.term_id == term_id).all()])
         secs: list[SectionData] = self._cache[key]  # type: ignore[assignment]
         if course_codes:
             wanted = set(course_codes)
@@ -88,3 +91,41 @@ class TempleBannerCourseSearchAdapter(CourseSearchAdapter):
 
     def search_sections(self, term_id, course_codes=None):
         self._unavailable()
+
+
+class LiveAvailability(BaseModel):
+    crn: str
+    term_id: str
+    seats_available: int | None
+    wait_count: int | None = None
+    retrieved_at: str
+    source: str
+
+
+class AvailabilityNotConfigured(RuntimeError):
+    pass
+
+
+class LiveAvailabilityAdapter(ABC):
+    """Interface for authorized, live seat/time data. The planner keeps using the snapshot
+    for optimization and only overlays availability flagged with its own retrieval time."""
+
+    @abstractmethod
+    def get_availability(self, term_id: str, crns: list[str]) -> list[LiveAvailability]: ...
+
+
+class AuthorizedBannerAvailabilityAdapter(LiveAvailabilityAdapter):
+    """Requires an endpoint and credentials issued by Temple (TEMPLE_DATA_API_URL / TEMPLE_DATA_API_TOKEN).
+    Never scrapes TUportal or bypasses authentication."""
+
+    def __init__(self, base_url: str | None, token: str | None):
+        self.base_url, self.token = base_url, token
+
+    @property
+    def configured(self) -> bool:
+        return bool(self.base_url and self.token)
+
+    def get_availability(self, term_id: str, crns: list[str]) -> list[LiveAvailability]:
+        if not self.configured:
+            raise AvailabilityNotConfigured("No authorized Temple data endpoint is configured.")
+        raise NotImplementedError("Implement against the API contract Temple provides.")
