@@ -22,6 +22,13 @@ class Settings(BaseSettings):
     temple_data_api_url: str | None = None
     temple_data_api_token: str | None = None
 
+    # Requirements Research Agent: fetch the public Academic Bulletin pages for a student's
+    # programs at plan time (robots.txt respected, 1 request/second, cached for the TTL).
+    # When off, or when Temple is unreachable, the ingested snapshot is used and labeled.
+    live_bulletin_research: bool = True
+    bulletin_cache_ttl_hours: int = 24
+    bulletin_timeout_seconds: float = 8.0
+
     cors_origins: list[str] = ["http://localhost:3000"]
     max_upload_bytes: int = 5 * 1024 * 1024
 

@@ -1,3 +1,5 @@
+import re
+
 from app.agents.base import Agent, PlanContext
 from app.agents.categories import all_eligible, classify
 from app.domain import AvailBlock, SectionData
@@ -9,6 +11,7 @@ PREF_PREFIX = "Preference: "
 
 MAX_COURSES = 45
 MAX_SECTIONS_PER_COURSE = 6
+PRUNE_SLACK = 3
 
 
 def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> ScheduleModel:
@@ -39,7 +42,21 @@ def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> Sch
     for e in all_eligible(ctx.state):
         by_course.setdefault(e["course"], []).append(e)
     ranked = sorted(by_course, key=lambda c: -value(c))
-    chosen_courses = list(dict.fromkeys([c for c in ranked if c in keep_always] + ranked[:MAX_COURSES]))
+    # Cap-aware pruning: a rule that can use n more courses contributes at most n + SLACK
+    # candidates, so one broad rule (e.g. 14 language options for one language slot) can't
+    # crowd out the courses that other requirements need.
+    need = {r["id"]: max(1, r["remaining_courses"]) for r in ctx.state["degree_requirements"]["remaining"]}
+    picked: dict[str, int] = {}
+    chosen_courses = [c for c in ranked if c in keep_always]
+    for code in ranked:
+        if len(chosen_courses) >= MAX_COURSES + len(keep_always):
+            break
+        reqs = {r for e in by_course[code] for r in e["requirement_ids"]}
+        if code in chosen_courses or not any(picked.get(r, 0) < need.get(r, 2) + PRUNE_SLACK for r in reqs):
+            continue
+        chosen_courses.append(code)
+        for r in reqs:
+            picked[r] = picked.get(r, 0) + 1
 
     candidates = []
     for code in chosen_courses:
@@ -66,7 +83,28 @@ def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> Sch
                 weights[c] = max(weights.get(c, 0), 1 if i == 0 else 0)
         caps[r["id"]] = (max(1, r["remaining_courses"]), weights)
     return ScheduleModel(candidates, ctx.catalog.courses, blocks, prefs, caps, ctx.student.f1_status == "yes", critical,
-                         student_required=prefs.required_courses)
+                         student_required=prefs.required_courses, sequence_pairs=sequence_pairs(ctx, chosen_courses))
+
+
+CONCURRENT_RE = re.compile(r"([A-Z]{2,5} \d{4})\s*\((?:may|can) be taken concurrently\)", re.I)
+
+
+def sequence_pairs(ctx: PlanContext, codes: list[str]) -> list[tuple[str, str]]:
+    """A course and an unmet prerequisite of it can't be scheduled in the same term
+    (e.g. SPAN 1002 and SPAN 1003), unless the bulletin allows taking them concurrently."""
+    done = {t.course for t in ctx.student.transcript if t.status in ("completed", "transfer")}
+    chosen = set(codes)
+    pairs = []
+    for code in codes:
+        course = ctx.catalog.courses.get(code)
+        if course is None:
+            continue
+        concurrent = {m.upper() for m in CONCURRENT_RE.findall(course.prereq_text or "")}
+        for group in course.prereqs:
+            if any(c in done for c in group):
+                continue
+            pairs += [(pre, code) for pre in group if pre in chosen and pre != code and pre not in concurrent]
+    return pairs
 
 
 def describe_resolution(ctx: PlanContext, g: HardGroup, res) -> dict:

@@ -138,7 +138,7 @@ class CourseDiscoveryAgent(Agent):
         if changed:
             ctx.log(f"{len(changed)} open requirement rule(s) cannot progress this term (marked BLOCKED/UNAVAILABLE)", rules=changed[:20])
             reqs_state = ctx.state["degree_requirements"]
-            reqs_state["reliability_counts"] = {k: sum(1 for p in reqs_state["requirements"] if p["kind"] != "note" and p.get("reliability") == k)
+            reqs_state["reliability_counts"] = {k: sum(1 for p in reqs_state["requirements"] if p["kind"] not in ("note", "policy") and p.get("reliability") == k)
                                                 for k in reqs_state.get("reliability_counts", {})}
         ctx.log(f"{len(eligible)} eligible sections across {len({e['course'] for e in eligible})} courses; "
                 f"{len(excluded)} listed-course exclusions", exclusions=[f"{e['course']}: {e['reason']}" for e in excluded[:40]])

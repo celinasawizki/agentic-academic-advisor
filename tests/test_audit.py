@@ -139,7 +139,7 @@ def test_classify_courses():
 def test_every_agent_records_a_structured_decision(client):
     plan = plan_for(client)
     done = [a for a in plan["agents"] if a["status"] == "complete"]
-    assert len(done) == 9
+    assert len(done) == 10  # including the Requirements Research Agent
     for a in done:
         d = a["decision"]
         assert d["task"] and isinstance(d["findings"], list) and d["validation"]["status"] in ("passed", "warnings", "failed", "n/a")

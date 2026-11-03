@@ -35,13 +35,15 @@ class AcademicProgram(Base):
     __tablename__ = "academic_programs"
     id: Mapped[str] = mapped_column(String(120), primary_key=True)
     name: Mapped[str] = mapped_column(String(300))
-    type: Mapped[str] = mapped_column(String(20))  # major | minor | certificate | gened
+    type: Mapped[str] = mapped_column(String(20))  # major | minor | certificate | gened | school | university
     college: Mapped[str] = mapped_column(String(120))
     catalog_year: Mapped[str | None] = mapped_column(String(10))
     supported: Mapped[bool] = mapped_column(Boolean, default=False)
     total_credit_hours: Mapped[str | None] = mapped_column(String(40))
     source_id: Mapped[int | None] = mapped_column(ForeignKey("research_sources.id"))
     source: Mapped[ResearchSource | None] = relationship()
+    layers: Mapped[list[str] | None] = mapped_column(JSON, default=list)  # school/university layer program ids that apply
+    min_grade: Mapped[dict | None] = mapped_column(JSON, nullable=True)  # {"grade", "evidence", "source_url"}
     requirements: Mapped[list["ProgramRequirement"]] = relationship(back_populates="program", cascade="all, delete-orphan",
                                                                      order_by="ProgramRequirement.position")
 
@@ -54,13 +56,14 @@ class ProgramRequirement(Base):
     position: Mapped[int] = mapped_column(Integer, default=0)
     group: Mapped[str] = mapped_column(String(300), default="")
     name: Mapped[str] = mapped_column(Text)
-    kind: Mapped[str] = mapped_column(String(10))  # count | credits | manual | note
+    kind: Mapped[str] = mapped_column(String(10))  # count | credits | milestone | policy | manual | note
     needed: Mapped[float] = mapped_column(Float)
     options: Mapped[list[list[str]]] = mapped_column(JSON, default=list)
     patterns: Mapped[list[dict]] = mapped_column(JSON, default=list)
     notes: Mapped[list[str]] = mapped_column(JSON, default=list)
     catalog_year: Mapped[str | None] = mapped_column(String(10))
     verification_status: Mapped[str] = mapped_column(String(30), default="parsed")
+    evidence: Mapped[str | None] = mapped_column(Text, nullable=True)  # verbatim bulletin quote for school/university rules
     source_id: Mapped[int | None] = mapped_column(ForeignKey("research_sources.id"))
 
 

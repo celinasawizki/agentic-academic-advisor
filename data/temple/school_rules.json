@@ -1,0 +1,302 @@
+{
+ "_meta": {
+  "description": "School/college and university graduation requirements that apply on top of a program's own requirements. Each rule is transcribed from the Temple Academic Bulletin page named by its layer and carries a verbatim 'evidence' quote. The ingest script and the Requirements Research Agent check every quote against the fetched page; a rule whose quote is no longer on the page is downgraded to AMBIGUOUS.",
+  "catalog_year": "2026-2027",
+  "kinds": "count/credits: schedulable course rules. milestone: computed from the record (metric: total_credits | upper_level_credits | temple_credits | gpa). policy: shown to the student, not computed.",
+  "applies": "types: program types the layer applies to; degrees: program-id degree suffix (ba, bs, bba, ...); name_matches / name_excludes: regex on program name; exclude: program ids."
+ },
+ "layers": [
+  {
+   "id": "university",
+   "name": "Temple University requirements",
+   "college": null,
+   "url": "https://bulletin.temple.edu/undergraduate/academic-policies/academic-residency-requirements/",
+   "applies": {"types": ["major"]},
+   "rules": [
+    {"id": "residency", "name": "Academic residency: 30 credits completed at Temple", "kind": "milestone", "metric": "temple_credits", "needed": 30,
+     "evidence": "Students are required to successfully complete a minimum of 30 credits at Temple University to satisfy the academic residency requirement to earn a degree."}
+   ]
+  },
+  {
+   "id": "liberal-arts", "name": "College of Liberal Arts requirements", "college": "liberal-arts",
+   "url": "https://bulletin.temple.edu/undergraduate/liberal-arts/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "min_grade": {"grade": "C-", "evidence": "The minimum acceptable grade in a course taken to fulfill major requirements is a \"C-,\""},
+   "rules": [
+    {"id": "credits", "name": "Minimum 123 credits for the degree", "kind": "milestone", "metric": "total_credits", "needed": 123,
+     "evidence": "Bachelor of Arts (BA) and Bachelor of Science (BS) degrees in the College of Liberal Arts require a minimum of 123 credits"},
+    {"id": "upper", "name": "45 upper-level credits (2000-4999)", "kind": "milestone", "metric": "upper_level_credits", "needed": 45,
+     "notes": ["The bulletin requires these 45 credits to be CLA/CST courses; this check counts all courses numbered 2000-4999."],
+     "evidence": "90 credits in CLA/CST courses, 45 credits of which must be at the upper level (numbered 2000-4999)"},
+    {"id": "cla-cst-90", "name": "90 credits in CLA/CST courses", "kind": "policy",
+     "evidence": "To earn a CLA baccalaureate degree, a student must complete a minimum of 123 credits, including: 90 credits in CLA/CST courses"},
+    {"id": "gpa", "name": "Cumulative GPA of at least 2.0", "kind": "milestone", "metric": "gpa", "needed": 2.0,
+     "evidence": "with at least a 2.0 cumulative grade point average (GPA)"},
+    {"id": "pd", "name": "Professional development seminar (1 credit)", "kind": "count", "needed": 1,
+     "options": [["CLA 1002"], ["CJ 1002"], ["ENG 1801"], ["HIST 1012"], ["NSCI 1002"], ["POLS 1002"], ["PSY 1002"], ["SOC 1002"]],
+     "notes": ["Only one course in this category counts toward graduation; your major page may name the expected option."],
+     "evidence": "All students in the College of Liberal Arts are required to take a 1 credit seminar in professional development."},
+    {"id": "lang", "name": "Foreign language: second level (1002)", "kind": "count", "needed": 1, "language_level": 1002,
+     "applies": {"degrees": ["ba"]},
+     "notes": ["Placement or demonstrated proficiency can also satisfy this; level 1001 (or placement) is a prerequisite for 1002."],
+     "evidence": "All BA students complete the second level of a foreign language;"},
+    {"id": "lang-gg", "name": "One GenEd Global/World Society (GG) course", "kind": "count", "needed": 1, "patterns": [{"attribute": "GG"}],
+     "applies": {"degrees": ["ba"]},
+     "evidence": "All BA students must complete at least one course from the GenEd Global/World Society category;"},
+    {"id": "lang-option", "name": "Global studies option: third language level, a second GG course, or an approved Global Studies course", "kind": "count", "needed": 1,
+     "language_level": 1003, "patterns": [{"attribute": "GG"}], "table": {"from": "Foreign Language/Global Studies Requirement for Bachelor of Arts Students", "to": "Major"},
+     "applies": {"degrees": ["ba"]},
+     "notes": ["Demonstrated proficiency in a foreign language or an approved study-abroad program also satisfies this option; confirm with your advisor."],
+     "evidence": "All BA students must complete one of the following options:"},
+    {"id": "distribution", "name": "Two upper-level CLA courses outside your major's division", "kind": "policy",
+     "evidence": "must complete upper-level distribution requirements by taking two upper-level (numbered 2000-4999) CLA courses outside the curriculum division of the major"}
+   ]
+  },
+  {
+   "id": "liberal-arts-minor", "name": "College of Liberal Arts minor policies", "college": "liberal-arts",
+   "url": "https://bulletin.temple.edu/undergraduate/liberal-arts/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["minor"]},
+   "min_grade": {"grade": "C-", "evidence": "The minimum acceptable grade in a course taken to fulfill minor requirements is \"C-,\""},
+   "rules": [
+    {"id": "half", "name": "At least half of the minor's courses taken at Temple", "kind": "policy",
+     "evidence": "At least half of the courses taken by a student to fulfill the minor must be taken at Temple."},
+    {"id": "gpa", "name": "2.0 GPA in the minor", "kind": "policy", "evidence": "students need a 2.0 GPA in the minor in order to have it awarded at graduation"}
+   ]
+  },
+  {
+   "id": "liberal-arts-certificate", "name": "College of Liberal Arts certificate policies", "college": "liberal-arts",
+   "url": "https://bulletin.temple.edu/undergraduate/liberal-arts/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["certificate"]},
+   "min_grade": {"grade": "C-", "evidence": "The minimum acceptable grade in a course taken to fulfill certificate requirements is \"C-,\""},
+   "rules": [
+    {"id": "half", "name": "At least half of the certificate's courses taken at Temple", "kind": "policy",
+     "evidence": "At least half of the courses taken by a student to fulfill a certificate of specialization must be taken at Temple."},
+    {"id": "awarded", "name": "Certificate awarded only with the bachelor's degree", "kind": "policy",
+     "evidence": "Certificates are awarded only at the time of completion of the bachelor's degree"}
+   ]
+  },
+  {
+   "id": "science-technology", "name": "College of Science and Technology requirements", "college": "science-technology",
+   "url": "https://bulletin.temple.edu/undergraduate/science-technology/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "min_grade": {"grade": "C-", "evidence": "The minimum acceptable grade in a course taken to fulfill major requirements is a C- unless otherwise specified."},
+   "rules": [
+    {"id": "credits", "name": "Minimum 123 credits for the degree", "kind": "milestone", "metric": "total_credits", "needed": 123,
+     "notes": ["TUteach programs require 124 credits."],
+     "evidence": "The College of Science and Technology requires that students complete a total of 123 credits for most programs."},
+    {"id": "upper", "name": "45 upper-level credits (2000+)", "kind": "milestone", "metric": "upper_level_credits", "needed": 45,
+     "notes": ["Must be within the 90 CST/CLA/Engineering credits; this check counts all courses numbered 2000 and above."],
+     "evidence": "Of those 90 credits, 45 must be in upper-level courses."},
+    {"id": "cst-90", "name": "90 credits in CST, CLA or Engineering courses", "kind": "policy",
+     "evidence": "Of these totals, 90 credits must be in the College of Science and Technology, the College of Liberal Arts or the College of Engineering."},
+    {"id": "seminar", "name": "First-year (or transfer) seminar", "kind": "count", "needed": 1,
+     "options": [["SCTC 1001"], ["UNVS 1001"], ["HNRS 1901"], ["SCTC 2001"], ["UNVS 2002"]],
+     "notes": ["Transfer students and students changing into CST after the first year use SCTC 2001 or UNVS 2002."],
+     "evidence": "All students in the College of Science and Technology are required to take a one credit first year seminar."},
+    {"id": "gpa", "name": "GPA of at least 2.00 overall", "kind": "milestone", "metric": "gpa", "needed": 2.0,
+     "evidence": "The College of Science and Technology requires that students have a GPA of at least 2.00 overall"},
+    {"id": "lang", "name": "Foreign language: second semester (1002) or American Sign Language", "kind": "count", "needed": 1,
+     "language_level": 1002, "include_asl": true, "applies": {"degrees": ["ba"]},
+     "notes": ["C- or better, or proficiency demonstrated through placement."],
+     "evidence": "Bachelor of Arts candidates are required to successfully complete the second semester (typically courses numbered 1002) of a foreign language with a C- or better or demonstrate this proficiency through placement."},
+    {"id": "ba-dist", "name": "Six upper-level credits in Liberal Arts or Art History", "kind": "policy", "applies": {"degrees": ["ba"]},
+     "evidence": "Bachelor of Arts students must complete a minimum of six credits of upper-level coursework (courses numbered 2000 and above) in one or more departments of the College of Liberal Arts or the department of Art History with a C- or better."}
+   ]
+  },
+  {
+   "id": "science-technology-minor", "name": "College of Science and Technology minor policies", "college": "science-technology",
+   "url": "https://bulletin.temple.edu/undergraduate/science-technology/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["minor"]},
+   "min_grade": {"grade": "C-", "evidence": "The minimum acceptable grade in a course taken to fulfill minor requirements is a C- unless otherwise specified."},
+   "rules": [
+    {"id": "distinct", "name": "Distinct course rule: 7 credits / 3 courses not used elsewhere in CST", "kind": "policy",
+     "evidence": "At least seven credits or three courses of the minor must not be credited towards a CST major, additional CST minor, or CST certificate."}
+   ]
+  },
+  {
+   "id": "science-technology-certificate", "name": "College of Science and Technology certificate policies", "college": "science-technology",
+   "url": "https://bulletin.temple.edu/undergraduate/science-technology/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["certificate"]},
+   "min_grade": {"grade": "C-", "evidence": "The minimum acceptable grade in a course taken to fulfill certificate requirements is a C- unless otherwise specified."},
+   "rules": [
+    {"id": "distinct", "name": "Distinct course rule: 4 credits / 2 courses not used elsewhere in CST", "kind": "policy",
+     "evidence": "At least four credits or two courses of the certificate must not be credited towards a CST major, CST minor, or additional CST certificate."}
+   ]
+  },
+  {
+   "id": "fox-business-management", "name": "Fox School of Business BBA requirements", "college": "fox-business-management",
+   "url": "https://bulletin.temple.edu/undergraduate/fox-business-management/#requirementstext", "container": "requirementstextcontainer",
+   "applies": {"types": ["major"], "degrees": ["bba"]},
+   "min_grade": {"grade": "C-", "evidence": "In order to graduate, a grade of C- or better must be obtained in all FSBM lower-division requirements."},
+   "tables": {"from": "Bachelor of Business Administration Requirements", "to": "Major Requirements",
+              "evidence": "Twenty business courses (61 s.h.) are required as part of the lower- and upper-division foundation requirements for the BBA program."},
+   "overrides": [{"match": "^Select three business electives", "kind": "count", "needed": 3, "min": 2000, "max": 3999,
+                  "subjects": ["ACCT", "AS", "BA", "ECON", "FIN", "HCM", "HRM", "IB", "LGLS", "MIS", "MKTG", "RE", "RMI", "STAT", "SCM", "SGM"],
+                  "evidence": "2000-3999 electives can be selected from: ACCT, AS, BA, ECON, FIN, HCM, HRM, IB, LGLS, MIS, MKTG, RE, RMI, STAT, SCM, SGM."}],
+   "rules": [
+    {"id": "credits", "name": "Minimum 124 credits for the BBA", "kind": "milestone", "metric": "total_credits", "needed": 124,
+     "evidence": "upon the satisfactory completion of a minimum of 124 semester hours of credit with a minimum cumulative GPA of 2.0 overall and in the major"},
+    {"id": "gpa", "name": "Cumulative GPA of at least 2.0", "kind": "milestone", "metric": "gpa", "needed": 2.0,
+     "evidence": "with a minimum cumulative GPA of 2.0 overall and in the major"},
+    {"id": "residency", "name": "Half of business courses completed in the Fox School", "kind": "policy",
+     "evidence": "a minimum of 50% of the business courses and the majority of the requirements of a major must be completed in the Fox School of Business and Management"},
+    {"id": "forward", "name": "Fox Forward: 250 points each academic year", "kind": "policy",
+     "evidence": "The Fox School of Business and Management will expect all undergraduate students to earn 250 Forward points by the end of each of their academic years."}
+   ]
+  },
+  {
+   "id": "fox-business-management-bs", "name": "Fox School of Business BS core requirements", "college": "fox-business-management",
+   "url": "https://bulletin.temple.edu/undergraduate/fox-business-management/#requirementstext", "container": "requirementstextcontainer",
+   "applies": {"types": ["major"], "degrees": ["bs"]},
+   "min_grade": {"grade": "C-", "evidence": "In order to graduate, a grade of C- or better must be obtained in all FSBM core requirements."},
+   "tables": {"from": "Bachelor of Science Requirements", "to": "Major Requirements",
+              "evidence": "The Bachelor of Science major is offered in Statistical Science & Data Analytics."},
+   "rules": [
+    {"id": "credits", "name": "Minimum 122 credits for the BS", "kind": "milestone", "metric": "total_credits", "needed": 122,
+     "evidence": "upon the satisfactory completion of a minimum of 122 semester hours of credit"},
+    {"id": "forward", "name": "Fox Forward: 250 points each academic year", "kind": "policy",
+     "evidence": "The Fox School of Business and Management will expect all undergraduate students to earn 250 Forward points by the end of each of their academic years."}
+   ]
+  },
+  {
+   "id": "media-communication", "name": "Lew Klein College of Media and Communication requirements", "college": "media-communication",
+   "url": "https://bulletin.temple.edu/undergraduate/media-communication/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "rules": [
+    {"id": "credits", "name": "124 credits to graduate", "kind": "milestone", "metric": "total_credits", "needed": 124,
+     "evidence": "The Lew Klein College of Media and Communication requires 124 credits to graduate"},
+    {"id": "gpa", "name": "Minimum 2.00 GPA (cumulative and in the major)", "kind": "milestone", "metric": "gpa", "needed": 2.0,
+     "evidence": "a minimum of 2.00 GPA, both cumulative and in the major"},
+    {"id": "kln1001", "name": "KLN 1001 (or an equivalent course)", "kind": "count", "needed": 1, "options": [["KLN 1001"]],
+     "notes": ["The bulletin accepts an equivalent course; confirm equivalents with your advisor."],
+     "evidence": "Students are also required to complete KLN 1001 (or an equivalent course) and KLN 1002"},
+    {"id": "kln1002", "name": "KLN 1002 Klein College Introduction to Professional Development", "kind": "count", "needed": 1, "options": [["KLN 1002"]],
+     "evidence": "and KLN 1002 Klein College Introduction to Professional Development"}
+   ]
+  },
+  {
+   "id": "media-communication-minor", "name": "Klein College minor and certificate policies", "college": "media-communication",
+   "url": "https://bulletin.temple.edu/undergraduate/media-communication/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["minor", "certificate"]},
+   "min_grade": {"grade": "C-", "evidence": "The minimum acceptable grade in a course taken to fulfill minor or certificate requirements is a C-, unless otherwise specified."},
+   "rules": []
+  },
+  {
+   "id": "theater-film-media-arts", "name": "School of Theater, Film and Media Arts requirements", "college": "theater-film-media-arts",
+   "url": "https://bulletin.temple.edu/undergraduate/theater-film-media-arts/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "rules": [
+    {"id": "credits", "name": "124 credits to graduate", "kind": "milestone", "metric": "total_credits", "needed": 124,
+     "evidence": "The School of Theater, Film and Media Arts requires 124 credits to graduate"}
+   ]
+  },
+  {
+   "id": "tourism-hospitality-management", "name": "School of Sport, Tourism and Hospitality Management requirements", "college": "tourism-hospitality-management",
+   "url": "https://bulletin.temple.edu/undergraduate/tourism-hospitality-management/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "min_grade": {"grade": "C-", "evidence": "a letter grade of C- or better must be earned for all required coursework"},
+   "rules": [
+    {"id": "credits", "name": "124 semester hours", "kind": "milestone", "metric": "total_credits", "needed": 124,
+     "evidence": "must complete 124 semester hours of coursework and have a cumulative GPA of 2.0 and a major GPA of 2.0"},
+    {"id": "gpa", "name": "Cumulative GPA of 2.0", "kind": "milestone", "metric": "gpa", "needed": 2.0,
+     "evidence": "have a cumulative GPA of 2.0 and a major GPA of 2.0"}
+   ]
+  },
+  {
+   "id": "engineering", "name": "College of Engineering requirements", "college": "engineering",
+   "url": "https://bulletin.temple.edu/undergraduate/engineering/#ctext", "container": "ctextcontainer",
+   "applies": {"types": ["major"], "name_excludes": "Technology"},
+   "rules": [
+    {"id": "credits", "name": "128 minimum credits total", "kind": "milestone", "metric": "total_credits", "needed": 128,
+     "evidence": "50-65 credits in major (varies with major), minimum 2.0 GPA in the major 128 minimum credits total"},
+    {"id": "gpa", "name": "Cumulative GPA of 2.0", "kind": "milestone", "metric": "gpa", "needed": 2.0,
+     "evidence": "A minimum cumulative GPA of 2.0 is required for graduation."},
+    {"id": "math-sci", "name": "30 minimum credits in Math and Science", "kind": "policy", "evidence": "30 minimum credits in Math and Science"}
+   ]
+  },
+  {
+   "id": "engineering-technology", "name": "College of Engineering — Engineering Technology requirements", "college": "engineering",
+   "url": "https://bulletin.temple.edu/undergraduate/engineering/#ctext", "container": "ctextcontainer",
+   "applies": {"types": ["major"], "name_matches": "Technology"},
+   "rules": [
+    {"id": "credits", "name": "124 minimum credits total", "kind": "milestone", "metric": "total_credits", "needed": 124,
+     "evidence": "50-60 credits in major (varies with major), minimum 2.0 GPA in the major 124 minimum credits total"},
+    {"id": "gpa", "name": "Cumulative GPA of 2.0", "kind": "milestone", "metric": "gpa", "needed": 2.0,
+     "evidence": "A minimum cumulative GPA of 2.0 is required for graduation."},
+    {"id": "math-sci", "name": "24 minimum credits in Math and Science", "kind": "policy", "evidence": "24 minimum credits in Math and Science"}
+   ]
+  },
+  {
+   "id": "pharmacy", "name": "School of Pharmacy requirements", "college": "pharmacy",
+   "url": "https://bulletin.temple.edu/undergraduate/pharmacy/#schoolrequirementstext", "container": "schoolrequirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "rules": [
+    {"id": "credits", "name": "Minimum 121 credits (BS in Pharmaceutical Sciences)", "kind": "milestone", "metric": "total_credits", "needed": 121,
+     "evidence": "The School of Pharmacy requires that students complete a minimum of 121 credits for the BS in Pharmaceutical Sciences."},
+    {"id": "seminar", "name": "Pharmacy first-year (or transfer) seminar", "kind": "count", "needed": 1, "options": [["PP 1001"], ["PP 2001"]],
+     "evidence": "All students in the School of Pharmacy are required to take a one credit first year seminar."},
+    {"id": "gpa", "name": "GPA of at least 2.00 overall", "kind": "milestone", "metric": "gpa", "needed": 2.0,
+     "evidence": "have a GPA of at least 2.00 overall and at least 2.00 in the courses applicable to their major"},
+    {"id": "temple", "name": "All PP and PS courses completed at Temple", "kind": "policy", "evidence": "All Pharmacy courses (PP and PS) must be completed at Temple."}
+   ]
+  },
+  {
+   "id": "public-health", "name": "College of Public Health requirements", "college": "public-health",
+   "url": "https://bulletin.temple.edu/undergraduate/public-health/#requirementstext", "container": "requirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "rules": [
+    {"id": "core", "name": "College Core Course: HRPR 1001", "kind": "count", "needed": 1, "options": [["HRPR 1001"]],
+     "evidence": "A key requirement for entering undergraduates is the College Core Course, HRPR 1001"}
+   ]
+  },
+  {
+   "id": "social-work", "name": "School of Social Work requirements", "college": "social-work",
+   "url": "https://bulletin.temple.edu/undergraduate/social-work/#requirementstext", "container": "requirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "min_grade": {"grade": "C", "evidence": "grades of C or above in all social work courses and HRPR 1001"},
+   "rules": [
+    {"id": "credits", "name": "Minimum 120 semester hours", "kind": "milestone", "metric": "total_credits", "needed": 120,
+     "evidence": "a student must complete a minimum of 120 semester hours"},
+    {"id": "core", "name": "College of Public Health Core course: HRPR 1001", "kind": "count", "needed": 1, "options": [["HRPR 1001"]],
+     "evidence": "the College of Public Health Core course ( HRPR 1001 )"},
+    {"id": "gpa", "name": "Cumulative GPA of 2.00", "kind": "milestone", "metric": "gpa", "needed": 2.0,
+     "evidence": "A potential graduate must also hold a cumulative GPA of 2.00 or better"}
+   ]
+  },
+  {
+   "id": "boyer-music-dance", "name": "Boyer College of Music and Dance requirements", "college": "boyer-music-dance",
+   "url": "https://bulletin.temple.edu/undergraduate/boyer-music-dance/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["major", "minor", "certificate"]},
+   "min_grade": {"grade": "C-", "evidence": "courses must be completed with a grade of C- or better"},
+   "rules": [
+    {"id": "recitals", "name": "Recital attendance each semester (music students)", "kind": "policy", "applies": {"types": ["major"], "name_excludes": "Dance"},
+     "evidence": "All Boyer College music students must attend a minimum number of college recitals each semester to qualify for graduation."},
+    {"id": "ensembles", "name": "Ensemble participation (music students)", "kind": "policy", "applies": {"types": ["major"], "name_excludes": "Dance"},
+     "evidence": "All Boyer College music students are required to participate in specific ensembles as determined by their department and program."},
+    {"id": "dance-gpa", "name": "Cumulative GPA of 2.0 (dance)", "kind": "milestone", "metric": "gpa", "needed": 2.0, "applies": {"types": ["major"], "name_matches": "Dance"},
+     "evidence": "Overall, the required GPA for graduation: 2.0 cumulative, 2.0 in dance major courses."}
+   ]
+  },
+  {
+   "id": "education", "name": "College of Education and Human Development requirements", "college": "education",
+   "url": "https://bulletin.temple.edu/undergraduate/education/#requirementstext", "container": "requirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "min_grade": {"grade": "C-", "evidence": "or above in all required Education Courses"},
+   "rules": [
+    {"id": "candidacy", "name": "Teacher Candidacy: 48 credits and a 3.00 GPA before upper-level education courses", "kind": "policy", "applies": {"degrees": ["bsed"]},
+     "evidence": "Earn a minimum cumulative GPA of 3.00."},
+    {"id": "gpa", "name": "Cumulative GPA of 2.00", "kind": "milestone", "metric": "gpa", "needed": 2.0, "applies": {"degrees": ["ba", "bs"]},
+     "evidence": "Earn a minimum cumulative GPA of 2.00."}
+   ]
+  },
+  {
+   "id": "tyler", "name": "Tyler School of Art and Architecture requirements", "college": "tyler",
+   "url": "https://bulletin.temple.edu/undergraduate/tyler/#collegerequirementstext", "container": "collegerequirementstextcontainer",
+   "applies": {"types": ["major"]},
+   "rules": [
+    {"id": "grades", "name": "Major-specific minimum grades for required courses", "kind": "policy",
+     "evidence": "Please note that Tyler has minimum grade requirements for required courses for the majors."}
+   ]
+  }
+ ]
+}

@@ -78,7 +78,9 @@ class ScheduleModel:
         f1: bool,
         must_courses: list[str],
         student_required: list[str] | None = None,
+        sequence_pairs: list[tuple[str, str]] | None = None,
     ):
+        self.sequence_pairs = sequence_pairs or []  # (prerequisite, course) that can't share a term
         self.c = candidates
         self.courses = courses
         self.blocks = blocks
@@ -144,6 +146,9 @@ class ScheduleModel:
 
         for a_id, b_id in self._conflict_pairs():
             m.Add(x[a_id] + x[b_id] <= 1)
+        for pre, course in self.sequence_pairs:
+            if pre in y and course in y:
+                m.Add(y[pre] + y[course] <= 1)
 
         for cand in self.c:
             for blk in overlapping_blocks(cand.section, [b for b in self.blocks if b.kind == "hard"]):

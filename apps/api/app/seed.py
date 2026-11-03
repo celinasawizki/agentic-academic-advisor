@@ -42,7 +42,7 @@ def term_name(code: str) -> str:
     return f"{SEASON.get(code[4:], code[4:])} {code[:4]}"
 
 
-CATALOG_SCHEMA_VERSION = "2"
+CATALOG_SCHEMA_VERSION = "3"
 
 
 def _fingerprint(files: list[Path]) -> str:
@@ -95,11 +95,12 @@ def load_catalog(db: Session, d: Path) -> None:
         db.flush()
         db.add(AcademicProgram(id=p["id"], name=p["name"], type=p["type"], college=p["college"], catalog_year=p.get("catalog_year"),
                                supported=p.get("supported", True), total_credit_hours=", ".join(p.get("total_credit_hours") or []) or None,
-                               source_id=src.id))
+                               layers=p.get("layers", []), min_grade=p.get("min_grade"), source_id=src.id))
         db.flush()
         rows = [{"id": r["id"], "program_id": p["id"], "position": i, "group": r.get("group", ""), "name": r["name"], "kind": r["kind"],
                  "needed": r["needed"], "options": r.get("options", []), "patterns": r.get("patterns", []), "notes": r.get("notes", []),
-                 "catalog_year": p.get("catalog_year"), "verification_status": r.get("verification_status", "parsed"), "source_id": src.id}
+                 "catalog_year": p.get("catalog_year"), "verification_status": r.get("verification_status", "parsed"),
+                 "evidence": r.get("evidence"), "source_id": src.id}
                 for i, r in enumerate(p["requirements"])]
         if rows:
             db.execute(insert(ProgramRequirement), rows)

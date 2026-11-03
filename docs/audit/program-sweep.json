@@ -1,0 +1,10312 @@
+{
+ "generated_s": 127,
+ "summary": {
+  "certificate": {
+   "programs": 86,
+   "complete": 86,
+   "with_school_layer": 54,
+   "with_schedule": 86,
+   "with_min_grade": 69
+  },
+  "minor": {
+   "programs": 119,
+   "complete": 119,
+   "with_school_layer": 68,
+   "with_schedule": 119,
+   "with_min_grade": 111
+  },
+  "major": {
+   "programs": 230,
+   "complete": 230,
+   "with_school_layer": 230,
+   "with_schedule": 230,
+   "with_min_grade": 196
+  },
+  "gened": {
+   "programs": 1,
+   "complete": 1,
+   "with_school_layer": 0,
+   "with_schedule": 1,
+   "with_min_grade": 0
+  }
+ },
+ "failed": [],
+ "rows": [
+  {
+   "program": "chamber-music-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.5
+  },
+  {
+   "program": "jazz-arranging-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "jazz-voice-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.5
+  },
+  {
+   "program": "music-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "music-therapy-jazz-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 48,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "music-therapy-jazz-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 54,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "theory-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 99,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "theory-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 90,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "early-elementary-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 24,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "early-elementary-education-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 33,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "middle-grades-education-mathematics-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "middle-grades-education-mathematics-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 36,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.6
+  },
+  {
+   "program": "secondary-education-social-studies-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "secondary-education-social-studies-education-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "mechanical-engineering-bsme",
+   "status": "complete",
+   "error": null,
+   "rules": 40,
+   "layers": [
+    "layer-university",
+    "layer-engineering",
+    "mechanical-engineering-bsme--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 42,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "business-basics-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "economics-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 32,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 38,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "general-business-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "international-business-sales-business-development-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "international-business-sales-business-development-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.4
+  },
+  {
+   "program": "marketing-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "statistical-science-data-analytics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 26,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management-bs",
+    "statistical-science-data-analytics-bs--degree"
+   ],
+   "layer_rules": 17,
+   "open_rules": 47,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "anthropology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "chinese-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "criminal-justice-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "environmental-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 43,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "environmental-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "french-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "german-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "interdisciplinary-german-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "japanese-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 23,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "japanese-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 34,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "law-enforcement-homeland-security-public-safety-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "philosophy-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "psychology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "spanish-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 22,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "spanish-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 28,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "advertising-brand-strategy-research-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "advertising-brand-strategy-research-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 25,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.9
+  },
+  {
+   "program": "communication-studies-communication-entrepreneurship-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "communication-studies-communication-entrepreneurship-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "digital-media-technologies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "media-studies-production-media-business-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "media-studies-production-media-business-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "virtual-media-management-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "virtual-media-management-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "health-information-management-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "nutrition-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "artificial-intelligence-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 9,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "biophysics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 35,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "biophysics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 42,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "computer-science-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.8
+  },
+  {
+   "program": "data-science-genomics-bioinformatics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 19,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "data-science-genomics-bioinformatics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "environmental-science-hydrology-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 64,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "environmental-science-hydrology-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 28,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "genomic-medicine-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-science-technology-certificate"
+   ],
+   "layer_rules": 1,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "integrative-genetics-genomics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 32,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "integrative-genetics-genomics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "mathematics-technology-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 48,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "mathematics-technology-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 49,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "natural-sciences-earth-environmental-sciences-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 16,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "natural-sciences-earth-environmental-sciences-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 24,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "physics-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 12,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "physics-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "entertainment-industry-studies-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 9,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "film-media-arts-screen-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 17,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "film-media-arts-screen-studies-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "theater-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 44,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "theater-ba--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 50,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.0
+  },
+  {
+   "program": "multidisciplinary-studies-sport-tourism-hospitality-event-management-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-tourism-hospitality-management",
+    "multidisciplinary-studies-sport-tourism-hospitality-event-management-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "art-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 32,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "art-education-bsed--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 35,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "community-development-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 16,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "community-development-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 25,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "glass-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 32,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "glass-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 40,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "illustration-emerging-media-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "photography-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 34,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "photography-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 42,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "outdoor-wellness-leadership-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "classical-piano-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.7
+  },
+  {
+   "program": "jazz-improvisation-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "music-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 29,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "music-bs--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 31,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.0
+  },
+  {
+   "program": "music-performance-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "orchestral-music-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "adult-learning-training-organizational-development-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 12,
+   "layers": [
+    "layer-university",
+    "layer-education--gpa",
+    "adult-learning-training-organizational-development-ba--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "early-elementary-education-special-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "early-elementary-education-special-education-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 36,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "middle-grades-education-mathematics-language-arts-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "middle-grades-education-mathematics-language-arts-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 36,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.7
+  },
+  {
+   "program": "secondary-education-world-languages-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "secondary-education-world-languages-education-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "mechanical-engineering-cooperative-education-bsme",
+   "status": "complete",
+   "error": null,
+   "rules": 42,
+   "layers": [
+    "layer-university",
+    "layer-engineering",
+    "mechanical-engineering-cooperative-education-bsme--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 44,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "business-management-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "business-management-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 31,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.0
+  },
+  {
+   "program": "entrepreneurship-innovation-management-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "entrepreneurship-innovation-management-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 33,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.5
+  },
+  {
+   "program": "healthcare-management-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "international-business-supply-chain-transportation-logistics-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "international-business-supply-chain-transportation-logistics-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 33,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.8
+  },
+  {
+   "program": "organizational-leadership-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "statistical-science-data-analytics-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "arab-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 9,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "classical-languages-literature-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "cybersecurity-human-behavior-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "cybersecurity-human-behavior-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 20,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "environmental-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "gender-sexuality-womens-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 39,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "gender-sexuality-womens-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 51,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "german-language-cultural-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "german-language-cultural-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "international-affairs-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 164,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "international-affairs-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 170,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "japanese-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 15,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.3
+  },
+  {
+   "program": "lesbian-gay-bisexual-transgender-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "political-economy-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "public-policy-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 86,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 93,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "spanish-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 14,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "advertising-copywriting-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "advertising-copywriting-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 25,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "communication-studies-communication-studies-thesis-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "communication-studies-communication-studies-thesis-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "global-communication-media-arts-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "media-studies-production-media-production-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "media-studies-production-media-production-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "visual-journalism-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "health-policy-management-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 19,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 26,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "public-health-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 23,
+   "layers": [
+    "layer-university",
+    "layer-public-health",
+    "public-health-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 32,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.1
+  },
+  {
+   "program": "astrophysics-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-science-technology-certificate"
+   ],
+   "layer_rules": 1,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "cellular-molecular-neurobiology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "computer-science-physics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 23,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "computer-science-physics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 30,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "digital-media-technologies-minor-science-technology",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "forensic-chemistry-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "forensic-chemistry-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 33,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "genomic-medicine-pre-med-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 34,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "genomic-medicine-pre-med-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 31,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.8
+  },
+  {
+   "program": "mathematical-economics-ba-science-technology",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "mathematical-economics-ba-science-technology--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 33,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "mathematics-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 35,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "mathematics-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 42,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "natural-sciences-earth-environmental-sciences-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 23,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "natural-sciences-earth-environmental-sciences-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "physics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "physics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "film-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "film-media-arts-screenwriting-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "film-media-arts-screenwriting-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 20,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "theater-community-engagement-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "sport-entertainment-management-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 32,
+   "layers": [
+    "layer-university",
+    "layer-tourism-hospitality-management",
+    "sport-entertainment-management-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 37,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "art-graphic-design-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 18,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "art-graphic-design-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 25,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "community-development-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 9,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "graphic-interactive-design-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 65,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "graphic-interactive-design-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "landscape-architecture-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "landscape-architecture-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "printmaking-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 21,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "printmaking-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 30,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "science-technology-society-honors-interdisciplinary-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 92,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "classical-voice-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.7
+  },
+  {
+   "program": "jazz-piano-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "music-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.2
+  },
+  {
+   "program": "music-technology-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 33,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "music-technology-bs--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 40,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "performance-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 142,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "performance-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 142,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "adult-learning-training-organizational-development-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "education-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "middle-grades-education-mathematics-science-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "middle-grades-education-mathematics-science-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 23,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "special-education-prek12-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 23,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "special-education-prek12-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 32,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "accounting-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "accounting-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 35,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.6
+  },
+  {
+   "program": "business-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "entrepreneurship-innovation-management-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 1,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 10,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "human-resource-management-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "human-resource-management-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.2
+  },
+  {
+   "program": "legal-studies-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "legal-studies-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.8
+  },
+  {
+   "program": "real-estate-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "real-estate-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 31,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.7
+  },
+  {
+   "program": "supply-chain-management-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 9,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "supply-chain-management-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 33,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.3
+  },
+  {
+   "program": "arabic-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "classics-classical-civilizations-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "classics-classical-civilizations-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "cybersecurity-human-behavior-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "ethics-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "gender-sexuality-womens-studies-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "german-language-cultural-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "international-business-studies-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 15,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts",
+    "international-business-studies-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 23,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "japanese-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "liberal-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "liberal-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.8
+  },
+  {
+   "program": "political-science-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 9,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "political-science-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 20,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "religion-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "religion-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "spanish-health-professions-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "advertising-media-planning-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "advertising-media-planning-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 25,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "communication-studies-contemporary-media-environments-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "communication-studies-contemporary-media-environments-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.1
+  },
+  {
+   "program": "international-communication-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 129,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 122,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "podcasting-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "pharmaceutical-sciences-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 47,
+   "layers": [
+    "layer-university",
+    "layer-pharmacy",
+    "pharmaceutical-sciences-bs--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 55,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "health-professions-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 53,
+   "layers": [
+    "layer-university",
+    "layer-public-health",
+    "health-professions-bs--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 62,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.8
+  },
+  {
+   "program": "public-health-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "astrophysics-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "chemistry-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "chemistry-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "computer-security-digital-forensics-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-science-technology-certificate"
+   ],
+   "layer_rules": 1,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "earth-space-science-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 28,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "earth-space-science-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 35,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "fundamentals-physics-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [
+    "layer-science-technology-certificate"
+   ],
+   "layer_rules": 1,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "geology-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 16,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "geology-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 24,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "mathematics-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 18,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "mathematics-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 26,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "medicinal-chemistry-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 30,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "medicinal-chemistry-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 35,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "natural-sciences-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "physics-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "film-media-arts-animation-media-arts-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 17,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "film-media-arts-animation-media-arts-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 24,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "media-arts-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "theater-education-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.9
+  },
+  {
+   "program": "sport-management-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "art-history-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 78,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "art-history-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 79,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "ecological-planning-design-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "graphic-interactive-design-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.7
+  },
+  {
+   "program": "landscape-architecture-horticulture-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "landscape-architecture-horticulture-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 36,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.7
+  },
+  {
+   "program": "sculpture-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 31,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "sculpture-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 39,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.4
+  },
+  {
+   "program": "social-justice-honors-interdisciplinary-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 127,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 111,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.4
+  },
+  {
+   "program": "composition-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 37,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "composition-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 44,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.8
+  },
+  {
+   "program": "jazz-studies-composition-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 96,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "jazz-studies-composition-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 101,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "music-composition-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.9
+  },
+  {
+   "program": "music-technology-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "performance-classical-guitar-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "performance-classical-guitar-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 35,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "applied-behavior-analysis-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "english-language-teaching-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "middle-grades-education-science-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "middle-grades-education-science-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 23,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "civil-engineering-bsce",
+   "status": "complete",
+   "error": null,
+   "rules": 43,
+   "layers": [
+    "layer-university",
+    "layer-engineering",
+    "civil-engineering-bsce--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 45,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.5
+  },
+  {
+   "program": "accounting-data-analytics-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "accounting-data-analytics-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 37,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 5.1
+  },
+  {
+   "program": "business-plus-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "entrepreneurship-innovation-management-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 15,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "international-business-administration-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 18,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 24,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "legal-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "real-estate-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "supply-chain-management-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "asian-business-society-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "classics-classical-languages-literature-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 24,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "classics-classical-languages-literature-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 31,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "cybersecurity-human-behavior-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "forensic-psychology-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "gender-sexuality-womens-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 10,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "global-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 83,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "global-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 86,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "italian-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "italian-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "jewish-secular-studies-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "management-career-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "political-science-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 10,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "religion-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 10,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "spanish-latin-american-studies-business-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "audio-live-entertainment-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 55,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "audio-live-entertainment-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 57,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "communication-studies-global-community-engagement-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "communication-studies-global-community-engagement-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "journalism-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 104,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "journalism-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 102,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "professional-creative-communication-honors-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "american-sign-language-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "health-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 17,
+   "layers": [
+    "layer-university",
+    "layer-public-health",
+    "health-studies-ba--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 26,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "recreational-therapy-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 25,
+   "layers": [
+    "layer-university",
+    "layer-public-health",
+    "recreational-therapy-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 35,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "biochemistry-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "biochemistry-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "chemistry-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 47,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "chemistry-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 48,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "cybersecurity-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "cybersecurity-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 26,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.2
+  },
+  {
+   "program": "ecology-evolution-biodiversity-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 99,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "ecology-evolution-biodiversity-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 57,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "fundamentals-programming-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 1,
+   "layers": [
+    "layer-science-technology-certificate"
+   ],
+   "layer_rules": 1,
+   "open_rules": 10,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "geology-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 28,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "geology-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 34,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "mathematics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 21,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "mathematics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 28,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "mobile-application-development-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-science-technology-certificate"
+   ],
+   "layer_rules": 1,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "natural-sciences-physics-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 17,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "natural-sciences-physics-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 25,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "physics-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 42,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "physics-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 51,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "film-media-arts-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "film-media-arts-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "musical-theater-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 41,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "musical-theater-bfa--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 50,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "theater-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 34,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 42,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "sport-management-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "art-history-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "entrepreneurship-creative-businesses-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "historic-preservation-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 22,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "historic-preservation-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "landscape-plants-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "sustainable-food-systems-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "gened",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 9,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "dance-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 39,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--dance-gpa",
+    "dance-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 47,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.6
+  },
+  {
+   "program": "jazz-studies-composition-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "music-education-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 185,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "music-education-bm--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 189,
+   "options": 3,
+   "credits": [
+    18.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.7
+  },
+  {
+   "program": "music-technology-interdisciplinary-studies-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 30,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "music-technology-interdisciplinary-studies-bs--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 37,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "performance-harpsichord-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 31,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "performance-harpsichord-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 39,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "career-technical-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "career-technical-education-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 28,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "human-development-community-engagement-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-university",
+    "layer-education--gpa",
+    "human-development-community-engagement-bs--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "middle-grades-education-science-language-arts-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "middle-grades-education-science-language-arts-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 23,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "civil-engineering-cooperative-education-bsce",
+   "status": "complete",
+   "error": null,
+   "rules": 45,
+   "layers": [
+    "layer-university",
+    "layer-engineering",
+    "civil-engineering-cooperative-education-bsce--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 47,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.5
+  },
+  {
+   "program": "accounting-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "corporate-compliance-regulatory-policy-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "finance-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "finance-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 31,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.8
+  },
+  {
+   "program": "international-business-economics-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "international-business-economics-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.0
+  },
+  {
+   "program": "management-information-systems-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "management-information-systems-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 37,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 6.0
+  },
+  {
+   "program": "risk-management-insurance-healthcare-risk-management-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "risk-management-insurance-healthcare-risk-management-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 33,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.9
+  },
+  {
+   "program": "africology-african-american-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "africology-african-american-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "asian-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "asian-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "clinical-health-psychology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "economics-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "economics-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "french-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "french-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "general-program-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 25,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "general-program-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "global-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 89,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "italian-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 14,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.1
+  },
+  {
+   "program": "jewish-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "jewish-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 20,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "mathematical-economics-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 26,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "mathematical-economics-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 35,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "portuguese-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "social-science-research-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "spanish-latinx-studies-health-human-services-professions-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 21,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.5
+  },
+  {
+   "program": "childrens-media-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 33,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 40,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "communication-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "journalism-society-culture-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "public-relations-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 17,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "public-relations-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 28,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.5,
+    15.5
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "applied-epidemiology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "kinesiology-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 15,
+   "layers": [
+    "layer-university",
+    "layer-public-health",
+    "kinesiology-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 24,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "recreational-therapy-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 15,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 23,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "biology-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 34,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "biology-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 31,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "chemistry-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 35,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 43,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "data-science-computation-modeling-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 17,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "data-science-computation-modeling-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 27,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "environmental-professional-training-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-science-technology-certificate"
+   ],
+   "layer_rules": 1,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.6
+  },
+  {
+   "program": "general-science-mathematics-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 38,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "general-science-mathematics-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 45,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "geology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "mathematics-computer-science-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "mathematics-computer-science-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 33,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "natural-sciences-biology-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 16,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "natural-sciences-biology-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 24,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "natural-sciences-physics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 24,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "natural-sciences-physics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 30,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "quantum-materials-science-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 22,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "quantum-materials-science-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 27,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "film-media-arts-cinematography-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 15,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "film-media-arts-cinematography-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 23,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.7
+  },
+  {
+   "program": "screen-studies-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "voice-speech-actor-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "tourism-hospitality-event-management-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 41,
+   "layers": [
+    "layer-university",
+    "layer-tourism-hospitality-management",
+    "tourism-hospitality-event-management-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 46,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "art-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "environmental-horticulture-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.9
+  },
+  {
+   "program": "historic-preservation-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "landscape-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.8
+  },
+  {
+   "program": "sustainable-food-systems-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.6
+  },
+  {
+   "program": "dance-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.0
+  },
+  {
+   "program": "jazz-studies-performance-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 30,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "jazz-studies-performance-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 38,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "music-education-jazz-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 197,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "music-education-jazz-bm--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 198,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.5
+  },
+  {
+   "program": "music-theory-jazz-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "performance-piano-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 32,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "performance-piano-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 39,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "career-technical-education-business-computer-information-technology-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "career-technical-education-business-computer-information-technology-education-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 27,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "human-development-community-engagement-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "middle-grades-education-social-studies-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "middle-grades-education-social-studies-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 36,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.0
+  },
+  {
+   "program": "civil-engineering-environmental-engineering-bsce",
+   "status": "complete",
+   "error": null,
+   "rules": 42,
+   "layers": [
+    "layer-university",
+    "layer-engineering",
+    "civil-engineering-environmental-engineering-bsce--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 44,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "actuarial-science-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "actuarial-science-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 38,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 5.2
+  },
+  {
+   "program": "corporate-risk-management-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "finance-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "international-business-entrepreneurship-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "international-business-entrepreneurship-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 5.2
+  },
+  {
+   "program": "management-information-systems-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "risk-management-insurance-managing-corporate-risk-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "risk-management-insurance-managing-corporate-risk-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.3
+  },
+  {
+   "program": "africology-african-american-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "asian-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "cognitive-neuroscience-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "economics-minor-liberal-arts",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "french-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "geographic-information-systems-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "history-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "history-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.3
+  },
+  {
+   "program": "italian-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "jewish-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "neuroscience-research-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "professional-writing-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "sociology-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "sociology-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "spanish-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 10,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "communication-activism-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "communication-studies-production-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 17,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "communication-studies-production-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 27,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "latino-media-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 19,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 26,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "public-relations-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "emergency-sports-injury-management-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "linguistics-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "speech-language-hearing-science-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-public-health",
+    "speech-language-hearing-science-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 28,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.5
+  },
+  {
+   "program": "biology-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 34,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "biology-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 30,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "chemistry-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 26,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "chemistry-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 34,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "data-science-computational-analytics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 30,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "data-science-computational-analytics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 39,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "environmental-science-applied-ecology-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 69,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "environmental-science-applied-ecology-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 30,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "general-science-technology-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 35,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "general-science-technology-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 43,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "information-science-technology-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 15,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "information-science-technology-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 25,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "mathematics-computer-science-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 35,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "mathematics-computer-science-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 43,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "natural-sciences-biology-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 23,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "natural-sciences-biology-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "neuroscience-cellular-molecular-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 52,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "neuroscience-cellular-molecular-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 48,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "science-technology-writing-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-science-technology-certificate"
+   ],
+   "layer_rules": 1,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "film-media-arts-directing-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 22,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "film-media-arts-directing-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 25,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.9
+  },
+  {
+   "program": "screen-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 18,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 24,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "esports-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "tourism-hospitality-management-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "art-therapy-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 22,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "art-therapy-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "environmental-sustainability-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "horticultural-therapy-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "metals-jewelry-cad-cam-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 46,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "metals-jewelry-cad-cam-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 54,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "user-experience-user-interface-design-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 62,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "user-experience-user-interface-design-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "dance-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.0
+  },
+  {
+   "program": "jazz-studies-performance-piano-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "jazz-studies-performance-piano-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 34,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "music-history-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 113,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "music-history-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 92,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.0
+  },
+  {
+   "program": "music-theory-traditional-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "performance-voice-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 34,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "performance-voice-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 41,
+   "options": 3,
+   "credits": [
+    14.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "career-technical-education-marketing-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "career-technical-education-marketing-education-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 27,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "leadership-military-science-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "secondary-education-english-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "secondary-education-english-education-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "civil-engineering-environmental-engineering-cooperative-education-bsce",
+   "status": "complete",
+   "error": null,
+   "rules": 44,
+   "layers": [
+    "layer-university",
+    "layer-engineering",
+    "civil-engineering-environmental-engineering-cooperative-education-bsce--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 46,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.6
+  },
+  {
+   "program": "actuarial-science-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "digital-marketing-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "financial-planning-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "financial-planning-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 33,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.5
+  },
+  {
+   "program": "international-business-finance-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "international-business-finance-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.1
+  },
+  {
+   "program": "management-information-systems-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "risk-management-insurance-managing-human-capital-risk-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "risk-management-insurance-managing-human-capital-risk-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 5.2
+  },
+  {
+   "program": "ancient-mediterranean-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "chinese-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "chinese-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "creative-writing-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 37,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 45,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "english-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 12,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "english-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 20,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "french-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 14,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.5
+  },
+  {
+   "program": "geography-urban-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 10,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "geography-urban-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "history-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 10,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "italian-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "italian-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "latin-american-studies-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 0,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 9,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "neuroscience-systems-behavior-plasticity-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 32,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts",
+    "neuroscience-systems-behavior-plasticity-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 41,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "psychological-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 21,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "psychological-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 32,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "sociology-health-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "advertising-account-management-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 14,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "advertising-account-management-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 25,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.0
+  },
+  {
+   "program": "communication-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "communication-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 31,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "content-creation-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "leadership-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "sports-media-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 18,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "sports-media-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "exercise-sport-science-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-public-health",
+    "exercise-sport-science-bs--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "nursing-accelerated-bsn",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-public-health",
+    "nursing-accelerated-bsn--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 36,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "applied-mathematics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 26,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "applied-mathematics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 33,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "biology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.6
+  },
+  {
+   "program": "computer-science-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 18,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "computer-science-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "data-science-computational-analytics-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-science-technology-certificate"
+   ],
+   "layer_rules": 1,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "environmental-science-climate-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 49,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "environmental-science-climate-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 27,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "general-science-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 34,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "general-science-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 41,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "information-science-technology-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 19,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "information-science-technology-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 25,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "mathematics-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "natural-sciences-chemistry-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 16,
+   "layers": [
+    "layer-university",
+    "layer-science-technology--ba-dist.lang",
+    "natural-sciences-chemistry-ba--degree"
+   ],
+   "layer_rules": 9,
+   "open_rules": 24,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "paleontology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "social-work-bsw",
+   "status": "complete",
+   "error": null,
+   "rules": 28,
+   "layers": [
+    "layer-university",
+    "layer-social-work",
+    "social-work-bsw--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 34,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "film-media-arts-post-production-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 18,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "film-media-arts-post-production-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 23,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.7
+  },
+  {
+   "program": "stage-management-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "event-entertainment-management-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "tourism-hospitality-management-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "ceramics-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 30,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "ceramics-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 38,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "facilities-management-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 24,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "facilities-management-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.8
+  },
+  {
+   "program": "horticulture-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 33,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "horticulture-bs--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 35,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "native-perennial-garden-design-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.9
+  },
+  {
+   "program": "user-experience-user-interface-design-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "hip-hop-dance-culture-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 20,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.6
+  },
+  {
+   "program": "jazz-studies-performance-voice-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 34,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "jazz-studies-performance-voice-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 41,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "music-history-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.5
+  },
+  {
+   "program": "music-therapy-bm",
+   "status": "complete",
+   "error": null,
+   "rules": 48,
+   "layers": [
+    "layer-university",
+    "layer-boyer-music-dance--ensembles.recitals",
+    "music-therapy-bm--degree"
+   ],
+   "layer_rules": 5,
+   "open_rules": 54,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "performing-arts-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-boyer-music-dance"
+   ],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  },
+  {
+   "program": "diversity-inclusion-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 14,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "middle-grades-education-language-arts-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 21,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "middle-grades-education-language-arts-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 30,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "secondary-education-mathematics-education-bsed",
+   "status": "complete",
+   "error": null,
+   "rules": 28,
+   "layers": [
+    "layer-university",
+    "layer-education--candidacy",
+    "secondary-education-mathematics-education-bsed--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 37,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.4
+  },
+  {
+   "program": "environmental-engineering-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "business-analytics-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "economics-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 40,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "economics-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 64,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.7
+  },
+  {
+   "program": "financial-planning-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "international-business-marketing-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "international-business-marketing-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 4.6
+  },
+  {
+   "program": "marketing-bba",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-university",
+    "layer-fox-business-management",
+    "marketing-bba--degree"
+   ],
+   "layer_rules": 24,
+   "open_rules": 32,
+   "options": 2,
+   "credits": [
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 5.2
+  },
+  {
+   "program": "sales-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 12,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 0.9
+  },
+  {
+   "program": "anthropology-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 5,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "anthropology-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "chinese-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "criminal-justice-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "criminal-justice-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 19,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 3.2
+  },
+  {
+   "program": "english-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "french-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "french-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.7
+  },
+  {
+   "program": "geography-urban-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "interdisciplinary-german-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "interdisciplinary-german-studies-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "italian-studies-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "law-american-criminal-justice-system-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-liberal-arts-certificate"
+   ],
+   "layer_rules": 2,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "philosophy-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 15,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "philosophy-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 26,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.5
+  },
+  {
+   "program": "psychology-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 13,
+   "layers": [
+    "layer-university",
+    "layer-liberal-arts--lang.lang-gg.lang-option",
+    "psychology-ba--degree"
+   ],
+   "layer_rules": 11,
+   "open_rules": 23,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "sociology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [
+    "layer-liberal-arts-minor"
+   ],
+   "layer_rules": 2,
+   "open_rules": 10,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "advertising-art-direction-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 15,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "advertising-art-direction-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 26,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "communication-pre-law-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "communication-pre-law-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 31,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "digital-media-engagement-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 7,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 16,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "media-studies-production-media-analysis-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 11,
+   "layers": [
+    "layer-university",
+    "layer-media-communication",
+    "media-studies-production-media-analysis-ba--degree"
+   ],
+   "layer_rules": 6,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    17.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.6
+  },
+  {
+   "program": "sports-media-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 2,
+   "layers": [
+    "layer-media-communication-minor"
+   ],
+   "layer_rules": 0,
+   "open_rules": 11,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "global-health-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "nursing-bsn",
+   "status": "complete",
+   "error": null,
+   "rules": 27,
+   "layers": [
+    "layer-university",
+    "layer-public-health",
+    "nursing-bsn--degree"
+   ],
+   "layer_rules": 3,
+   "open_rules": 37,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.4
+  },
+  {
+   "program": "artificial-intelligence-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 28,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "artificial-intelligence-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    18.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.9
+  },
+  {
+   "program": "biology-with-teaching-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 33,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "biology-with-teaching-bs--degree"
+   ],
+   "layer_rules": 8,
+   "open_rules": 40,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "computer-science-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 19,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "computer-science-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 18,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.9
+  },
+  {
+   "program": "data-science-computational-analytics-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 8,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.1
+  },
+  {
+   "program": "environmental-science-environmental-geochemistry-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 63,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "environmental-science-environmental-geochemistry-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 28,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "genomic-medicine-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 31,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "genomic-medicine-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 28,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.3
+  },
+  {
+   "program": "information-science-technology-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 3,
+   "layers": [
+    "layer-science-technology-minor"
+   ],
+   "layer_rules": 1,
+   "open_rules": 12,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "mathematics-physics-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 20,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "mathematics-physics-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 28,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.6
+  },
+  {
+   "program": "natural-sciences-chemistry-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 23,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "natural-sciences-chemistry-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 29,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.0
+  },
+  {
+   "program": "pharmaceutical-studies-bs",
+   "status": "complete",
+   "error": null,
+   "rules": 17,
+   "layers": [
+    "layer-university",
+    "layer-science-technology",
+    "pharmaceutical-studies-bs--degree"
+   ],
+   "layer_rules": 7,
+   "open_rules": 23,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 2.2
+  },
+  {
+   "program": "acting-certificate",
+   "status": "complete",
+   "error": null,
+   "rules": 4,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 13,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.2
+  },
+  {
+   "program": "film-media-arts-producing-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 17,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "film-media-arts-producing-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 21,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.7
+  },
+  {
+   "program": "technical-production-management-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 26,
+   "layers": [
+    "layer-university",
+    "layer-theater-film-media-arts",
+    "technical-production-management-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 34,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "event-entertainment-management-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 6,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 15,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "art-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 16,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "art-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 17,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "city-regional-planning-minor",
+   "status": "complete",
+   "error": null,
+   "rules": 15,
+   "layers": [],
+   "layer_rules": 0,
+   "open_rules": 23,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "fibers-materials-studies-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 41,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "fibers-materials-studies-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 49,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.4
+  },
+  {
+   "program": "illustration-emerging-media-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 89,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "illustration-emerging-media-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 22,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.0
+  },
+  {
+   "program": "painting-bfa",
+   "status": "complete",
+   "error": null,
+   "rules": 42,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "painting-bfa--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 48,
+   "options": 3,
+   "credits": [
+    15.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": null,
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.3
+  },
+  {
+   "program": "visual-studies-ba",
+   "status": "complete",
+   "error": null,
+   "rules": 33,
+   "layers": [
+    "layer-university",
+    "layer-tyler",
+    "visual-studies-ba--degree"
+   ],
+   "layer_rules": 4,
+   "open_rules": 39,
+   "options": 3,
+   "credits": [
+    16.0,
+    15.0,
+    15.0
+   ],
+   "min_grade": "C-",
+   "research_modes": [
+    "cache",
+    "snapshot"
+   ],
+   "seconds": 1.1
+  }
+ ]
+}

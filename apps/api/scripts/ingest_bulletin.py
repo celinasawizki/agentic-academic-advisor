@@ -19,6 +19,7 @@ from urllib.robotparser import RobotFileParser
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app.ingest.bulletin import clean, parse_course_blocks, parse_program_page, program_type  # noqa: E402
+from app.ingest.school import build_layers, load_spec  # noqa: E402
 from scripts.http_cache import USER_AGENT, PoliteClient  # noqa: E402
 
 BASE = "https://bulletin.temple.edu"
@@ -107,6 +108,21 @@ def main(limit: int | None = None, refresh: bool = False) -> None:
             courses[c["code"]] = c
         if i % 50 == 0:
             print(f"  course pages {i}/{len(course_urls)} ({len(courses)} undergraduate courses)")
+
+    # School/college and university layers (data/temple/school_rules.json + program-page summaries),
+    # with every evidence quote checked against the fetched page.
+    def allowed(url: str) -> str | None:
+        return http.get_text(url) if robots.can_fetch(USER_AGENT, url) else None
+    built = build_layers(load_spec(OUT), programs, courses, allowed, retrieved_at=now())
+    for p in programs:
+        p["layers"] = built["links"].get(p["id"], [])
+        if p["id"] in built["min_grades"]:
+            p["min_grade"] = built["min_grades"][p["id"]]
+    programs.extend(built["layers"])
+    missing = [c for c in built["checks"] if not c["found"]]
+    print(f"{len(built['layers'])} school/university layers; {len(missing)} evidence quotes not found on their pages")
+    for c in missing:
+        print("   missing:", c["rule"], c["url"])
 
     meta = {"source": "Temple University Academic Bulletin", "base_url": BASE, "generated_at": now(),
             "notice": "Parsed automatically from the public bulletin. Requirements are pending verification by an advisor."}

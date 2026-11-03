@@ -22,6 +22,7 @@ from app.agents.interests import InterestMatchingAgent
 from app.agents.optimization import ScheduleOptimizationAgent
 from app.agents.profile import AcademicProfileAgent
 from app.agents.requirements import DegreeRequirementsAgent
+from app.agents.research import RequirementsResearchAgent, apply_research, effective_program_ids
 from app.agents.review import AcademicReviewAgent
 from app.core.config import settings
 from app.core.db import SessionLocal
@@ -31,7 +32,7 @@ from app.models import AgentExecution, PlanRun, Student
 log = logging.getLogger(__name__)
 
 PIPELINE: list[Agent] = [
-    AcademicProfileAgent(), DegreeRequirementsAgent(), CourseDiscoveryAgent(), InterestMatchingAgent(),
+    AcademicProfileAgent(), RequirementsResearchAgent(), DegreeRequirementsAgent(), CourseDiscoveryAgent(), InterestMatchingAgent(),
     GraduationPlanningAgent(), SchedulingConstraintsAgent(), ScheduleOptimizationAgent(), AcademicReviewAgent(),
     StudentExplanationAgent(),
 ]
@@ -66,8 +67,9 @@ def load_catalog(db: Session, term_id: str, program_ids: list[str]) -> Catalog:
     term = cs.get_term(term_id)
     if term is None:
         raise ValueError(f"Unknown term {term_id}")
+    programs = cat.programs()
     return Catalog(term_id=term.id, term_name=term.name, courses=cs.get_courses(), sections=cs.search_sections(term_id),
-                   requirements=cat.requirements(program_ids), programs=cat.programs(),
+                   requirements=cat.requirements(effective_program_ids(program_ids, programs)), programs=programs,
                    double_count_allowed=cat.double_count_allowed(), verified_rules=cat.verified_rules())
 
 
@@ -130,6 +132,8 @@ def _run(db: Session, plan_id: str, start_from: str | None) -> None:
                       catalog=load_catalog(db, plan.term_id, student.program_ids), state=state,
                       iteration=state["_iteration"])
     start = AGENT_KEYS.index(start_from) if start_from else 0
+    if start > AGENT_KEYS.index("requirements_research") and state.get("requirements_research"):
+        apply_research(ctx.catalog, state["requirements_research"])  # reuse what was read from the bulletin
     for agent in PIPELINE[start:]:
         _execute(ctx, plan, agent)
         if agent.key == "academic_review":

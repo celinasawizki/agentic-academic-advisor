@@ -1,13 +1,13 @@
 "use client"
 
-import { ArrowRight, Bot, CheckCircle2, ChevronDown, CircleDashed, Cpu, ExternalLink, History, Loader2, RotateCcw, SkipForward, XCircle } from "lucide-react"
+import { ArrowRight, Bot, CheckCircle2, ChevronDown, CircleDashed, Cpu, ExternalLink, Globe, History, Loader2, RotateCcw, Search, SkipForward, XCircle } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 
 import { Pill } from "@/components/planner/badges"
 import { usePlan } from "@/components/planner/plan-context"
 import { buttonVariants } from "@/components/ui/button"
-import type { AgentExecution } from "@/lib/types"
+import type { AgentExecution, RequirementsResearch } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 const STATUS: Record<AgentExecution["status"], { icon: React.ComponentType<{ className?: string }>; label: string; cls: string }> = {
@@ -65,11 +65,12 @@ export default function Workspace() {
         <div className="rounded-2xl border bg-card p-4">
           <h3 className="mb-2 text-sm font-semibold">Workflow</h3>
           <ol className="space-y-1.5 text-xs text-muted-foreground">
-            <li>1–3 · Profile → Requirements → Course discovery</li>
-            <li>4–5 · Interest matching ∥ Graduation planning</li>
-            <li>6–7 · Constraints → CP-SAT optimization</li>
-            <li>8 · Independent review (can reject → re-optimize)</li>
-            <li>9 · Student explanation</li>
+            <li>1–2 · Profile → Bulletin research (live search + fetch)</li>
+            <li>3–4 · Requirements → Course discovery</li>
+            <li>5–6 · Interest matching ∥ Graduation planning</li>
+            <li>7–8 · Constraints → CP-SAT optimization</li>
+            <li>9 · Independent review (can reject → re-optimize)</li>
+            <li>10 · Student explanation</li>
           </ol>
           <div className="mt-3 space-y-1.5 border-t pt-3 text-xs">
             <div className="flex items-center gap-2"><Pill tone="info" icon={Bot}>LLM</Pill> Claude produced schema-validated output</div>
@@ -92,6 +93,7 @@ export default function Workspace() {
         )}
       </aside>
     </div>
+    {plan.state.requirements_research && <ResearchPanel r={plan.state.requirements_research} />}
     {agents.some((a) => a.decision?.task) && <DecisionLog agents={agents} />}
     </>
   )
@@ -194,6 +196,93 @@ function DecisionLog({ agents }: { agents: AgentExecution[] }) {
             })}
           </tbody>
         </table>
+      </div>
+    </section>
+  )
+}
+
+const FETCH: Record<string, { label: string; tone: "success" | "info" | "warning" | "danger" }> = {
+  live: { label: "Fetched live", tone: "success" },
+  cache: { label: "Live (cached ≤24 h)", tone: "info" },
+  snapshot: { label: "Offline: ingest snapshot", tone: "warning" },
+  unavailable: { label: "Unavailable", tone: "danger" },
+}
+
+function when(t: string | null | undefined) {
+  return t ? new Date(t).toLocaleString([], { dateStyle: "short", timeStyle: "short" }) : ""
+}
+
+function ResearchPanel({ r }: { r: RequirementsResearch }) {
+  return (
+    <section className="mt-6 rounded-2xl border bg-card">
+      <div className="border-b px-4 py-3">
+        <h3 className="flex items-center gap-2 font-semibold"><Globe className="size-4 text-primary" /> Bulletin research</h3>
+        <p className="text-xs text-muted-foreground">
+          What the Requirements Research Agent searched for, which official Temple Academic Bulletin page it used, and whether the page
+          was read live. {r.live_enabled ? "Live research is on (robots.txt respected, 1 request/second, 24-hour cache)." : "Live research is off; the ingest snapshot was used."}
+        </p>
+      </div>
+      <div className="divide-y text-xs">
+        {r.programs.map((p) => (
+          <div key={p.program_id} className="grid gap-2 px-4 py-3 md:grid-cols-[1.1fr_1.6fr_1fr]">
+            <div>
+              <div className="font-medium">{p.name}</div>
+              <div className="text-muted-foreground capitalize">{p.type}</div>
+            </div>
+            <div className="min-w-0">
+              {p.query ? (
+                <>
+                  <div className="flex items-center gap-1.5"><Search className="size-3.5 shrink-0 text-muted-foreground" /><span className="truncate">&ldquo;{p.query}&rdquo;</span></div>
+                  <div className="mt-0.5 text-muted-foreground">{p.search_provider}</div>
+                  {p.search_results[0] && (
+                    <a href={p.search_results[0].url} target="_blank" rel="noreferrer" className="mt-1 inline-flex max-w-full items-center gap-1 text-primary hover:underline">
+                      <span className="truncate">{p.search_results[0].url.replace("https://", "")}</span> <ExternalLink className="size-3 shrink-0" />
+                    </a>
+                  )}
+                  <div className={cn("mt-0.5", p.search_matched_catalog_page ? "text-success" : "text-warning")}>
+                    {p.search_matched_catalog_page ? "Search found the official program page" : "Search did not return the catalog's page; the catalog's page was used"}
+                  </div>
+                </>
+              ) : (
+                <span className="text-muted-foreground">University-wide framework page (no search needed)</span>
+              )}
+            </div>
+            <div className="space-y-1">
+              {p.fetch && <Pill tone={FETCH[p.fetch.mode].tone}>{FETCH[p.fetch.mode].label}</Pill>}
+              {p.fetch?.retrieved_at && <div className="text-muted-foreground">{when(p.fetch.retrieved_at)}</div>}
+              {p.changes && (
+                <div className={p.changes.added || p.changes.removed ? "text-warning" : "text-muted-foreground"}>
+                  {p.changes.added || p.changes.removed
+                    ? `Page changed since ingest: +${p.changes.added} / −${p.changes.removed} rules (page version used)`
+                    : `${p.changes.rules_on_page} rules on the page match the planner`}
+                </div>
+              )}
+              {p.fetch?.error && p.fetch.mode !== "live" && <div className="text-muted-foreground">{p.fetch.error}</div>}
+            </div>
+          </div>
+        ))}
+        {r.school_layers.map((l) => (
+          <div key={l.id} className="grid gap-2 bg-muted/20 px-4 py-3 md:grid-cols-[1.1fr_1.6fr_1fr]">
+            <div>
+              <div className="font-medium">{l.name}</div>
+              <div className="text-muted-foreground">{l.type === "school" ? "School/college rules" : "University rules"} · applied automatically</div>
+            </div>
+            <div className="min-w-0">
+              <a href={l.url} target="_blank" rel="noreferrer" className="inline-flex max-w-full items-center gap-1 text-primary hover:underline">
+                <span className="truncate">{l.url.replace("https://", "")}</span> <ExternalLink className="size-3 shrink-0" />
+              </a>
+              <div className={cn("mt-0.5", l.evidence_missing.length ? "text-warning" : "text-success")}>
+                {l.evidence_checked - l.evidence_missing.length}/{l.evidence_checked} quoted bulletin sentences found on the page
+                {l.evidence_missing.length > 0 && " — changed rules are marked Ambiguous"}
+              </div>
+            </div>
+            <div className="space-y-1">
+              {l.fetch_mode && <Pill tone={FETCH[l.fetch_mode]?.tone ?? "neutral"}>{FETCH[l.fetch_mode]?.label ?? l.fetch_mode}</Pill>}
+              {l.retrieved_at && <div className="text-muted-foreground">{when(l.retrieved_at)}</div>}
+              <div className="text-muted-foreground">{l.rules} rule(s)</div>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   )

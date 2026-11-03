@@ -13,23 +13,26 @@ Multi-agent academic planning and constraint-based schedule optimization for Tem
 | Undergraduate courses | Bulletin course descriptions | 6,800+ with credits, GenEd attributes and parsed prerequisite logic |
 | Sections | Public class search snapshot, Spring 2027 (term 202703) | 8,690 with real meeting times, modality, seats, instructors |
 
-Every program uses the same data model and pipeline — nothing is hardcoded per major. See [data/temple/README.md](data/temple/README.md) for provenance and [docs/integrations.md](docs/integrations.md) for limitations.
+Every program uses the same data model and pipeline — nothing is hardcoded per major.
+
+**School, college and university requirements.** A program page lists only its own courses; graduation also depends on the student's school. [`data/temple/school_rules.json`](data/temple/school_rules.json) transcribes the graduation rules of all 13 undergraduate schools/colleges (e.g. Liberal Arts: 123 credits, 45 upper-level, foreign language through 1002 and a global-studies option for BAs, the professional-development seminar; Fox: the 20-course BBA business core; Klein: KLN 1001/1002 and 124 credits; CST: SCTC 1001 seminar and BA language; Public Health/Social Work: HRPR 1001; Engineering, Pharmacy, STHM, TFMA, Boyer, Education, Tyler), each with a verbatim bulletin quote, plus university rules (30-credit residency, two writing-intensive courses — the exact WI courses are read from each major's page) and program minimum grades. They are applied automatically by program type and degree (BA vs BS vs BBA). `python -m scripts.sweep_programs` runs the full pipeline for all 436 programs (last run: 436/436 complete, every major with its school layer). See [data/temple/README.md](data/temple/README.md) for provenance and [docs/integrations.md](docs/integrations.md) for limitations.
 
 ## What it does
 
-A student completes a 7-step onboarding (any combination of Temple programs, academic records, interests in their own words, a drag-to-paint weekly availability grid, credit load, campus, F-1 status). Nine specialized agents then share one planning state:
+A student completes a 7-step onboarding (any combination of Temple programs, academic records, interests in their own words, a drag-to-paint weekly availability grid, credit load, campus, F-1 status). Ten specialized agents then share one planning state:
 
 | # | Agent | Responsibility | Engine |
 |---|---|---|---|
 | 1 | Academic Profile | Separates completed / in-progress / transfer work, resolves catalog year | Deterministic |
-| 2 | Degree Requirements | Applies bulletin rules: required courses, "or" alternatives, lecture+lab bundles, select-N and credit groups, course ranges, GenEd attributes; no double counting without a rule | Deterministic |
-| 3 | Course Discovery | Expands rules against the term's sections; filters campus, prerequisites (AND/OR logic, placement alternatives), seats, arranged courses; logs every exclusion | Deterministic |
-| 4 | Interest Matching | Scores course descriptions against free-text interests | Claude (schema-validated) or concept/keyword fallback |
-| 5 | Graduation Planning | Prerequisite chains, critical courses, pace and risks | Deterministic |
-| 6 | Scheduling & Constraints | Typed hard / soft / academic / immigration constraints; pre-checks | Deterministic |
-| 7 | Schedule Optimization | Google OR-Tools CP-SAT, three strategies, lecture/lab/recitation components, solver-computed conflict sets | CP-SAT |
-| 8 | Academic Review | Independent re-verification; can reject → orchestrator re-optimizes | Deterministic |
-| 9 | Student Explanation | Per-course reasons, tradeoffs, unresolved issues | Templated + optional Claude summary |
+| 2 | Requirements Research | Searches the bulletin for each program (Claude web search limited to bulletin.temple.edu when a key is set, otherwise the bulletin's sitemap index), fetches the official program page and the student's school page live (robots.txt, 1 req/s, 24 h cache), re-parses them and checks every transcribed school rule's quote is still on the page | Deterministic + optional Claude search |
+| 3 | Degree Requirements | Applies program **plus school/college and university** rules: required courses, "or" alternatives, lecture+lab bundles, select-N and credit groups, course ranges, GenEd attributes; no double counting without a rule | Deterministic |
+| 4 | Course Discovery | Expands rules against the term's sections; filters campus, prerequisites (AND/OR logic, placement alternatives), seats, arranged courses; logs every exclusion | Deterministic |
+| 5 | Interest Matching | Scores course descriptions against free-text interests | Claude (schema-validated) or concept/keyword fallback |
+| 6 | Graduation Planning | Prerequisite chains, critical courses, pace and risks | Deterministic |
+| 7 | Scheduling & Constraints | Typed hard / soft / academic / immigration constraints; pre-checks | Deterministic |
+| 8 | Schedule Optimization | Google OR-Tools CP-SAT, three strategies, lecture/lab/recitation components, solver-computed conflict sets | CP-SAT |
+| 9 | Academic Review | Independent re-verification; can reject → orchestrator re-optimizes | Deterministic |
+| 10 | Student Explanation | Per-course reasons, tradeoffs, unresolved issues | Templated + optional Claude summary |
 
 Language models interpret and explain; **they never decide validity**. Conflicts, prerequisites, credits, campus and the F-1 counting rule are enforced by code and by the solver.
 
@@ -55,7 +58,7 @@ Language models interpret and explain; **they never decide validity**. Conflicts
 
 ```
 apps/api        FastAPI + SQLAlchemy + OR-Tools + Anthropic SDK
-  app/agents    nine agents, LLM wrapper, shared context
+  app/agents    ten agents, LLM wrapper, shared context
   app/ingest    bulletin requirement/course/prerequisite parsers, section normalization
   app/adapters  course search (snapshot), requirements catalog, degree audit PDF, TUportal (mock)
   app/rules.py  deterministic rules engine
@@ -92,6 +95,15 @@ The API reloads the catalog automatically whenever files in `data/temple` change
 
 Without `ANTHROPIC_API_KEY` every agent uses its deterministic fallback and the workspace labels each agent "Deterministic". With a key, Interest Matching, Explanation and change-request parsing call `claude-opus-5-5` with schema-validated structured outputs and server-side refusal fallbacks.
 
+### Terminal view of what's running
+
+```bash
+./scripts/dev-swarm.sh        # tmux session on its own socket: agents feed | API | web
+./scripts/dev-swarm.sh stop
+```
+
+The top pane (`scripts/watch_agents.py`) streams every agent execution the orchestrator persists — start/finish, duration, research log lines and the bulletin URLs each agent cited.
+
 ### Refreshing Temple data
 
 ```bash
@@ -121,7 +133,7 @@ See [docs/demo-walkthrough.md](docs/demo-walkthrough.md). Short version: open `/
 - Untrusted text is wrapped as data, LLM output is schema-validated and filtered against the dataset.
 - API keys are server-side only. Students can delete their records (`DELETE /api/students/{id}` removes plans, agent logs, options and validations).
 - The advisor view uses a demo-only role header. Production requires Temple SSO and advisor-student assignment checks. This prototype is not FERPA-certified.
-- Temple data was collected politely: robots.txt respected for the bulletin, 1 request/second, identifying user agent, local cache so re-parsing never re-hits Temple. The app makes no requests to Temple at runtime.
+- Temple data was collected politely: robots.txt respected for the bulletin, 1 request/second, identifying user agent, local cache so re-parsing never re-hits Temple. At plan time the Requirements Research Agent reads only the public bulletin pages for the student's own programs and school (same politeness rules, 24-hour cache; `LIVE_BULLETIN_RESEARCH=false` turns this off). Only program names are used as search queries — never student data. Google is not scraped (its terms forbid it); the bulletin's own search is disallowed by robots.txt, so the agent ranks the bulletin's sitemap, or uses Claude's web search tool restricted to bulletin.temple.edu when an API key is configured.
 
 ## Known limitations
 

@@ -67,3 +67,27 @@ python -m pytest tests -q                                           # from the r
 
 ## 8. Demo walkthrough
 See [docs/demo-walkthrough.md](docs/demo-walkthrough.md).
+
+## 9. Follow-up: school-specific requirements and live bulletin research (2026-11-03)
+
+**Finding (B12).** Plans applied only each program page's course tables. The school/college and university graduation rules were never applied: for a Psychology BA that meant no College of Liberal Arts foreign language, global-studies option, professional-development seminar, 123/45 credit rules, residency or writing-intensive requirement; Fox BBA majors had no business core. Program-level minimum grades ("C- in each course") were not enforced, and a zero-width space in "Writing-&#8203;intensive" hid WI statements from the parser.
+
+**Fix.**
+- `data/temple/school_rules.json` covers all 13 schools/colleges plus university rules, each with a verbatim quote from its bulletin page.
+- `app/ingest/school.py` builds the layers by program type and degree, reads WI courses, degree credits and minimum grades from every program page, and checks every quote against the page. At ingest, 255 layers were built and 0 quotes were missing.
+- Milestones (credits, upper-level credits, Temple residency credits, GPA, WI courses) are computed from the record. Layer rules double count with the major, as the bulletin intends.
+- The new **Requirements Research Agent** (second in the pipeline):
+  - searches for each program, using Claude web search limited to bulletin.temple.edu when an API key is set, otherwise the bulletin's sitemap index;
+  - fetches the official program and school pages live;
+  - re-parses them, diffs them against the ingested rules (using the page's version if it changed) and marks rules whose quote disappeared as AMBIGUOUS.
+- The optimizer prunes candidates per requirement cap, and it never schedules a course in the same term as its own unmet prerequisite (concurrent-allowed prerequisites excepted).
+
+**Evidence.**
+- `python -m scripts.sweep_programs` runs the full pipeline for all 436 programs: 436 complete, 0 failed, every major with its school layer, every program with schedule options (`docs/audit/program-sweep.json`).
+- Before the pruning fix, 10 programs (mostly language majors) had no schedule at all.
+- `pytest`: 84 passed, including 13 new tests in `tests/test_school_layers.py`.
+
+**Limits.**
+- "90 credits in CLA/CST courses", distribution and Fox Forward rules are shown as policies, not computed.
+- Program-specific GenEd waivers aren't applied yet.
+- Without an API key the search step is a sitemap ranking, not a web search engine.

@@ -104,7 +104,7 @@ export type Resolution = {
   alternative_note?: string
 }
 
-export type RequirementPattern = { subject?: string; min?: number; max?: number; attribute?: string }
+export type RequirementPattern = { subject?: string; min?: number; max?: number; attribute?: string; metric?: string }
 
 export type RequirementProgress = {
   id: string
@@ -113,7 +113,7 @@ export type RequirementProgress = {
   program_type: string
   group: string
   name: string
-  kind: "count" | "credits" | "manual" | "note"
+  kind: "count" | "credits" | "milestone" | "policy" | "manual" | "note"
   needed: number
   options: string[][]
   patterns: RequirementPattern[]
@@ -126,10 +126,27 @@ export type RequirementProgress = {
   remaining_needed: number
   remaining_courses: number
   candidate_courses: string[]
-  status: "complete" | "in_progress" | "incomplete" | "manual" | "note"
+  status: "complete" | "in_progress" | "incomplete" | "unverified" | "manual" | "policy" | "note"
   notes: string[]
+  value?: number | null
+  min_grade?: string | null
+  evidence?: string | null
   reliability?: Reliability
   reliability_reason?: string
+}
+
+export type FetchInfo = { mode: "live" | "cache" | "snapshot" | "unavailable"; retrieved_at: string | null; status?: number | null; error?: string | null; sha?: string | null }
+
+export type RequirementsResearch = {
+  programs: {
+    program_id: string; name: string; type: string; query: string | null; search_provider: string | null
+    search_results: { title: string; url: string; score: number | null }[]; search_matched_catalog_page: boolean; url: string | null
+    fetch: FetchInfo | null; changes: { added: number; removed: number; rules_on_page: number; catalog_year_on_page: string | null } | null
+  }[]
+  school_layers: { id: string; name: string; type: string; url: string; rules: number; evidence_checked: number; evidence_missing: string[]; fetch_mode: string | null; retrieved_at: string | null }[]
+  effective_programs: string[]
+  fetches: { url: string; mode: string; retrieved_at: string | null; error: string | null }[]
+  live_enabled: boolean
 }
 
 export type Reliability = "VERIFIED" | "PENDING_VERIFICATION" | "AMBIGUOUS" | "UNAVAILABLE" | "BLOCKED"
@@ -236,7 +253,8 @@ export type PlanState = {
   _history: { message: string; applied: string[]; assumptions: string[]; mode: string }[]
   _error?: string
   academic_profile?: Loose
-  degree_requirements?: { requirements: RequirementProgress[]; remaining: RequirementProgress[]; courses_needed: number; manual_review: RequirementProgress[]; review_flags: { requirement: string; issue: string }[]; reliability_counts?: Record<Reliability, number> }
+  degree_requirements?: { requirements: RequirementProgress[]; remaining: RequirementProgress[]; courses_needed: number; manual_review: RequirementProgress[]; review_flags: { requirement: string; issue: string }[]; reliability_counts?: Record<Reliability, number>; layers?: { id: string; name: string; type: string; source_url: string | null }[] }
+  requirements_research?: RequirementsResearch
   course_discovery?: {
     term_id: string
     term_name: string

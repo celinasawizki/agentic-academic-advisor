@@ -1,6 +1,6 @@
 "use client"
 
-import { AlertTriangle, BookCheck, Filter, GraduationCap, Info, Sparkles, Target } from "lucide-react"
+import { AlertTriangle, BookCheck, Filter, GraduationCap, Info, Landmark, Quote, Sparkles, Target } from "lucide-react"
 
 import { useState } from "react"
 
@@ -33,6 +33,9 @@ function DashboardBody() {
     ;(acc[r.program_id] ??= []).push(r)
     return acc
   }, {})
+  const isLayer = (rs: RequirementProgress[]) => LAYER_TYPES.includes(rs[0].program_type)
+  const programs = Object.entries(byProgram).filter(([, rs]) => !isLayer(rs))
+  const layers = Object.entries(byProgram).filter(([, rs]) => isLayer(rs))
 
   return (
     <div className="space-y-6">
@@ -54,8 +57,19 @@ function DashboardBody() {
             <p className="mt-1.5 text-muted-foreground">Nothing is marked Verified until a person checks it against your official degree audit or department.</p>
           </div>
           <div className="space-y-6">
-            {Object.entries(byProgram).map(([pid, rs]) => <ProgramProgress key={pid} rs={rs} />)}
+            {programs.map(([pid, rs]) => <ProgramProgress key={pid} rs={rs} />)}
           </div>
+          {layers.length > 0 && (
+            <div className="mt-6 border-t pt-5">
+              <h3 className="flex items-center gap-2 text-sm font-semibold"><Landmark className="size-4 text-primary" /> School &amp; university requirements</h3>
+              <p className="mt-1 mb-4 text-xs text-muted-foreground">
+                Applied automatically on top of your programs: your school&apos;s graduation rules and Temple&apos;s university rules. Each rule
+                quotes the bulletin sentence it comes from, and the Requirements Research Agent checked that sentence is still on the page.
+                These rules can be met by the same courses as your major.
+              </p>
+              <div className="space-y-6">{layers.map(([pid, rs]) => <ProgramProgress key={pid} rs={rs} />)}</div>
+            </div>
+          )}
           <p className="mt-4 flex items-start gap-1.5 text-xs text-muted-foreground">
             <Info className="mt-0.5 size-3.5 shrink-0" /> Requirements were parsed automatically from the Temple Academic Bulletin
             ({reqs.requirements[0]?.catalog_year ?? "current"} catalog) and are pending verification against your official degree audit. Rules the
@@ -139,14 +153,35 @@ function Stat({ label, value, sub, tone }: { label: string; value: React.ReactNo
   )
 }
 
+const LAYER_TYPES = ["school", "university"]
+
 function patternText(p: RequirementPattern) {
-  if (p.attribute) return `any course with GenEd attribute ${p.attribute}`
+  if (p.attribute) return `any course with ${p.attribute === "WI" ? "the writing-intensive" : "GenEd"} attribute ${p.attribute}`
   return `any ${p.subject} ${p.min}–${p.max}`
+}
+
+const METRIC_UNIT: Record<string, string> = { total_credits: "credits", upper_level_credits: "upper-level credits", temple_credits: "credits at Temple", wi_courses: "WI courses" }
+
+function milestoneText(r: RequirementProgress) {
+  const metric = r.patterns.find((p) => p.metric)?.metric ?? ""
+  if (metric === "gpa") return r.value == null ? `GPA unknown · minimum ${r.needed.toFixed(2)}` : `GPA ${r.value.toFixed(2)} · minimum ${r.needed.toFixed(2)}`
+  return `${r.value ?? 0} of ${r.needed} ${METRIC_UNIT[metric] ?? ""}`.trim()
+}
+
+function statusPill(r: RequirementProgress) {
+  if (r.kind === "policy") return <Pill tone="neutral">Policy · check with advisor</Pill>
+  if (r.status === "complete") return <Pill tone="success">Complete</Pill>
+  if (r.status === "in_progress") return <Pill tone="info">In progress</Pill>
+  if (r.status === "unverified") return <Pill tone="warning">Unknown</Pill>
+  if (r.kind === "manual") return <Pill tone="warning">Manual review</Pill>
+  if (r.kind === "milestone") return <Pill tone="neutral">{milestoneText(r)}</Pill>
+  return <Pill tone="neutral">{r.kind === "credits" ? `${r.remaining_needed} cr needed` : `${r.remaining_needed} needed`}</Pill>
 }
 
 function ProgramProgress({ rs }: { rs: RequirementProgress[] }) {
   const [open, setOpen] = useState(false)
-  const countable = rs.filter((r) => r.kind === "count" || r.kind === "credits")
+  const countable = rs.filter((r) => r.kind === "count" || r.kind === "credits" || r.kind === "milestone")
+  const minGrade = rs.find((r) => r.min_grade)?.min_grade
   const done = countable.filter((r) => r.status === "complete").length
   const ip = countable.filter((r) => r.status === "in_progress").length
   const manual = rs.filter((r) => r.kind === "manual")
@@ -160,6 +195,7 @@ function ProgramProgress({ rs }: { rs: RequirementProgress[] }) {
       <div className="mb-1.5 flex flex-wrap items-baseline justify-between gap-2">
         <div className="font-medium">
           {rs[0].program_name} <span className="text-xs font-normal text-muted-foreground capitalize">{rs[0].program_type} · catalog {rs[0].catalog_year ?? "n/a"}</span>
+          {minGrade && <span className="ml-1.5 text-xs font-normal text-muted-foreground">· minimum grade {minGrade}</span>}
           {rs[0].source_url && <a href={rs[0].source_url} target="_blank" rel="noreferrer" className="ml-1.5 text-xs text-primary hover:underline">bulletin ↗</a>}
         </div>
         <div className="text-xs text-muted-foreground">{done}/{countable.length} rules complete{ip ? ` · ${ip} in progress` : ""}{manual.length ? ` · ${manual.length} manual` : ""}</div>
@@ -177,11 +213,9 @@ function ProgramProgress({ rs }: { rs: RequirementProgress[] }) {
                 <li key={r.id} className={cn("rounded-lg border px-2.5 py-2 text-xs", r.status === "complete" && "bg-success-soft/40", r.kind === "manual" && "border-warning/40 bg-warning-soft/40")}>
                   <div className="flex items-start justify-between gap-2">
                     <span className="font-medium">{r.name} <span className="ml-1 inline-block align-middle"><ReliabilityBadge status={r.reliability} title={r.reliability_reason} /></span></span>
-                    <Pill tone={r.status === "complete" ? "success" : r.status === "in_progress" ? "info" : r.kind === "manual" ? "warning" : "neutral"}>
-                      {r.status === "complete" ? "Complete" : r.status === "in_progress" ? "In progress" : r.kind === "manual" ? "Manual review"
-                        : r.kind === "credits" ? `${r.remaining_needed} cr needed` : `${r.remaining_needed} needed`}
-                    </Pill>
+                    {statusPill(r)}
                   </div>
+                  {r.kind === "milestone" && r.status !== "incomplete" && <div className="mt-1 text-muted-foreground">{milestoneText(r)}</div>}
                   {r.options.length > 1 && (
                     <div className="mt-1 text-muted-foreground">
                       {r.options.slice(0, 12).map((o, i) => {
@@ -195,11 +229,17 @@ function ProgramProgress({ rs }: { rs: RequirementProgress[] }) {
                       {r.options.length > 12 && <span> +{r.options.length - 12} more</span>}
                     </div>
                   )}
-                  {r.patterns.length > 0 && <div className="mt-1 text-muted-foreground">Counts: {r.patterns.map(patternText).join("; ")}</div>}
+                  {r.patterns.some((p) => !p.metric) && <div className="mt-1 text-muted-foreground">Counts: {r.patterns.filter((p) => !p.metric).map(patternText).join("; ")}</div>}
                   {(r.completed.length > 0 || r.in_progress.length > 0) && r.options.length <= 1 && (
                     <div className="mt-1 text-muted-foreground">Applied: {[...r.completed, ...r.in_progress].join(", ")}</div>
                   )}
                   {r.kind === "manual" && <div className="mt-1 text-warning">Couldn&apos;t be parsed automatically — check with your advisor.</div>}
+                  {r.evidence && (
+                    <div className="mt-1.5 flex gap-1 text-[11px] text-muted-foreground italic">
+                      <Quote className="mt-0.5 size-3 shrink-0" />
+                      <span>{r.evidence.length > 180 ? `${r.evidence.slice(0, 180)}…` : r.evidence}</span>
+                    </div>
+                  )}
                   {r.notes.slice(0, 2).map((n) => <div key={n} className="mt-1 text-warning">{n}</div>)}
                 </li>
               ))}

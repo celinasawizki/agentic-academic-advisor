@@ -69,7 +69,7 @@ class RequirementData(BaseModel):
     program_type: str
     group: str = ""
     name: str
-    kind: Literal["count", "credits", "manual", "note"]
+    kind: Literal["count", "credits", "milestone", "policy", "manual", "note"]
     needed: float
     options: list[list[str]] = []
     patterns: list[dict] = []
@@ -77,6 +77,8 @@ class RequirementData(BaseModel):
     catalog_year: str | None = None
     verification_status: str
     source_url: str | None = None
+    min_grade: str | None = None  # minimum grade for a course to count (program or school rule)
+    evidence: str | None = None  # verbatim bulletin quote (school/university layers)
 
     @property
     def courses(self) -> list[str]:
@@ -84,6 +86,8 @@ class RequirementData(BaseModel):
 
     def pattern_matches(self, course: "CourseData", section_attrs: list[str] | None = None) -> bool:
         for p in self.patterns:
+            if "metric" in p:
+                continue
             if "attribute" in p:
                 if p["attribute"] in course.attributes or p["attribute"] in (section_attrs or []):
                     return True

@@ -31,6 +31,7 @@ class DbCatalogAdapter(RequirementsCatalogAdapter):
         for p in self.db.query(AcademicProgram).all():
             out[p.id] = {"id": p.id, "name": p.name, "type": p.type, "college": p.college, "catalog_year": p.catalog_year,
                          "supported": p.supported, "total_credit_hours": p.total_credit_hours,
+                         "layers": p.layers or [], "min_grade": p.min_grade,
                          "source_url": p.source.url if p.source else None,
                          "retrieved_at": p.source.retrieved_at.isoformat() if p.source else None,
                          "verification_status": p.source.verification_status if p.source else "unknown"}
@@ -38,12 +39,16 @@ class DbCatalogAdapter(RequirementsCatalogAdapter):
 
     def requirements(self, program_ids: list[str]) -> list[RequirementData]:
         out = []
-        for p in self.db.query(AcademicProgram).filter(AcademicProgram.id.in_(program_ids)).all():
+        found = {p.id: p for p in self.db.query(AcademicProgram).filter(AcademicProgram.id.in_(program_ids)).all()}
+        for pid in program_ids:
+            if (p := found.get(pid)) is None:
+                continue
             for r in p.requirements:
                 out.append(RequirementData(id=r.id, program_id=p.id, program_name=p.name, program_type=p.type, group=r.group,
                                            name=r.name, kind=r.kind, needed=r.needed, options=r.options or [],
                                            patterns=r.patterns or [], notes=r.notes or [], catalog_year=r.catalog_year,
-                                           verification_status=r.verification_status, source_url=p.source.url if p.source else None))
+                                           verification_status=r.verification_status, source_url=p.source.url if p.source else None,
+                                           min_grade=(p.min_grade or {}).get("grade"), evidence=r.evidence))
         return out
 
     def verified_rules(self) -> dict[str, dict]:

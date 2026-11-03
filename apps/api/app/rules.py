@@ -27,7 +27,13 @@ def grade_ok(grade: str | None, minimum: str | None = None) -> bool:
 
 def counts_as_done(t: TranscriptItem, minimum: str | None = None) -> bool:
     return t.status in COMPLETED_STATUSES and grade_ok(t.grade, minimum)
-PROGRAM_PRIORITY = {"major": 0, "minor": 1, "certificate": 2, "gened": 3}
+PROGRAM_PRIORITY = {"major": 0, "minor": 1, "certificate": 2, "gened": 3, "school": 4, "university": 5}
+# School/college and university layers are degree-level rules that the same courses
+# legitimately satisfy alongside the major (e.g. PSY 1002 is both a Psychology BA course
+# and CLA's professional-development seminar), so they never block or consume courses.
+LAYER_TYPES = {"school", "university"}
+GRADE_POINTS = {"A": 4.0, "A-": 3.67, "B+": 3.33, "B": 3.0, "B-": 2.67, "C+": 2.33, "C": 2.0, "C-": 1.67,
+                "D+": 1.33, "D": 1.0, "D-": 0.67, "F": 0.0}
 OTHER = "@OTHER"
 
 
@@ -139,8 +145,9 @@ class RequirementProgress:
     remaining_needed: float  # courses for count, credits for credits
     remaining_courses: int  # schedulable course slots still needed
     candidate_courses: list[str]
-    status: str  # complete | in_progress | incomplete | manual | note
+    status: str  # complete | in_progress | incomplete | unverified | manual | policy | note
     notes: list[str] = field(default_factory=list)
+    value: float | None = None  # milestones: current value of the metric (credits, GPA, course count)
 
     def to_dict(self) -> dict:
         r = self.requirement
@@ -151,7 +158,7 @@ class RequirementProgress:
             "verification_status": r.verification_status, "source_url": r.source_url,
             "completed": self.completed, "in_progress": self.in_progress, "remaining_needed": self.remaining_needed,
             "remaining_courses": self.remaining_courses, "candidate_courses": self.candidate_courses,
-            "status": self.status, "notes": self.notes,
+            "status": self.status, "notes": self.notes, "value": self.value, "min_grade": r.min_grade, "evidence": r.evidence,
         }
 
 
@@ -166,6 +173,7 @@ def requirement_progress(
     Without an explicit rule we do not assume double counting."""
     double_count_allowed = double_count_allowed or set()
     courses = courses or {}
+    grade_of = {t.course: t.grade for t in transcript}
     status_of = {t.course: t.status for t in transcript if t.status not in ("planned", "unverified")
                  and (t.status == "in_progress" or grade_ok(t.grade))}
     gened_ok = {t.course for t in transcript if t.status == "in_progress" or grade_ok(t.grade, GENED_MIN_GRADE)}
@@ -181,6 +189,11 @@ def requirement_progress(
         if req.program_type == "gened" and code not in gened_ok:
             notes.append(f"{code} grade is below the GenEd minimum ({GENED_MIN_GRADE}).")
             return False
+        if req.min_grade and status_of[code] in COMPLETED_STATUSES and not grade_ok(grade_of.get(code), req.min_grade):
+            notes.append(f"{code} grade {grade_of.get(code)} is below this program's minimum ({req.min_grade}) and does not count.")
+            return False
+        if req.program_type in LAYER_TYPES:
+            return True
         other = owner.get(code)
         if other and other != req.program_id and frozenset({other, req.program_id}) not in double_count_allowed:
             notes.append(f"{code} already applied to another program; double counting not assumed.")
@@ -189,12 +202,16 @@ def requirement_progress(
 
     def take(code: str, req: RequirementData) -> None:
         used_by_program.setdefault(req.program_id, set()).add(code)
-        owner.setdefault(code, req.program_id)
+        if req.program_type not in LAYER_TYPES:
+            owner.setdefault(code, req.program_id)
 
     for req in ordered:
         notes: list[str] = []
-        if req.kind in ("note", "manual"):
+        if req.kind in ("note", "manual", "policy"):
             out.append(RequirementProgress(req, [], [], 0, 0, [], req.kind, list(req.notes)))
+            continue
+        if req.kind == "milestone":
+            out.append(milestone_progress(req, transcript, courses))
             continue
         completed, in_progress = [], []
         got = 0.0
@@ -228,7 +245,56 @@ def requirement_progress(
         candidates = [c for c in dict.fromkeys(req.courses) if c not in taken and c not in status_of] if remaining else []
         status = "complete" if not remaining and not in_progress else ("in_progress" if not remaining else "incomplete")
         out.append(RequirementProgress(req, completed, in_progress, remaining, slots, candidates, status, notes))
-    return out
+    by_id = {p.requirement.id: p for p in out}
+    return [by_id[r.id] for r in requirements]  # allocation order is internal; keep the bulletin's order
+
+
+def _credits(code: str, courses: dict[str, CourseData]) -> float:
+    return float(courses[code].credits) if code in courses else 3.0
+
+
+def milestone_progress(req: RequirementData, transcript: list[TranscriptItem], courses: dict[str, CourseData]) -> RequirementProgress:
+    """Degree-level milestones computed from the record: total / upper-level / Temple
+    (residency) credits, GPA, or writing-intensive courses. Not schedulable directly."""
+    metric = next((p["metric"] for p in req.patterns if "metric" in p), "")
+    done = [t for t in transcript if counts_as_done(t)]
+    in_prog = [t for t in transcript if t.status == "in_progress"]
+    notes = list(req.notes)
+    unknown = sorted({t.course for t in done + in_prog if t.course not in courses})
+    if unknown and metric != "gpa":
+        notes.append(f"Credits for {', '.join(unknown[:5])} are not in the course data; 3 credits assumed.")
+    if metric == "gpa":
+        graded = [t for t in transcript if t.status == "completed" and (t.grade or "").upper() in GRADE_POINTS]
+        hours = sum(_credits(t.course, courses) for t in graded)
+        if not hours:
+            notes.append("No letter grades entered; GPA can't be computed. Your official GPA is on your degree audit.")
+            return RequirementProgress(req, [], [], 0, 0, [], "unverified", notes, None)
+        gpa = round(sum(GRADE_POINTS[t.grade.upper()] * _credits(t.course, courses) for t in graded) / hours, 2)
+        notes.append("Computed from the grades you entered (Temple courses only); your official GPA is on your degree audit.")
+        return RequirementProgress(req, [], [], 0 if gpa >= req.needed else round(req.needed - gpa, 2), 0, [],
+                                   "complete" if gpa >= req.needed else "incomplete", notes, gpa)
+    if metric == "wi_courses":
+        wanted = {c for o in req.options for c in o}
+
+        def is_wi(code: str) -> bool:
+            return code in wanted if wanted else code in courses and "WI" in courses[code].attributes
+        got = [t.course for t in done if is_wi(t.course)]
+        ip = [t.course for t in in_prog if is_wi(t.course)]
+        value, value_ip = float(len(got)), float(len(ip))
+    else:
+        def counts(t: TranscriptItem) -> bool:
+            if metric == "upper_level_credits":
+                num = t.course.split()[-1]
+                return num.isdigit() and 2000 <= int(num) <= 4999
+            if metric == "temple_credits":
+                return t.status == "completed"
+            return True
+        got = [t.course for t in done if counts(t)]
+        ip = [t.course for t in in_prog if counts(t)]
+        value, value_ip = sum(_credits(c, courses) for c in got), sum(_credits(c, courses) for c in ip)
+    remaining = max(0.0, req.needed - value)
+    status = "complete" if not remaining else ("in_progress" if value + value_ip >= req.needed else "incomplete")
+    return RequirementProgress(req, got, ip, remaining, 0, [], status, notes, value)
 
 
 def total_credits(sections: list[SectionData], courses: dict[str, CourseData]) -> float:

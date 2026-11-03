@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.adapters.catalog import DbCatalogAdapter
 from app.core.db import get_db
+from app.ingest.school import LAYER_TYPES
 from app.models import AcademicTerm, Course
 
 router = APIRouter(prefix="/api/catalog", tags=["catalog"])
@@ -10,8 +11,8 @@ router = APIRouter(prefix="/api/catalog", tags=["catalog"])
 
 @router.get("/programs")
 def programs(db: Session = Depends(get_db)):
-    progs = DbCatalogAdapter(db).programs()
-    return sorted(progs.values(), key=lambda p: (not p["supported"], p["type"], p["name"]))
+    progs = [p for p in DbCatalogAdapter(db).programs().values() if p["type"] not in LAYER_TYPES]  # layers apply automatically
+    return sorted(progs, key=lambda p: (not p["supported"], p["type"], p["name"]))
 
 
 @router.get("/terms")

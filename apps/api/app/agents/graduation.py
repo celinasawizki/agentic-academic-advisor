@@ -2,7 +2,7 @@ from functools import lru_cache
 
 from app.agents.base import Agent, PlanContext
 
-TYPE_WEIGHT = {"major": 0.15, "minor": 0.05, "certificate": 0.05, "gened": 0.0}
+TYPE_WEIGHT = {"major": 0.15, "minor": 0.05, "certificate": 0.05, "gened": 0.0, "school": 0.1, "university": 0.1}
 
 
 def term_index(term: str) -> int:

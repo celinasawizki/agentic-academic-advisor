@@ -27,7 +27,7 @@ def test_demo_plan_end_to_end(client):
     plan = run_plan(client)
     st = plan["state"]
     executed = [a["agent"] for a in plan["agents"] if a["status"] == "complete"]
-    assert executed[:9] == ["academic_profile", "degree_requirements", "course_discovery", "interest_matching",
+    assert executed[:10] == ["academic_profile", "requirements_research", "degree_requirements", "course_discovery", "interest_matching",
                             "graduation_planning", "scheduling_constraints", "schedule_optimization", "academic_review",
                             "student_explanation"]
     opts = st["schedule_optimization"]["options"]

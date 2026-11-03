@@ -18,7 +18,7 @@ DEGREE_SUFFIX = re.compile(r"-(ba|bs|bba|bfa|bm|bmus|bsn|bse|bsw|bsed|bsba|barch
 def clean(fragment: str) -> str:
     text = re.sub(r"<sup[^>]*>.*?</sup>", "", fragment, flags=re.S)
     text = re.sub(r"<[^>]+>", " ", text)
-    text = htmllib.unescape(text).replace("\xa0", " ")
+    text = htmllib.unescape(text).replace("\xa0", " ").replace("​", "")
     return re.sub(r"\s+", " ", text).strip()
 
 
