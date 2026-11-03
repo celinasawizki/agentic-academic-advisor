@@ -1,0 +1,35 @@
+from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+REPO_ROOT = Path(__file__).resolve().parents[4]
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=(REPO_ROOT / ".env", ".env"), extra="ignore")
+
+    database_url: str = f"sqlite:///{REPO_ROOT / 'apps' / 'api' / 'academic_planner.db'}"
+    data_dir: Path = REPO_ROOT / "data" / "demo"
+    upload_dir: Path = REPO_ROOT / "apps" / "api" / "uploads"
+
+    anthropic_api_key: str | None = None
+    anthropic_model: str = "claude-opus-5-5"
+    # Student education records are never sent to the LLM unless explicitly enabled
+    # under an institutional data agreement. Only catalog data and interest text are sent.
+    llm_may_receive_student_records: bool = False
+
+    cors_origins: list[str] = ["http://localhost:3000"]
+    max_upload_bytes: int = 5 * 1024 * 1024
+
+    # F-1 full course of study (undergraduate): 12 credits, of which at most one
+    # online course / 3 online credits may count. Configurable, not hardcoded in logic.
+    f1_full_time_credits: int = 12
+    f1_max_online_credits_counted: int = 3
+    f1_hybrid_counts_as_in_person: bool = False
+
+    @property
+    def llm_enabled(self) -> bool:
+        return bool(self.anthropic_api_key)
+
+
+settings = Settings()
