@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.agents.base import PlanContext
-from app.agents.constraints import apply_changes, parse_change_request
+from app.agents.constraints import QUESTION_RE, apply_changes, parse_change_request
 from app.agents.review import review_sections
 from app.core.auth import Principal, authorize_plan, authorize_student, get_principal
 from app.core.db import get_db
@@ -11,6 +11,7 @@ from app.domain import AvailBlock, StudentProfile
 from app.ingest.sections import components_by_course
 from app.models import AgentExecution, AvailabilityBlock, PlanRun, Student
 from app.optimizer import ScheduleModel
+from app.agents.research import apply_research
 from app.orchestrator import PIPELINE, PlanBusy, create_plan, load_catalog, queue_agents, run_plan
 from app.routers.students import AvailabilityIn
 from app.rules import total_credits
@@ -110,11 +111,23 @@ def modify(plan_id: str, body: ModifyIn, bg: BackgroundTasks, db: Session = Depe
     current = sorted({s["course"] for o in plan.state.get("schedule_optimization", {}).get("options", []) for s in o["sections"]})
     changes, mode = parse_change_request(body.message, current)
     if not changes.changes:
-        return {"applied": [], "assumptions": [], "unclear": changes.unclear, "mode": mode, "rerun": False}
-    updated, applied, assumptions = apply_changes(student, changes)
-    _rerun(db, plan, updated, bg, {"message": body.message, "applied": applied, "assumptions": assumptions, "mode": mode},
+        return {"applied": [], "assumptions": [], "warnings": [], "unclear": changes.unclear, "mode": mode, "rerun": False}
+    required: dict[str, list[str]] = {}
+    for r in plan.state.get("degree_requirements", {}).get("remaining", []):
+        if r["kind"] == "count" and len(r["options"]) == 1 and not r["patterns"]:
+            for c in r["options"][0]:
+                required.setdefault(c, []).append(f"{r['program_name']} ({r['name'][:80]})")
+    if QUESTION_RE.match(body.message):  # a question is answered, not executed
+        preview: list[str] = []
+        _, would, _ = apply_changes(student, changes, required, preview)
+        return {"applied": [], "assumptions": [], "warnings": preview, "mode": mode, "rerun": False,
+                "unclear": [f"That reads as a question, so nothing was changed. It would: {'; '.join(would)}. "
+                            "Say it as a request (e.g. 'Drop PSY 3096') to apply it."]}
+    warnings: list[str] = []
+    updated, applied, assumptions = apply_changes(student, changes, required, warnings)
+    _rerun(db, plan, updated, bg, {"message": body.message, "applied": applied, "assumptions": assumptions + warnings, "mode": mode},
            "course_discovery")
-    return {"applied": applied, "assumptions": assumptions, "unclear": changes.unclear, "mode": mode, "rerun": True}
+    return {"applied": applied, "assumptions": assumptions, "warnings": warnings, "unclear": changes.unclear, "mode": mode, "rerun": True}
 
 
 @router.post("/{plan_id}/preferences")
@@ -200,6 +213,8 @@ def validate(plan_id: str, body: ValidateIn, db: Session = Depends(get_db), prin
         raise HTTPException(409, "Plan has not finished discovery yet")
     student = StudentProfile(**plan.state["_student"])
     catalog = load_catalog(db, plan.term_id, student.program_ids)
+    if plan.state.get("requirements_research"):
+        apply_research(catalog, plan.state["requirements_research"])  # same rules the agents used
     by_id = {s.id: s for s in catalog.sections}
     unknown = [s for s in body.section_ids if s not in by_id]
     if unknown:

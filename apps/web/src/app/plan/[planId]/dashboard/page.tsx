@@ -81,7 +81,7 @@ function DashboardBody() {
           <section className="rounded-2xl border bg-card p-5">
             <header className="mb-3 flex items-center justify-between">
               <h2 className="flex items-center gap-2 font-semibold"><Sparkles className="size-4.5 text-primary" /> Academic interests</h2>
-              {Object.values(im.scores)[0]?.method === "llm_semantic" ? <AISuggestion /> : <Pill>Concept matching</Pill>}
+              {Object.values(im.scores)[0]?.method === "llm_semantic" ? <AISuggestion /> : <Pill>Text similarity (deterministic)</Pill>}
             </header>
             <p className="rounded-lg bg-muted/50 p-3 text-sm italic">&ldquo;{st._student.interests_text}&rdquo;</p>
             <div className="mt-3 flex flex-wrap gap-1.5">{im.themes.map((t) => <Pill key={t.label} tone="cherry">{t.label}</Pill>)}</div>

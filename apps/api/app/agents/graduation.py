@@ -59,17 +59,24 @@ class GraduationPlanningAgent(Agent):
         sem_left = semesters_remaining(s.planning_term, s.expected_graduation)
         priorities, critical = {}, []
         for c, meta in remaining_courses.items():
-            p = (0.6 if meta["mandatory"] else 0.3 if meta["patterned"] else 0.45) + TYPE_WEIGHT.get(meta["program_type"], 0)
-            p += min(0.15, 0.03 * len(meta["requirements"]))
+            base = 0.6 if meta["mandatory"] else 0.3 if meta["patterned"] else 0.45
+            basis = [("individually required course" if meta["mandatory"] else "matches a course range/attribute rule"
+                      if meta["patterned"] else "one of several listed options", base)]
+            if TYPE_WEIGHT.get(meta["program_type"], 0):
+                basis.append((f"counts toward a {meta['program_type']}", TYPE_WEIGHT[meta["program_type"]]))
+            basis.append((f"counts toward {len(meta['requirements'])} open rule(s)", min(0.15, 0.03 * len(meta["requirements"]))))
             unlocks = sorted(downstream[c])
-            p += min(0.2, 0.05 * len(unlocks))
+            if unlocks:
+                basis.append((f"prerequisite for {len(unlocks)} remaining course(s)", min(0.2, 0.05 * len(unlocks))))
             ch = chain(c)
             slack = sem_left - ch
             if meta["mandatory"] and ch >= 2 and slack <= 1:
-                p += 0.2
+                basis.append(("graduation-critical sequence", 0.2))
                 critical.append({"course": c, "chain_length": ch, "semesters_left": sem_left, "slack": slack, "unlocks": unlocks[:8],
                                  "reason": f"{c} starts a {ch}-course prerequisite chain with only {slack} semester(s) of slack before {s.expected_graduation}."})
-            priorities[c] = {"priority": round(min(1.0, p), 3), "chain_length": ch, "unlocks": unlocks[:8], "mandatory": meta["mandatory"]}
+            p = sum(v for _, v in basis)
+            priorities[c] = {"priority": round(min(1.0, p), 3), "chain_length": ch, "unlocks": unlocks[:8], "mandatory": meta["mandatory"],
+                             "basis": [{"factor": f, "value": round(v, 3)} for f, v in basis] + ([{"factor": "capped at 1.0", "value": round(1.0 - p, 3)}] if p > 1 else [])}
 
         courses_needed = req["courses_needed"]
         per_term = courses_needed / max(1, sem_left)

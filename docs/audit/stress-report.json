@@ -1,0 +1,2124 @@
+{
+ "seed": 99,
+ "students": 240,
+ "violations": 0,
+ "rows": [
+  {
+   "programs": [
+    "public-health-bs",
+    "ancient-mediterranean-studies-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 23.0
+  },
+  {
+   "programs": [
+    "general-science-technology-with-teaching-bs",
+    "health-information-management-minor",
+    "social-science-research-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.4
+  },
+  {
+   "programs": [
+    "art-history-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.7
+  },
+  {
+   "programs": [
+    "real-estate-bba",
+    "forensic-psychology-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 17.5
+  },
+  {
+   "programs": [
+    "media-studies-production-media-business-ba",
+    "entrepreneurship-creative-businesses-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.1
+  },
+  {
+   "programs": [
+    "environmental-studies-ba",
+    "lesbian-gay-bisexual-transgender-studies-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.5
+  },
+  {
+   "programs": [
+    "data-science-genomics-bioinformatics-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.7
+  },
+  {
+   "programs": [
+    "performance-classical-guitar-bm",
+    "corporate-risk-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.3
+  },
+  {
+   "programs": [
+    "ceramics-bfa",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.4
+  },
+  {
+   "programs": [
+    "art-education-bsed",
+    "chamber-music-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.2
+  },
+  {
+   "programs": [
+    "earth-space-science-with-teaching-bs",
+    "artificial-intelligence-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.6
+  },
+  {
+   "programs": [
+    "film-media-arts-post-production-ba",
+    "american-sign-language-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.0
+  },
+  {
+   "programs": [
+    "secondary-education-mathematics-education-bsed",
+    "human-development-community-engagement-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.8
+  },
+  {
+   "programs": [
+    "career-technical-education-marketing-education-bsed",
+    "leadership-military-science-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.8
+  },
+  {
+   "programs": [
+    "secondary-education-world-languages-education-bsed",
+    "environmental-horticulture-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.0
+  },
+  {
+   "programs": [
+    "social-work-bsw",
+    "city-regional-planning-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.0
+  },
+  {
+   "programs": [
+    "business-management-bba",
+    "digital-marketing-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 19.7
+  },
+  {
+   "programs": [
+    "special-education-prek12-bsed",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.2
+  },
+  {
+   "programs": [
+    "liberal-studies-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.2
+  },
+  {
+   "programs": [
+    "mathematics-physics-bs",
+    "illustration-emerging-media-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.5
+  },
+  {
+   "programs": [
+    "music-therapy-bm",
+    "professional-writing-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.3
+  },
+  {
+   "programs": [
+    "data-science-computational-analytics-bs",
+    "cognitive-neuroscience-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.3
+  },
+  {
+   "programs": [
+    "general-science-mathematics-with-teaching-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.2
+  },
+  {
+   "programs": [
+    "general-science-mathematics-with-teaching-bs",
+    "arab-studies-minor",
+    "music-theory-jazz-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.8
+  },
+  {
+   "programs": [
+    "neuroscience-cellular-molecular-bs",
+    "italian-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 14.6
+  },
+  {
+   "programs": [
+    "italian-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.0
+  },
+  {
+   "programs": [
+    "career-technical-education-marketing-education-bsed",
+    "computer-science-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.5
+  },
+  {
+   "programs": [
+    "horticulture-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.3
+  },
+  {
+   "programs": [
+    "environmental-science-environmental-geochemistry-bs",
+    "clinical-health-psychology-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.0
+  },
+  {
+   "programs": [
+    "media-studies-production-media-production-ba",
+    "data-science-computational-analytics-minor",
+    "music-theory-traditional-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.8
+  },
+  {
+   "programs": [
+    "secondary-education-mathematics-education-bsed",
+    "social-justice-honors-interdisciplinary-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 26.2
+  },
+  {
+   "programs": [
+    "history-ba",
+    "marketing-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.9
+  },
+  {
+   "programs": [
+    "international-business-sales-business-development-bba",
+    "astrophysics-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 25.0
+  },
+  {
+   "programs": [
+    "psychological-studies-ba",
+    "business-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.8
+  },
+  {
+   "programs": [
+    "film-media-arts-screenwriting-bfa",
+    "theater-minor",
+    "sports-media-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.2
+  },
+  {
+   "programs": [
+    "classics-classical-civilizations-ba",
+    "acting-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 14.2
+  },
+  {
+   "programs": [
+    "international-affairs-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.3
+  },
+  {
+   "programs": [
+    "environmental-studies-ba",
+    "physics-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.9
+  },
+  {
+   "programs": [
+    "middle-grades-education-social-studies-bsed",
+    "adult-learning-training-organizational-development-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.2
+  },
+  {
+   "programs": [
+    "french-studies-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.5
+  },
+  {
+   "programs": [
+    "music-history-bm",
+    "environmental-engineering-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.5
+  },
+  {
+   "programs": [
+    "risk-management-insurance-managing-human-capital-risk-bba",
+    "geography-urban-studies-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 16.7
+  },
+  {
+   "programs": [
+    "mechanical-engineering-bsme",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.5
+  },
+  {
+   "programs": [
+    "jazz-studies-performance-voice-bm",
+    "event-entertainment-management-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.0
+  },
+  {
+   "programs": [
+    "french-studies-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.6
+  },
+  {
+   "programs": [
+    "religion-ba",
+    "healthcare-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.1
+  },
+  {
+   "programs": [
+    "artificial-intelligence-bs",
+    "financial-planning-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.6
+  },
+  {
+   "programs": [
+    "entrepreneurship-innovation-management-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.4
+  },
+  {
+   "programs": [
+    "landscape-architecture-horticulture-bs",
+    "visual-journalism-minor",
+    "jazz-arranging-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.6
+  },
+  {
+   "programs": [
+    "secondary-education-english-education-bsed",
+    "general-business-studies-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.6
+  },
+  {
+   "programs": [
+    "human-development-community-engagement-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.1
+  },
+  {
+   "programs": [
+    "music-bs",
+    "classical-languages-literature-minor",
+    "entrepreneurship-creative-businesses-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.5
+  },
+  {
+   "programs": [
+    "economics-bba",
+    "artificial-intelligence-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 19.2
+  },
+  {
+   "programs": [
+    "italian-ba",
+    "international-business-administration-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.4
+  },
+  {
+   "programs": [
+    "information-science-technology-bs",
+    "international-communication-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.4
+  },
+  {
+   "programs": [
+    "jazz-studies-performance-piano-bm",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.2
+  },
+  {
+   "programs": [
+    "global-studies-ba",
+    "public-health-minor",
+    "sport-management-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.4
+  },
+  {
+   "programs": [
+    "marketing-bba",
+    "ancient-mediterranean-studies-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.0
+  },
+  {
+   "programs": [
+    "genomic-medicine-bs",
+    "applied-epidemiology-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 3.3
+  },
+  {
+   "programs": [
+    "computer-science-ba",
+    "international-business-administration-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 2.5
+  },
+  {
+   "programs": [
+    "jewish-studies-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 23.4
+  },
+  {
+   "programs": [
+    "international-business-finance-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.6
+  },
+  {
+   "programs": [
+    "metals-jewelry-cad-cam-bfa",
+    "theater-education-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.1
+  },
+  {
+   "programs": [
+    "cybersecurity-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.1
+  },
+  {
+   "programs": [
+    "environmental-science-environmental-geochemistry-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.1
+  },
+  {
+   "programs": [
+    "special-education-prek12-bsed",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.4
+  },
+  {
+   "programs": [
+    "secondary-education-mathematics-education-bsed",
+    "nutrition-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.1
+  },
+  {
+   "programs": [
+    "music-bs",
+    "gender-sexuality-womens-studies-minor",
+    "american-sign-language-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.6
+  },
+  {
+   "programs": [
+    "environmental-science-hydrology-bs",
+    "portuguese-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.5
+  },
+  {
+   "programs": [
+    "psychology-ba",
+    "jazz-voice-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.6
+  },
+  {
+   "programs": [
+    "classics-classical-civilizations-ba",
+    "ecological-planning-design-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.9
+  },
+  {
+   "programs": [
+    "jewish-studies-ba",
+    "digital-media-technologies-minor-science-technology",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.7
+  },
+  {
+   "programs": [
+    "international-business-finance-bba",
+    "forensic-psychology-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.3
+  },
+  {
+   "programs": [
+    "dance-bfa",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.5
+  },
+  {
+   "programs": [
+    "international-business-economics-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 14.1
+  },
+  {
+   "programs": [
+    "artificial-intelligence-bs",
+    "financial-planning-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.9
+  },
+  {
+   "programs": [
+    "middle-grades-education-science-language-arts-bsed",
+    "clinical-health-psychology-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.9
+  },
+  {
+   "programs": [
+    "pharmaceutical-studies-bs",
+    "spanish-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.3
+  },
+  {
+   "programs": [
+    "genomic-medicine-pre-med-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.0
+  },
+  {
+   "programs": [
+    "art-education-bsed",
+    "international-communication-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.2
+  },
+  {
+   "programs": [
+    "natural-sciences-chemistry-ba",
+    "japanese-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.5
+  },
+  {
+   "programs": [
+    "communication-studies-communication-studies-thesis-ba",
+    "entrepreneurship-innovation-management-minor",
+    "acting-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.2
+  },
+  {
+   "programs": [
+    "tourism-hospitality-event-management-bs",
+    "data-science-computational-analytics-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.1
+  },
+  {
+   "programs": [
+    "forensic-chemistry-bs",
+    "corporate-risk-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 14.6
+  },
+  {
+   "programs": [
+    "middle-grades-education-science-language-arts-bsed",
+    "cellular-molecular-neurobiology-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.9
+  },
+  {
+   "programs": [
+    "cybersecurity-human-behavior-ba",
+    "creative-writing-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.1
+  },
+  {
+   "programs": [
+    "performance-classical-guitar-bm",
+    "performing-arts-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.4
+  },
+  {
+   "programs": [
+    "data-science-computational-analytics-bs",
+    "stage-management-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.6
+  },
+  {
+   "programs": [
+    "civil-engineering-environmental-engineering-bsce",
+    "corporate-risk-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.6
+  },
+  {
+   "programs": [
+    "chinese-ba",
+    "social-justice-honors-interdisciplinary-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.7
+  },
+  {
+   "programs": [
+    "philosophy-ba",
+    "digital-media-technologies-minor-science-technology",
+    "business-basics-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 16.8
+  },
+  {
+   "programs": [
+    "chinese-ba",
+    "horticultural-therapy-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.1
+  },
+  {
+   "programs": [
+    "middle-grades-education-mathematics-language-arts-bsed",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.6
+  },
+  {
+   "programs": [
+    "music-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.6
+  },
+  {
+   "programs": [
+    "art-graphic-design-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.9
+  },
+  {
+   "programs": [
+    "media-studies-production-media-business-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.4
+  },
+  {
+   "programs": [
+    "early-elementary-education-bsed",
+    "health-information-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.8
+  },
+  {
+   "programs": [
+    "sculpture-bfa",
+    "film-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.5
+  },
+  {
+   "programs": [
+    "natural-sciences-chemistry-ba",
+    "japanese-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.1
+  },
+  {
+   "programs": [
+    "natural-sciences-earth-environmental-sciences-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.9
+  },
+  {
+   "programs": [
+    "career-technical-education-marketing-education-bsed",
+    "healthcare-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.2
+  },
+  {
+   "programs": [
+    "advertising-media-planning-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.1
+  },
+  {
+   "programs": [
+    "quantum-materials-science-bs",
+    "economics-minor-liberal-arts",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.8
+  },
+  {
+   "programs": [
+    "mathematics-computer-science-with-teaching-bs",
+    "spanish-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.7
+  },
+  {
+   "programs": [
+    "early-elementary-education-special-education-bsed",
+    "emergency-sports-injury-management-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.9
+  },
+  {
+   "programs": [
+    "nursing-accelerated-bsn",
+    "international-communication-minor",
+    "jazz-studies-composition-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.7
+  },
+  {
+   "programs": [
+    "mathematics-with-teaching-bs",
+    "entrepreneurship-innovation-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.7
+  },
+  {
+   "programs": [
+    "physics-bs",
+    "tourism-hospitality-management-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.8
+  },
+  {
+   "programs": [
+    "music-education-jazz-bm",
+    "mobile-application-development-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.9
+  },
+  {
+   "programs": [
+    "international-business-economics-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 15.1
+  },
+  {
+   "programs": [
+    "biology-with-teaching-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.4
+  },
+  {
+   "programs": [
+    "marketing-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 18.4
+  },
+  {
+   "programs": [
+    "fibers-materials-studies-bfa",
+    "artificial-intelligence-minor",
+    "leadership-military-science-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.9
+  },
+  {
+   "programs": [
+    "real-estate-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 15.4
+  },
+  {
+   "programs": [
+    "mathematics-bs",
+    "childrens-media-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.7
+  },
+  {
+   "programs": [
+    "physics-ba",
+    "jewish-secular-studies-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.7
+  },
+  {
+   "programs": [
+    "early-elementary-education-special-education-bsed",
+    "entrepreneurship-innovation-management-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 4.8
+  },
+  {
+   "programs": [
+    "quantum-materials-science-bs",
+    "english-language-teaching-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.1
+  },
+  {
+   "programs": [
+    "middle-grades-education-science-language-arts-bsed",
+    "supply-chain-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.4
+  },
+  {
+   "programs": [
+    "ecology-evolution-biodiversity-bs",
+    "science-technology-society-honors-interdisciplinary-minor",
+    "stage-management-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.8
+  },
+  {
+   "programs": [
+    "multidisciplinary-studies-sport-tourism-hospitality-event-management-bs",
+    "clinical-health-psychology-minor",
+    "spanish-latin-american-studies-business-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 19.1
+  },
+  {
+   "programs": [
+    "career-technical-education-business-computer-information-technology-education-bsed",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.3
+  },
+  {
+   "programs": [
+    "middle-grades-education-science-bsed",
+    "real-estate-minor",
+    "business-basics-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.4
+  },
+  {
+   "programs": [
+    "data-science-computation-modeling-bs",
+    "international-communication-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.4
+  },
+  {
+   "programs": [
+    "religion-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.9
+  },
+  {
+   "programs": [
+    "exercise-sport-science-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.8
+  },
+  {
+   "programs": [
+    "ceramics-bfa",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.4
+  },
+  {
+   "programs": [
+    "middle-grades-education-mathematics-science-bsed",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.5
+  },
+  {
+   "programs": [
+    "nursing-bsn",
+    "environmental-engineering-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.7
+  },
+  {
+   "programs": [
+    "advertising-art-direction-ba",
+    "applied-epidemiology-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 14.1
+  },
+  {
+   "programs": [
+    "illustration-emerging-media-bfa",
+    "journalism-society-culture-minor",
+    "computer-security-digital-forensics-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.1
+  },
+  {
+   "programs": [
+    "sport-entertainment-management-bs",
+    "geographic-information-systems-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.6
+  },
+  {
+   "programs": [
+    "entrepreneurship-innovation-management-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 19.1
+  },
+  {
+   "programs": [
+    "career-technical-education-marketing-education-bsed",
+    "philosophy-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.6
+  },
+  {
+   "programs": [
+    "philosophy-ba",
+    "economics-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.2
+  },
+  {
+   "programs": [
+    "history-ba",
+    "community-development-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.8
+  },
+  {
+   "programs": [
+    "quantum-materials-science-bs",
+    "cognitive-neuroscience-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.1
+  },
+  {
+   "programs": [
+    "africology-african-american-studies-ba",
+    "orchestral-music-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.2
+  },
+  {
+   "programs": [
+    "information-science-technology-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.6
+  },
+  {
+   "programs": [
+    "natural-sciences-biology-bs",
+    "health-information-management-minor",
+    "jewish-secular-studies-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.1
+  },
+  {
+   "programs": [
+    "history-ba",
+    "international-business-administration-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.8
+  },
+  {
+   "programs": [
+    "middle-grades-education-mathematics-language-arts-bsed",
+    "theater-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.5
+  },
+  {
+   "programs": [
+    "africology-african-american-studies-ba",
+    "entrepreneurship-innovation-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.6
+  },
+  {
+   "programs": [
+    "accounting-data-analytics-bba",
+    "theater-minor",
+    "law-american-criminal-justice-system-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 22.4
+  },
+  {
+   "programs": [
+    "biology-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.4
+  },
+  {
+   "programs": [
+    "computer-science-bs",
+    "jewish-studies-minor",
+    "gender-sexuality-womens-studies-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.4
+  },
+  {
+   "programs": [
+    "middle-grades-education-mathematics-science-bsed",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.8
+  },
+  {
+   "programs": [
+    "natural-sciences-physics-bs",
+    "science-technology-society-honors-interdisciplinary-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.0
+  },
+  {
+   "programs": [
+    "media-studies-production-media-production-ba",
+    "sustainable-food-systems-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.4
+  },
+  {
+   "programs": [
+    "interdisciplinary-german-studies-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.9
+  },
+  {
+   "programs": [
+    "environmental-science-hydrology-bs",
+    "japanese-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 26.1
+  },
+  {
+   "programs": [
+    "performance-piano-bm",
+    "chemistry-minor",
+    "law-enforcement-homeland-security-public-safety-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.2
+  },
+  {
+   "programs": [
+    "art-graphic-design-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.0
+  },
+  {
+   "programs": [
+    "environmental-science-climate-bs",
+    "environmental-studies-minor",
+    "social-science-research-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.1
+  },
+  {
+   "programs": [
+    "english-ba",
+    "portuguese-minor",
+    "voice-speech-actor-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.5
+  },
+  {
+   "programs": [
+    "secondary-education-english-education-bsed",
+    "data-science-computational-analytics-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.7
+  },
+  {
+   "programs": [
+    "natural-sciences-physics-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.4
+  },
+  {
+   "programs": [
+    "music-therapy-jazz-bm",
+    "jazz-improvisation-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.0
+  },
+  {
+   "programs": [
+    "media-studies-production-media-analysis-ba",
+    "japanese-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.8
+  },
+  {
+   "programs": [
+    "philosophy-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.0
+  },
+  {
+   "programs": [
+    "political-science-ba",
+    "economics-minor-liberal-arts",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.6
+  },
+  {
+   "programs": [
+    "virtual-media-management-ba",
+    "voice-speech-actor-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.2
+  },
+  {
+   "programs": [
+    "data-science-computational-analytics-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.9
+  },
+  {
+   "programs": [
+    "international-business-marketing-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.9
+  },
+  {
+   "programs": [
+    "kinesiology-bs",
+    "information-science-technology-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.9
+  },
+  {
+   "programs": [
+    "artificial-intelligence-bs",
+    "supply-chain-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.4
+  },
+  {
+   "programs": [
+    "historic-preservation-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.8
+  },
+  {
+   "programs": [
+    "facilities-management-bs",
+    "chinese-minor",
+    "sports-media-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 16.3
+  },
+  {
+   "programs": [
+    "liberal-studies-ba",
+    "interdisciplinary-german-studies-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.1
+  },
+  {
+   "programs": [
+    "secondary-education-mathematics-education-bsed",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.6
+  },
+  {
+   "programs": [
+    "accounting-data-analytics-bba",
+    "global-communication-media-arts-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 27.0
+  },
+  {
+   "programs": [
+    "middle-grades-education-science-bsed",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.7
+  },
+  {
+   "programs": [
+    "media-studies-production-media-analysis-ba",
+    "science-technology-writing-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.3
+  },
+  {
+   "programs": [
+    "civil-engineering-cooperative-education-bsce",
+    "french-studies-minor",
+    "cybersecurity-human-behavior-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 18.3
+  },
+  {
+   "programs": [
+    "speech-language-hearing-science-ba",
+    "ethics-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.4
+  },
+  {
+   "programs": [
+    "international-business-finance-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 15.1
+  },
+  {
+   "programs": [
+    "chemistry-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 4.2
+  },
+  {
+   "programs": [
+    "sports-media-ba",
+    "business-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.6
+  },
+  {
+   "programs": [
+    "printmaking-bfa",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 3.5
+  },
+  {
+   "programs": [
+    "health-studies-ba",
+    "communication-activism-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 3.1
+  },
+  {
+   "programs": [
+    "jazz-studies-performance-piano-bm",
+    "jazz-arranging-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 20.1
+  },
+  {
+   "programs": [
+    "risk-management-insurance-healthcare-risk-management-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.6
+  },
+  {
+   "programs": [
+    "speech-language-hearing-science-ba",
+    "criminal-justice-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.3
+  },
+  {
+   "programs": [
+    "speech-language-hearing-science-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.2
+  },
+  {
+   "programs": [
+    "film-media-arts-directing-bfa",
+    "jazz-arranging-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 15.5
+  },
+  {
+   "programs": [
+    "communication-studies-production-ba",
+    "science-technology-society-honors-interdisciplinary-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.5
+  },
+  {
+   "programs": [
+    "data-science-computation-modeling-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.1
+  },
+  {
+   "programs": [
+    "human-resource-management-bba",
+    "environmental-horticulture-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 16.8
+  },
+  {
+   "programs": [
+    "data-science-computational-analytics-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.8
+  },
+  {
+   "programs": [
+    "liberal-studies-ba",
+    "italian-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.7
+  },
+  {
+   "programs": [
+    "mathematics-computer-science-with-teaching-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.4
+  },
+  {
+   "programs": [
+    "international-business-finance-bba",
+    "voice-speech-actor-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 23.0
+  },
+  {
+   "programs": [
+    "data-science-genomics-bioinformatics-bs",
+    "geographic-information-systems-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.4
+  },
+  {
+   "programs": [
+    "technical-production-management-bfa",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.2
+  },
+  {
+   "programs": [
+    "illustration-emerging-media-bfa",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.6
+  },
+  {
+   "programs": [
+    "neuroscience-systems-behavior-plasticity-bs",
+    "computer-security-digital-forensics-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.1
+  },
+  {
+   "programs": [
+    "biochemistry-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.5
+  },
+  {
+   "programs": [
+    "secondary-education-social-studies-education-bsed",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.3
+  },
+  {
+   "programs": [
+    "performance-voice-bm",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.6
+  },
+  {
+   "programs": [
+    "classics-classical-languages-literature-ba",
+    "sustainable-food-systems-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.9
+  },
+  {
+   "programs": [
+    "public-health-bs",
+    "music-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.8
+  },
+  {
+   "programs": [
+    "advertising-art-direction-ba",
+    "dance-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.5
+  },
+  {
+   "programs": [
+    "jazz-studies-performance-piano-bm",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.8
+  },
+  {
+   "programs": [
+    "international-business-economics-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 21.7
+  },
+  {
+   "programs": [
+    "advertising-brand-strategy-research-ba",
+    "paleontology-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 5.7
+  },
+  {
+   "programs": [
+    "neuroscience-cellular-molecular-bs",
+    "statistical-science-data-analytics-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.9
+  },
+  {
+   "programs": [
+    "mathematics-with-teaching-bs",
+    "science-technology-society-honors-interdisciplinary-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.2
+  },
+  {
+   "programs": [
+    "natural-sciences-chemistry-bs",
+    "sociology-minor",
+    "jazz-improvisation-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.1
+  },
+  {
+   "programs": [
+    "human-development-community-engagement-bs",
+    "landscape-studies-minor",
+    "computer-security-digital-forensics-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 4.9
+  },
+  {
+   "programs": [
+    "psychological-studies-ba",
+    "content-creation-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 6.8
+  },
+  {
+   "programs": [
+    "risk-management-insurance-managing-human-capital-risk-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 28.7
+  },
+  {
+   "programs": [
+    "communication-ba",
+    "global-health-minor",
+    "english-language-teaching-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.1
+  },
+  {
+   "programs": [
+    "audio-live-entertainment-ba",
+    "graphic-interactive-design-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.6
+  },
+  {
+   "programs": [
+    "communication-studies-global-community-engagement-ba",
+    "sustainable-food-systems-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.0
+  },
+  {
+   "programs": [
+    "physics-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.3
+  },
+  {
+   "programs": [
+    "forensic-chemistry-bs",
+    "latin-american-studies-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.8
+  },
+  {
+   "programs": [
+    "middle-grades-education-mathematics-language-arts-bsed",
+    "biology-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 12.3
+  },
+  {
+   "programs": [
+    "risk-management-insurance-managing-corporate-risk-bba",
+    "global-studies-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 17.7
+  },
+  {
+   "programs": [
+    "physics-bs",
+    "latino-media-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.3
+  },
+  {
+   "programs": [
+    "risk-management-insurance-managing-human-capital-risk-bba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 15.6
+  },
+  {
+   "programs": [
+    "natural-sciences-chemistry-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.1
+  },
+  {
+   "programs": [
+    "fibers-materials-studies-bfa",
+    "sport-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.2
+  },
+  {
+   "programs": [
+    "geology-ba",
+    "actuarial-science-minor",
+    "spanish-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.6
+  },
+  {
+   "programs": [
+    "forensic-chemistry-bs",
+    "anthropology-minor",
+    "jazz-improvisation-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.2
+  },
+  {
+   "programs": [
+    "virtual-media-management-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.7
+  },
+  {
+   "programs": [
+    "music-history-bm",
+    "french-studies-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 16.6
+  },
+  {
+   "programs": [
+    "jazz-studies-composition-bm",
+    "supply-chain-management-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.1
+  },
+  {
+   "programs": [
+    "chinese-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.8
+  },
+  {
+   "programs": [
+    "biology-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.5
+  },
+  {
+   "programs": [
+    "musical-theater-bfa",
+    "history-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 10.5
+  },
+  {
+   "programs": [
+    "communication-studies-communication-studies-thesis-ba",
+    "sport-management-minor",
+    "english-language-teaching-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 11.9
+  },
+  {
+   "programs": [
+    "music-technology-bs",
+    "spanish-latin-american-studies-business-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.3
+  },
+  {
+   "programs": [
+    "information-science-technology-ba",
+    "organizational-leadership-minor",
+    "esports-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.4
+  },
+  {
+   "programs": [
+    "jazz-studies-performance-voice-bm",
+    "data-science-computational-analytics-minor",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 9.0
+  },
+  {
+   "programs": [
+    "media-studies-production-media-analysis-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 7.4
+  },
+  {
+   "programs": [
+    "advertising-account-management-ba",
+    "city-regional-planning-minor",
+    "spanish-latinx-studies-health-human-services-professions-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 13.8
+  },
+  {
+   "programs": [
+    "music-education-jazz-bm",
+    "chinese-minor",
+    "entrepreneurship-creative-businesses-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 8.0
+  },
+  {
+   "programs": [
+    "genomic-medicine-bs",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 4.8
+  },
+  {
+   "programs": [
+    "art-graphic-design-ba",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 1.9
+  },
+  {
+   "programs": [
+    "geology-bs",
+    "stage-management-certificate",
+    "gened"
+   ],
+   "errors": [],
+   "seconds": 3.8
+  }
+ ]
+}

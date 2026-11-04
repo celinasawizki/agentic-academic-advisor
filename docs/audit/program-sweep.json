@@ -1,5 +1,5 @@
 {
- "generated_s": 127,
+ "generated_s": 217,
  "summary": {
   "certificate": {
    "programs": 86,
@@ -53,7 +53,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.5
+   "seconds": 13.4
   },
   {
    "program": "jazz-arranging-certificate",
@@ -76,7 +76,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 5.4
   },
   {
    "program": "jazz-voice-certificate",
@@ -99,7 +99,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.5
+   "seconds": 8.2
   },
   {
    "program": "music-minor",
@@ -122,7 +122,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 3.9
   },
   {
    "program": "music-therapy-jazz-bm",
@@ -147,7 +147,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 4.4
   },
   {
    "program": "theory-bm",
@@ -172,7 +172,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 5.9
   },
   {
    "program": "early-elementary-education-bsed",
@@ -189,7 +189,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -197,7 +197,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 4.4
   },
   {
    "program": "middle-grades-education-mathematics-bsed",
@@ -213,7 +213,7 @@
    "open_rules": 36,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -221,7 +221,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.6
+   "seconds": 4.2
   },
   {
    "program": "secondary-education-social-studies-education-bsed",
@@ -246,7 +246,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 2.9
   },
   {
    "program": "mechanical-engineering-bsme",
@@ -271,7 +271,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 3.0
   },
   {
    "program": "business-basics-certificate",
@@ -292,7 +292,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.6
   },
   {
    "program": "economics-minor",
@@ -313,7 +313,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 6.4
   },
   {
    "program": "general-business-studies-minor",
@@ -334,7 +334,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 3.3
   },
   {
    "program": "international-business-sales-business-development-bba",
@@ -350,7 +350,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -358,7 +358,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.4
+   "seconds": 5.7
   },
   {
    "program": "marketing-minor",
@@ -379,7 +379,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 2.6
   },
   {
    "program": "statistical-science-data-analytics-bs",
@@ -404,7 +404,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.1
   },
   {
    "program": "anthropology-minor",
@@ -427,7 +427,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.0
   },
   {
    "program": "chinese-minor",
@@ -450,7 +450,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.3
   },
   {
    "program": "criminal-justice-minor",
@@ -473,7 +473,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 3.1
   },
   {
    "program": "environmental-studies-ba",
@@ -490,7 +490,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -498,7 +498,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.9
   },
   {
    "program": "french-studies-minor",
@@ -521,7 +521,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 5.0
   },
   {
    "program": "german-certificate",
@@ -544,7 +544,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.5
   },
   {
    "program": "interdisciplinary-german-studies-minor",
@@ -567,7 +567,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.1
   },
   {
    "program": "japanese-ba",
@@ -584,7 +584,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -592,7 +592,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 3.3
   },
   {
    "program": "law-enforcement-homeland-security-public-safety-certificate",
@@ -615,7 +615,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.3
   },
   {
    "program": "philosophy-minor",
@@ -638,7 +638,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.3
   },
   {
    "program": "psychology-minor",
@@ -686,7 +686,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.3
+   "seconds": 4.1
   },
   {
    "program": "advertising-brand-strategy-research-ba",
@@ -703,7 +703,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C",
@@ -711,7 +711,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.9
+   "seconds": 3.1
   },
   {
    "program": "communication-studies-communication-entrepreneurship-ba",
@@ -736,7 +736,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 4.9
   },
   {
    "program": "digital-media-technologies-minor",
@@ -759,7 +759,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.6
   },
   {
    "program": "media-studies-production-media-business-ba",
@@ -776,7 +776,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -784,7 +784,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.5
   },
   {
    "program": "virtual-media-management-ba",
@@ -801,7 +801,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -809,7 +809,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 4.6
   },
   {
    "program": "health-information-management-minor",
@@ -830,7 +830,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 1.9
   },
   {
    "program": "nutrition-minor",
@@ -851,7 +851,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.9
   },
   {
    "program": "artificial-intelligence-minor",
@@ -874,7 +874,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 3.8
   },
   {
    "program": "biophysics-bs",
@@ -899,7 +899,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.3
+   "seconds": 3.5
   },
   {
    "program": "computer-science-minor",
@@ -922,7 +922,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.8
+   "seconds": 2.4
   },
   {
    "program": "data-science-genomics-bioinformatics-bs",
@@ -947,7 +947,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 3.3
   },
   {
    "program": "environmental-science-hydrology-bs",
@@ -972,7 +972,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 5.9
   },
   {
    "program": "genomic-medicine-certificate",
@@ -995,7 +995,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 3.9
   },
   {
    "program": "integrative-genetics-genomics-bs",
@@ -1020,7 +1020,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 3.3
   },
   {
    "program": "mathematics-technology-with-teaching-bs",
@@ -1037,7 +1037,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1045,7 +1045,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 3.2
   },
   {
    "program": "natural-sciences-earth-environmental-sciences-ba",
@@ -1070,7 +1070,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 6.8
   },
   {
    "program": "physics-ba",
@@ -1087,7 +1087,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1095,7 +1095,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.6
   },
   {
    "program": "entertainment-industry-studies-certificate",
@@ -1116,7 +1116,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 1.3
   },
   {
    "program": "film-media-arts-screen-studies-ba",
@@ -1141,7 +1141,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.0
   },
   {
    "program": "theater-ba",
@@ -1157,7 +1157,7 @@
    "open_rules": 50,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C",
@@ -1165,7 +1165,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.0
+   "seconds": 3.9
   },
   {
    "program": "multidisciplinary-studies-sport-tourism-hospitality-event-management-bs",
@@ -1190,7 +1190,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 1.4
   },
   {
    "program": "art-education-bsed",
@@ -1207,7 +1207,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1215,7 +1215,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 1.7
   },
   {
    "program": "community-development-bs",
@@ -1240,7 +1240,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 2.1
   },
   {
    "program": "glass-bfa",
@@ -1265,7 +1265,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 2.0
   },
   {
    "program": "illustration-emerging-media-minor",
@@ -1286,7 +1286,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.1
   },
   {
    "program": "photography-bfa",
@@ -1311,7 +1311,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 1.4
   },
   {
    "program": "outdoor-wellness-leadership-certificate",
@@ -1332,7 +1332,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.6
   },
   {
    "program": "classical-piano-certificate",
@@ -1355,7 +1355,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.7
+   "seconds": 13.7
   },
   {
    "program": "jazz-improvisation-certificate",
@@ -1378,7 +1378,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 5.1
   },
   {
    "program": "music-bs",
@@ -1403,7 +1403,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.0
+   "seconds": 9.3
   },
   {
    "program": "music-performance-certificate",
@@ -1426,7 +1426,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 22.7
   },
   {
    "program": "orchestral-music-certificate",
@@ -1449,7 +1449,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.2
   },
   {
    "program": "adult-learning-training-organizational-development-ba",
@@ -1466,7 +1466,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1474,7 +1474,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 1.5
   },
   {
    "program": "early-elementary-education-special-education-bsed",
@@ -1491,7 +1491,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1499,7 +1499,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.2
   },
   {
    "program": "middle-grades-education-mathematics-language-arts-bsed",
@@ -1515,7 +1515,7 @@
    "open_rules": 36,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1523,7 +1523,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.7
+   "seconds": 5.7
   },
   {
    "program": "secondary-education-world-languages-education-bsed",
@@ -1548,7 +1548,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 3.2
   },
   {
    "program": "mechanical-engineering-cooperative-education-bsme",
@@ -1573,7 +1573,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.0
   },
   {
    "program": "business-management-bba",
@@ -1589,7 +1589,7 @@
    "open_rules": 31,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1597,7 +1597,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.0
+   "seconds": 4.2
   },
   {
    "program": "entrepreneurship-innovation-management-bba",
@@ -1613,7 +1613,7 @@
    "open_rules": 33,
    "options": 2,
    "credits": [
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1621,7 +1621,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.5
+   "seconds": 7.8
   },
   {
    "program": "healthcare-management-minor",
@@ -1642,7 +1642,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 1.8
   },
   {
    "program": "international-business-supply-chain-transportation-logistics-bba",
@@ -1658,7 +1658,7 @@
    "open_rules": 33,
    "options": 2,
    "credits": [
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1666,7 +1666,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.8
+   "seconds": 8.0
   },
   {
    "program": "organizational-leadership-minor",
@@ -1687,7 +1687,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 4.8
   },
   {
    "program": "statistical-science-data-analytics-minor",
@@ -1708,7 +1708,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.6
   },
   {
    "program": "arab-studies-minor",
@@ -1731,7 +1731,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 3.2
   },
   {
    "program": "classical-languages-literature-minor",
@@ -1754,7 +1754,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.5
   },
   {
    "program": "cybersecurity-human-behavior-ba",
@@ -1779,7 +1779,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 6.1
   },
   {
    "program": "environmental-studies-minor",
@@ -1802,7 +1802,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 3.1
   },
   {
    "program": "gender-sexuality-womens-studies-ba",
@@ -1819,7 +1819,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1827,7 +1827,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.5
   },
   {
    "program": "german-language-cultural-studies-ba",
@@ -1852,7 +1852,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 4.7
   },
   {
    "program": "international-affairs-ba",
@@ -1869,7 +1869,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -1877,7 +1877,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 3.0
   },
   {
    "program": "japanese-certificate",
@@ -1922,7 +1922,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 1.6
   },
   {
    "program": "political-economy-certificate",
@@ -1945,7 +1945,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 2.1
   },
   {
    "program": "public-policy-minor",
@@ -1990,7 +1990,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 2.7
   },
   {
    "program": "advertising-copywriting-ba",
@@ -2007,7 +2007,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C",
@@ -2015,7 +2015,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 6.1
   },
   {
    "program": "communication-studies-communication-studies-thesis-ba",
@@ -2032,7 +2032,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": null,
@@ -2040,7 +2040,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 6.1
   },
   {
    "program": "global-communication-media-arts-minor",
@@ -2063,7 +2063,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 4.4
   },
   {
    "program": "media-studies-production-media-production-ba",
@@ -2080,7 +2080,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -2088,7 +2088,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 4.3
   },
   {
    "program": "visual-journalism-minor",
@@ -2111,7 +2111,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 3.6
   },
   {
    "program": "health-policy-management-minor",
@@ -2132,7 +2132,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 1.7
   },
   {
    "program": "public-health-bs",
@@ -2157,7 +2157,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.1
+   "seconds": 1.7
   },
   {
    "program": "astrophysics-certificate",
@@ -2180,7 +2180,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 2.3
   },
   {
    "program": "cellular-molecular-neurobiology-minor",
@@ -2203,7 +2203,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.0
   },
   {
    "program": "computer-science-physics-bs",
@@ -2220,7 +2220,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -2228,7 +2228,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 4.5
   },
   {
    "program": "digital-media-technologies-minor-science-technology",
@@ -2251,7 +2251,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 1.6
   },
   {
    "program": "forensic-chemistry-bs",
@@ -2276,7 +2276,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 3.4
   },
   {
    "program": "genomic-medicine-pre-med-bs",
@@ -2301,7 +2301,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.8
+   "seconds": 3.3
   },
   {
    "program": "mathematical-economics-ba-science-technology",
@@ -2326,7 +2326,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.1
   },
   {
    "program": "mathematics-with-teaching-bs",
@@ -2351,7 +2351,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.7
   },
   {
    "program": "natural-sciences-earth-environmental-sciences-bs",
@@ -2376,7 +2376,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.1
   },
   {
    "program": "physics-bs",
@@ -2401,7 +2401,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.6
   },
   {
    "program": "film-certificate",
@@ -2414,7 +2414,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": null,
@@ -2439,7 +2439,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -2447,7 +2447,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.4
   },
   {
    "program": "theater-community-engagement-certificate",
@@ -2485,7 +2485,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -2493,7 +2493,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.2
   },
   {
    "program": "art-graphic-design-ba",
@@ -2518,7 +2518,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 1.0
   },
   {
    "program": "community-development-minor",
@@ -2539,7 +2539,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.3
   },
   {
    "program": "graphic-interactive-design-bfa",
@@ -2564,7 +2564,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 1.3
   },
   {
    "program": "landscape-architecture-bs",
@@ -2589,7 +2589,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 0.7
   },
   {
    "program": "printmaking-bfa",
@@ -2614,7 +2614,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 0.8
   },
   {
    "program": "science-technology-society-honors-interdisciplinary-minor",
@@ -2635,7 +2635,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 0.6
   },
   {
    "program": "classical-voice-certificate",
@@ -2658,7 +2658,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.7
+   "seconds": 14.3
   },
   {
    "program": "jazz-piano-certificate",
@@ -2681,7 +2681,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 5.1
   },
   {
    "program": "music-certificate",
@@ -2704,7 +2704,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.2
+   "seconds": 7.7
   },
   {
    "program": "music-technology-bs",
@@ -2720,7 +2720,7 @@
    "open_rules": 40,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -2728,7 +2728,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 4.8
   },
   {
    "program": "performance-bm",
@@ -2753,7 +2753,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 4.5
   },
   {
    "program": "adult-learning-training-organizational-development-minor",
@@ -2774,7 +2774,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 1.7
   },
   {
    "program": "education-minor",
@@ -2795,7 +2795,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 3.3
   },
   {
    "program": "middle-grades-education-mathematics-science-bsed",
@@ -2820,7 +2820,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.6
   },
   {
    "program": "special-education-prek12-bsed",
@@ -2845,7 +2845,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.6
   },
   {
    "program": "accounting-bba",
@@ -2861,7 +2861,7 @@
    "open_rules": 35,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -2869,7 +2869,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.6
+   "seconds": 8.4
   },
   {
    "program": "business-minor",
@@ -2890,7 +2890,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 4.3
   },
   {
    "program": "entrepreneurship-innovation-management-certificate",
@@ -2908,10 +2908,9 @@
    ],
    "min_grade": null,
    "research_modes": [
-    "cache",
-    "snapshot"
+    "cache"
    ],
-   "seconds": 1.1
+   "seconds": 6.9
   },
   {
    "program": "human-resource-management-bba",
@@ -2927,7 +2926,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -2935,7 +2934,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.2
+   "seconds": 4.8
   },
   {
    "program": "legal-studies-bba",
@@ -2959,7 +2958,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.8
+   "seconds": 5.1
   },
   {
    "program": "real-estate-bba",
@@ -2975,7 +2974,7 @@
    "open_rules": 31,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -2983,7 +2982,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.7
+   "seconds": 7.3
   },
   {
    "program": "supply-chain-management-bba",
@@ -2999,7 +2998,7 @@
    "open_rules": 33,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -3007,7 +3006,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.3
+   "seconds": 7.0
   },
   {
    "program": "arabic-certificate",
@@ -3030,7 +3029,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 3.1
   },
   {
    "program": "classics-classical-civilizations-ba",
@@ -3055,7 +3054,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 4.8
   },
   {
    "program": "cybersecurity-human-behavior-certificate",
@@ -3078,7 +3077,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 3.9
   },
   {
    "program": "ethics-certificate",
@@ -3101,7 +3100,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 3.0
   },
   {
    "program": "gender-sexuality-womens-studies-certificate",
@@ -3124,7 +3123,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.5
   },
   {
    "program": "german-language-cultural-studies-minor",
@@ -3147,7 +3146,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 2.0
   },
   {
    "program": "international-business-studies-bs",
@@ -3172,7 +3171,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 6.6
   },
   {
    "program": "japanese-minor",
@@ -3195,7 +3194,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 2.8
   },
   {
    "program": "liberal-studies-ba",
@@ -3220,7 +3219,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.8
+   "seconds": 7.4
   },
   {
    "program": "political-science-ba",
@@ -3237,7 +3236,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -3245,7 +3244,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.7
   },
   {
    "program": "religion-ba",
@@ -3270,7 +3269,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 3.9
   },
   {
    "program": "spanish-health-professions-certificate",
@@ -3293,7 +3292,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 4.0
   },
   {
    "program": "advertising-media-planning-ba",
@@ -3310,7 +3309,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C",
@@ -3318,7 +3317,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 3.1
   },
   {
    "program": "communication-studies-contemporary-media-environments-ba",
@@ -3343,7 +3342,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.1
+   "seconds": 3.6
   },
   {
    "program": "international-communication-minor",
@@ -3366,7 +3365,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 1.9
   },
   {
    "program": "podcasting-certificate",
@@ -3389,7 +3388,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.9
   },
   {
    "program": "pharmaceutical-sciences-bs",
@@ -3414,7 +3413,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 7.8
   },
   {
    "program": "health-professions-bs",
@@ -3438,7 +3437,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.8
+   "seconds": 6.2
   },
   {
    "program": "public-health-minor",
@@ -3459,7 +3458,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.4
   },
   {
    "program": "astrophysics-minor",
@@ -3482,7 +3481,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.7
   },
   {
    "program": "chemistry-ba",
@@ -3507,7 +3506,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 4.4
   },
   {
    "program": "computer-security-digital-forensics-certificate",
@@ -3530,7 +3529,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.3
   },
   {
    "program": "earth-space-science-with-teaching-bs",
@@ -3555,7 +3554,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 1.9
   },
   {
    "program": "fundamentals-physics-certificate",
@@ -3578,7 +3577,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 1.6
   },
   {
    "program": "geology-ba",
@@ -3595,7 +3594,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -3603,7 +3602,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.8
   },
   {
    "program": "mathematics-ba",
@@ -3628,7 +3627,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.0
   },
   {
    "program": "medicinal-chemistry-bs",
@@ -3653,7 +3652,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.2
   },
   {
    "program": "natural-sciences-minor",
@@ -3676,7 +3675,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.1
   },
   {
    "program": "physics-minor",
@@ -3699,7 +3698,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.7
   },
   {
    "program": "film-media-arts-animation-media-arts-bfa",
@@ -3716,7 +3715,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -3724,7 +3723,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 2.6
   },
   {
    "program": "media-arts-certificate",
@@ -3737,7 +3736,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": null,
@@ -3745,7 +3744,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 2.0
   },
   {
    "program": "theater-education-certificate",
@@ -3766,7 +3765,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.9
+   "seconds": 1.5
   },
   {
    "program": "sport-management-certificate",
@@ -3787,7 +3786,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 1.3
   },
   {
    "program": "art-history-ba",
@@ -3833,7 +3832,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 1.4
   },
   {
    "program": "graphic-interactive-design-minor",
@@ -3854,7 +3853,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.7
+   "seconds": 1.4
   },
   {
    "program": "landscape-architecture-horticulture-bs",
@@ -3879,7 +3878,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.7
+   "seconds": 0.9
   },
   {
    "program": "sculpture-bfa",
@@ -3904,7 +3903,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.4
+   "seconds": 0.9
   },
   {
    "program": "social-justice-honors-interdisciplinary-minor",
@@ -3925,7 +3924,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.4
+   "seconds": 0.6
   },
   {
    "program": "composition-bm",
@@ -3950,7 +3949,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.8
+   "seconds": 15.2
   },
   {
    "program": "jazz-studies-composition-bm",
@@ -3975,7 +3974,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 9.7
   },
   {
    "program": "music-composition-certificate",
@@ -3998,7 +3997,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.9
+   "seconds": 3.7
   },
   {
    "program": "music-technology-certificate",
@@ -4021,7 +4020,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 2.9
   },
   {
    "program": "performance-classical-guitar-bm",
@@ -4046,7 +4045,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 7.0
   },
   {
    "program": "applied-behavior-analysis-certificate",
@@ -4067,7 +4066,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 2.2
   },
   {
    "program": "english-language-teaching-certificate",
@@ -4088,7 +4087,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 3.6
   },
   {
    "program": "middle-grades-education-science-bsed",
@@ -4113,7 +4112,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.3
   },
   {
    "program": "civil-engineering-bsce",
@@ -4138,7 +4137,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.5
+   "seconds": 3.3
   },
   {
    "program": "accounting-data-analytics-bba",
@@ -4154,7 +4153,7 @@
    "open_rules": 37,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -4162,7 +4161,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 5.1
+   "seconds": 10.2
   },
   {
    "program": "business-plus-certificate",
@@ -4175,7 +4174,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C",
@@ -4183,7 +4182,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 5.9
   },
   {
    "program": "entrepreneurship-innovation-management-minor",
@@ -4203,7 +4202,7 @@
    "research_modes": [
     "cache"
    ],
-   "seconds": 1.3
+   "seconds": 2.1
   },
   {
    "program": "international-business-administration-minor",
@@ -4216,7 +4215,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C",
@@ -4224,7 +4223,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.9
   },
   {
    "program": "legal-studies-minor",
@@ -4245,7 +4244,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.4
   },
   {
    "program": "real-estate-minor",
@@ -4266,7 +4265,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.7
   },
   {
    "program": "supply-chain-management-minor",
@@ -4287,7 +4286,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.1
   },
   {
    "program": "asian-business-society-certificate",
@@ -4310,7 +4309,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.5
   },
   {
    "program": "classics-classical-languages-literature-ba",
@@ -4335,7 +4334,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 5.6
   },
   {
    "program": "cybersecurity-human-behavior-minor",
@@ -4358,7 +4357,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 3.0
   },
   {
    "program": "forensic-psychology-certificate",
@@ -4381,7 +4380,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 2.4
   },
   {
    "program": "gender-sexuality-womens-studies-minor",
@@ -4404,7 +4403,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 5.1
   },
   {
    "program": "global-studies-ba",
@@ -4421,7 +4420,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -4429,7 +4428,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 4.9
   },
   {
    "program": "italian-ba",
@@ -4454,7 +4453,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.3
+   "seconds": 6.0
   },
   {
    "program": "jewish-secular-studies-certificate",
@@ -4477,7 +4476,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.4
   },
   {
    "program": "management-career-certificate",
@@ -4500,7 +4499,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.9
   },
   {
    "program": "political-science-minor",
@@ -4523,7 +4522,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.3
   },
   {
    "program": "religion-minor",
@@ -4546,7 +4545,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.4
   },
   {
    "program": "spanish-latin-american-studies-business-certificate",
@@ -4569,7 +4568,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.3
   },
   {
    "program": "audio-live-entertainment-ba",
@@ -4586,7 +4585,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -4594,7 +4593,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 1.8
   },
   {
    "program": "communication-studies-global-community-engagement-ba",
@@ -4619,7 +4618,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 5.8
   },
   {
    "program": "journalism-ba",
@@ -4644,7 +4643,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 1.9
   },
   {
    "program": "professional-creative-communication-honors-minor",
@@ -4667,7 +4666,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.5
   },
   {
    "program": "american-sign-language-certificate",
@@ -4688,7 +4687,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.6
   },
   {
    "program": "health-studies-ba",
@@ -4705,7 +4704,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -4713,7 +4712,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.1
   },
   {
    "program": "recreational-therapy-bs",
@@ -4738,7 +4737,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 3.3
   },
   {
    "program": "biochemistry-bs",
@@ -4763,7 +4762,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 3.3
   },
   {
    "program": "chemistry-bs",
@@ -4780,7 +4779,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -4788,7 +4787,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 2.6
   },
   {
    "program": "cybersecurity-bs",
@@ -4805,7 +4804,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -4813,7 +4812,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.2
+   "seconds": 4.2
   },
   {
    "program": "ecology-evolution-biodiversity-bs",
@@ -4838,7 +4837,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.3
+   "seconds": 6.4
   },
   {
    "program": "fundamentals-programming-certificate",
@@ -4858,10 +4857,9 @@
    ],
    "min_grade": "C-",
    "research_modes": [
-    "cache",
-    "snapshot"
+    "cache"
    ],
-   "seconds": 1.8
+   "seconds": 3.5
   },
   {
    "program": "geology-bs",
@@ -4878,7 +4876,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -4886,7 +4884,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.7
   },
   {
    "program": "mathematics-bs",
@@ -4911,7 +4909,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.9
   },
   {
    "program": "mobile-application-development-certificate",
@@ -4934,7 +4932,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.7
   },
   {
    "program": "natural-sciences-physics-ba",
@@ -4959,7 +4957,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.3
+   "seconds": 4.2
   },
   {
    "program": "physics-with-teaching-bs",
@@ -4984,7 +4982,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.6
   },
   {
    "program": "film-media-arts-ba",
@@ -5001,7 +4999,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5009,7 +5007,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 2.0
   },
   {
    "program": "musical-theater-bfa",
@@ -5026,7 +5024,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C",
@@ -5034,7 +5032,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 1.6
   },
   {
    "program": "theater-minor",
@@ -5047,7 +5045,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": null,
@@ -5055,7 +5053,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.6
   },
   {
    "program": "sport-management-minor",
@@ -5076,7 +5074,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.5
   },
   {
    "program": "art-history-minor",
@@ -5097,7 +5095,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.2
   },
   {
    "program": "entrepreneurship-creative-businesses-certificate",
@@ -5118,7 +5116,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.0
   },
   {
    "program": "historic-preservation-bs",
@@ -5135,7 +5133,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": null,
@@ -5143,7 +5141,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 1.7
   },
   {
    "program": "landscape-plants-certificate",
@@ -5164,7 +5162,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 2.5
   },
   {
    "program": "sustainable-food-systems-certificate",
@@ -5185,7 +5183,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 1.9
   },
   {
    "program": "gened",
@@ -5205,7 +5203,7 @@
    "research_modes": [
     "cache"
    ],
-   "seconds": 1.6
+   "seconds": 1.4
   },
   {
    "program": "dance-bfa",
@@ -5230,7 +5228,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.6
+   "seconds": 13.7
   },
   {
    "program": "jazz-studies-composition-certificate",
@@ -5253,7 +5251,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 5.3
   },
   {
    "program": "music-education-bm",
@@ -5270,7 +5268,7 @@
    "options": 3,
    "credits": [
     18.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5278,7 +5276,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.7
+   "seconds": 10.3
   },
   {
    "program": "music-technology-interdisciplinary-studies-bs",
@@ -5295,7 +5293,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5303,7 +5301,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 3.7
   },
   {
    "program": "performance-harpsichord-bm",
@@ -5328,7 +5326,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 5.1
   },
   {
    "program": "career-technical-education-bsed",
@@ -5353,7 +5351,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.0
   },
   {
    "program": "human-development-community-engagement-bs",
@@ -5378,7 +5376,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 6.4
   },
   {
    "program": "middle-grades-education-science-language-arts-bsed",
@@ -5395,7 +5393,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5403,7 +5401,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.8
   },
   {
    "program": "civil-engineering-cooperative-education-bsce",
@@ -5428,7 +5426,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.5
+   "seconds": 3.5
   },
   {
    "program": "accounting-minor",
@@ -5449,7 +5447,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 2.3
   },
   {
    "program": "corporate-compliance-regulatory-policy-minor",
@@ -5470,7 +5468,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 2.5
   },
   {
    "program": "finance-bba",
@@ -5486,7 +5484,7 @@
    "open_rules": 31,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5494,7 +5492,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.8
+   "seconds": 10.6
   },
   {
    "program": "international-business-economics-bba",
@@ -5510,7 +5508,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5518,7 +5516,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.0
+   "seconds": 5.2
   },
   {
    "program": "management-information-systems-bba",
@@ -5534,7 +5532,7 @@
    "open_rules": 37,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5542,7 +5540,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 6.0
+   "seconds": 7.0
   },
   {
    "program": "risk-management-insurance-healthcare-risk-management-bba",
@@ -5558,7 +5556,7 @@
    "open_rules": 33,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5566,7 +5564,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.9
+   "seconds": 7.2
   },
   {
    "program": "africology-african-american-studies-ba",
@@ -5583,7 +5581,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5591,7 +5589,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 5.0
   },
   {
    "program": "asian-studies-ba",
@@ -5608,7 +5606,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -5616,7 +5614,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 5.8
   },
   {
    "program": "clinical-health-psychology-minor",
@@ -5639,7 +5637,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.5
   },
   {
    "program": "economics-ba",
@@ -5664,7 +5662,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 5.2
   },
   {
    "program": "french-ba",
@@ -5689,7 +5687,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 4.9
   },
   {
    "program": "general-program-ba",
@@ -5714,7 +5712,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 4.3
   },
   {
    "program": "global-studies-minor",
@@ -5737,7 +5735,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.2
   },
   {
    "program": "italian-certificate",
@@ -5759,7 +5757,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.1
+   "seconds": 3.8
   },
   {
    "program": "jewish-studies-ba",
@@ -5784,7 +5782,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 4.0
   },
   {
    "program": "mathematical-economics-ba",
@@ -5809,7 +5807,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.5
   },
   {
    "program": "portuguese-minor",
@@ -5832,7 +5830,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.0
   },
   {
    "program": "social-science-research-certificate",
@@ -5855,7 +5853,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 4.9
   },
   {
    "program": "spanish-latinx-studies-health-human-services-professions-certificate",
@@ -5877,7 +5875,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.5
+   "seconds": 4.2
   },
   {
    "program": "childrens-media-certificate",
@@ -5900,7 +5898,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 2.3
   },
   {
    "program": "communication-studies-minor",
@@ -5923,7 +5921,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.3
   },
   {
    "program": "journalism-society-culture-minor",
@@ -5946,7 +5944,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 2.1
   },
   {
    "program": "public-relations-ba",
@@ -5963,7 +5961,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.5,
+    17.0,
     15.5
    ],
    "min_grade": "C",
@@ -5971,7 +5969,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 4.8
   },
   {
    "program": "applied-epidemiology-minor",
@@ -5992,7 +5990,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.3
   },
   {
    "program": "kinesiology-bs",
@@ -6017,7 +6015,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.3
   },
   {
    "program": "recreational-therapy-minor",
@@ -6038,7 +6036,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 1.9
   },
   {
    "program": "biology-ba",
@@ -6063,7 +6061,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.4
   },
   {
    "program": "chemistry-minor",
@@ -6086,7 +6084,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 3.1
   },
   {
    "program": "data-science-computation-modeling-bs",
@@ -6111,7 +6109,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 2.5
   },
   {
    "program": "environmental-professional-training-certificate",
@@ -6134,7 +6132,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.6
+   "seconds": 3.8
   },
   {
    "program": "general-science-mathematics-with-teaching-bs",
@@ -6159,7 +6157,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 3.3
   },
   {
    "program": "geology-minor",
@@ -6182,7 +6180,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.2
   },
   {
    "program": "mathematics-computer-science-bs",
@@ -6207,7 +6205,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 2.8
   },
   {
    "program": "natural-sciences-biology-ba",
@@ -6232,7 +6230,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 3.7
   },
   {
    "program": "natural-sciences-physics-bs",
@@ -6257,7 +6255,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 2.2
   },
   {
    "program": "quantum-materials-science-bs",
@@ -6306,7 +6304,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.7
+   "seconds": 4.2
   },
   {
    "program": "screen-studies-certificate",
@@ -6327,7 +6325,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.0
   },
   {
    "program": "voice-speech-actor-certificate",
@@ -6365,7 +6363,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -6373,7 +6371,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 1.2
   },
   {
    "program": "art-minor",
@@ -6394,7 +6392,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.0
   },
   {
    "program": "environmental-horticulture-minor",
@@ -6415,7 +6413,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.9
+   "seconds": 1.0
   },
   {
    "program": "historic-preservation-certificate",
@@ -6436,7 +6434,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 0.9
   },
   {
    "program": "landscape-studies-minor",
@@ -6457,7 +6455,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.8
+   "seconds": 0.9
   },
   {
    "program": "sustainable-food-systems-minor",
@@ -6478,7 +6476,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.6
+   "seconds": 0.7
   },
   {
    "program": "dance-certificate",
@@ -6501,7 +6499,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.0
+   "seconds": 12.2
   },
   {
    "program": "jazz-studies-performance-bm",
@@ -6518,7 +6516,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -6526,7 +6524,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 5.4
   },
   {
    "program": "music-education-jazz-bm",
@@ -6543,7 +6541,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    18.0,
     15.0
    ],
    "min_grade": "C-",
@@ -6551,7 +6549,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.5
+   "seconds": 9.3
   },
   {
    "program": "music-theory-jazz-certificate",
@@ -6574,7 +6572,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 4.3
   },
   {
    "program": "performance-piano-bm",
@@ -6599,7 +6597,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 5.8
   },
   {
    "program": "career-technical-education-business-computer-information-technology-education-bsed",
@@ -6624,7 +6622,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 1.6
   },
   {
    "program": "human-development-community-engagement-minor",
@@ -6645,7 +6643,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 4.4
   },
   {
    "program": "middle-grades-education-social-studies-bsed",
@@ -6661,7 +6659,7 @@
    "open_rules": 36,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -6669,7 +6667,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.0
+   "seconds": 3.2
   },
   {
    "program": "civil-engineering-environmental-engineering-bsce",
@@ -6694,7 +6692,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.2
   },
   {
    "program": "actuarial-science-bba",
@@ -6710,7 +6708,7 @@
    "open_rules": 38,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -6718,7 +6716,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 5.2
+   "seconds": 10.9
   },
   {
    "program": "corporate-risk-management-minor",
@@ -6739,7 +6737,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 6.1
   },
   {
    "program": "finance-minor",
@@ -6760,7 +6758,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 1.9
   },
   {
    "program": "international-business-entrepreneurship-bba",
@@ -6776,7 +6774,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -6784,7 +6782,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 5.2
+   "seconds": 6.1
   },
   {
    "program": "management-information-systems-certificate",
@@ -6805,7 +6803,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 1.9
   },
   {
    "program": "risk-management-insurance-managing-corporate-risk-bba",
@@ -6821,7 +6819,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -6829,7 +6827,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.3
+   "seconds": 7.2
   },
   {
    "program": "africology-african-american-studies-minor",
@@ -6852,7 +6850,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.6
   },
   {
    "program": "asian-studies-minor",
@@ -6875,7 +6873,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.5
   },
   {
    "program": "cognitive-neuroscience-minor",
@@ -6898,7 +6896,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 2.2
   },
   {
    "program": "economics-minor-liberal-arts",
@@ -6921,7 +6919,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 3.2
   },
   {
    "program": "french-certificate",
@@ -6944,7 +6942,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 8.0
   },
   {
    "program": "geographic-information-systems-certificate",
@@ -6967,7 +6965,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.2
   },
   {
    "program": "history-ba",
@@ -6992,7 +6990,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.3
+   "seconds": 8.5
   },
   {
    "program": "italian-minor",
@@ -7015,7 +7013,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.3
   },
   {
    "program": "jewish-studies-minor",
@@ -7038,7 +7036,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.2
   },
   {
    "program": "neuroscience-research-minor",
@@ -7061,7 +7059,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.4
   },
   {
    "program": "professional-writing-certificate",
@@ -7084,7 +7082,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.6
   },
   {
    "program": "sociology-ba",
@@ -7109,7 +7107,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 3.1
   },
   {
    "program": "spanish-minor",
@@ -7132,7 +7130,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 1.6
   },
   {
    "program": "communication-activism-minor",
@@ -7155,7 +7153,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.8
   },
   {
    "program": "communication-studies-production-ba",
@@ -7172,7 +7170,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": null,
@@ -7180,7 +7178,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 3.5
   },
   {
    "program": "latino-media-minor",
@@ -7203,7 +7201,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 2.0
   },
   {
    "program": "public-relations-minor",
@@ -7226,7 +7224,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.0
   },
   {
    "program": "emergency-sports-injury-management-certificate",
@@ -7247,7 +7245,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 1.9
   },
   {
    "program": "linguistics-certificate",
@@ -7268,7 +7266,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.8
   },
   {
    "program": "speech-language-hearing-science-ba",
@@ -7293,7 +7291,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.5
+   "seconds": 3.2
   },
   {
    "program": "biology-bs",
@@ -7318,7 +7316,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 3.2
   },
   {
    "program": "chemistry-with-teaching-bs",
@@ -7343,7 +7341,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.9
   },
   {
    "program": "data-science-computational-analytics-bs",
@@ -7360,7 +7358,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -7368,7 +7366,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 4.1
   },
   {
    "program": "environmental-science-applied-ecology-bs",
@@ -7393,7 +7391,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.9
   },
   {
    "program": "general-science-technology-with-teaching-bs",
@@ -7418,7 +7416,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.3
+   "seconds": 4.7
   },
   {
    "program": "information-science-technology-ba",
@@ -7435,7 +7433,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -7443,7 +7441,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 4.2
   },
   {
    "program": "mathematics-computer-science-with-teaching-bs",
@@ -7468,7 +7466,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.5
   },
   {
    "program": "natural-sciences-biology-bs",
@@ -7493,7 +7491,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 3.9
   },
   {
    "program": "neuroscience-cellular-molecular-bs",
@@ -7518,7 +7516,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.6
   },
   {
    "program": "science-technology-writing-certificate",
@@ -7541,7 +7539,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 1.5
   },
   {
    "program": "film-media-arts-directing-bfa",
@@ -7565,7 +7563,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.9
+   "seconds": 3.6
   },
   {
    "program": "screen-studies-minor",
@@ -7607,7 +7605,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.2
   },
   {
    "program": "tourism-hospitality-management-certificate",
@@ -7628,7 +7626,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.1
   },
   {
    "program": "art-therapy-ba",
@@ -7653,7 +7651,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.4
   },
   {
    "program": "environmental-sustainability-certificate",
@@ -7674,7 +7672,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 1.9
   },
   {
    "program": "horticultural-therapy-certificate",
@@ -7695,7 +7693,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 2.0
   },
   {
    "program": "metals-jewelry-cad-cam-bfa",
@@ -7720,7 +7718,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 2.4
   },
   {
    "program": "user-experience-user-interface-design-bfa",
@@ -7745,7 +7743,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 1.6
   },
   {
    "program": "dance-minor",
@@ -7768,7 +7766,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.0
+   "seconds": 14.3
   },
   {
    "program": "jazz-studies-performance-piano-bm",
@@ -7793,7 +7791,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 5.0
   },
   {
    "program": "music-history-bm",
@@ -7818,7 +7816,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.0
+   "seconds": 11.8
   },
   {
    "program": "music-theory-traditional-certificate",
@@ -7841,7 +7839,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 4.4
   },
   {
    "program": "performance-voice-bm",
@@ -7866,7 +7864,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 3.5
   },
   {
    "program": "career-technical-education-marketing-education-bsed",
@@ -7891,7 +7889,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.2
   },
   {
    "program": "leadership-military-science-certificate",
@@ -7912,7 +7910,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 4.4
   },
   {
    "program": "secondary-education-english-education-bsed",
@@ -7937,7 +7935,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.4
   },
   {
    "program": "civil-engineering-environmental-engineering-cooperative-education-bsce",
@@ -7962,7 +7960,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.6
+   "seconds": 3.4
   },
   {
    "program": "actuarial-science-minor",
@@ -7983,7 +7981,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.4
   },
   {
    "program": "digital-marketing-minor",
@@ -8004,7 +8002,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 2.5
   },
   {
    "program": "financial-planning-bba",
@@ -8020,7 +8018,7 @@
    "open_rules": 33,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -8028,7 +8026,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.5
+   "seconds": 10.6
   },
   {
    "program": "international-business-finance-bba",
@@ -8044,7 +8042,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -8052,7 +8050,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.1
+   "seconds": 5.6
   },
   {
    "program": "management-information-systems-minor",
@@ -8073,7 +8071,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.7
   },
   {
    "program": "risk-management-insurance-managing-human-capital-risk-bba",
@@ -8089,7 +8087,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -8097,7 +8095,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 5.2
+   "seconds": 7.2
   },
   {
    "program": "ancient-mediterranean-studies-minor",
@@ -8120,7 +8118,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 3.7
   },
   {
    "program": "chinese-ba",
@@ -8145,7 +8143,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 4.3
   },
   {
    "program": "creative-writing-minor",
@@ -8168,7 +8166,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.8
   },
   {
    "program": "english-ba",
@@ -8185,7 +8183,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -8193,7 +8191,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 3.4
   },
   {
    "program": "french-minor",
@@ -8215,7 +8213,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.5
+   "seconds": 5.7
   },
   {
    "program": "geography-urban-studies-ba",
@@ -8232,7 +8230,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -8240,7 +8238,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.5
   },
   {
    "program": "history-minor",
@@ -8263,7 +8261,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.6
   },
   {
    "program": "italian-studies-ba",
@@ -8288,7 +8286,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 4.3
   },
   {
    "program": "latin-american-studies-certificate",
@@ -8311,7 +8309,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 4.2
   },
   {
    "program": "neuroscience-systems-behavior-plasticity-bs",
@@ -8336,7 +8334,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 2.6
   },
   {
    "program": "psychological-studies-ba",
@@ -8358,10 +8356,9 @@
    ],
    "min_grade": "C-",
    "research_modes": [
-    "cache",
-    "snapshot"
+    "cache"
    ],
-   "seconds": 2.3
+   "seconds": 4.8
   },
   {
    "program": "sociology-health-minor",
@@ -8384,7 +8381,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.8
   },
   {
    "program": "advertising-account-management-ba",
@@ -8401,7 +8398,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C",
@@ -8409,7 +8406,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.0
+   "seconds": 3.8
   },
   {
    "program": "communication-ba",
@@ -8426,7 +8423,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": null,
@@ -8434,7 +8431,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 3.0
   },
   {
    "program": "content-creation-minor",
@@ -8457,7 +8454,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.0
   },
   {
    "program": "leadership-minor",
@@ -8480,7 +8477,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.8
   },
   {
    "program": "sports-media-ba",
@@ -8497,7 +8494,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -8505,7 +8502,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 1.8
   },
   {
    "program": "exercise-sport-science-bs",
@@ -8530,7 +8527,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 1.9
   },
   {
    "program": "nursing-accelerated-bsn",
@@ -8547,7 +8544,7 @@
    "options": 3,
    "credits": [
     15.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": null,
@@ -8555,7 +8552,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.3
+   "seconds": 3.1
   },
   {
    "program": "applied-mathematics-bs",
@@ -8580,7 +8577,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.5
   },
   {
    "program": "biology-minor",
@@ -8603,7 +8600,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.6
+   "seconds": 3.4
   },
   {
    "program": "computer-science-ba",
@@ -8620,7 +8617,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -8628,7 +8625,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 7.8
   },
   {
    "program": "data-science-computational-analytics-certificate",
@@ -8650,7 +8647,7 @@
    "research_modes": [
     "cache"
    ],
-   "seconds": 2.2
+   "seconds": 3.4
   },
   {
    "program": "environmental-science-climate-bs",
@@ -8675,7 +8672,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.8
+   "seconds": 4.7
   },
   {
    "program": "general-science-with-teaching-bs",
@@ -8700,7 +8697,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.2
   },
   {
    "program": "information-science-technology-bs",
@@ -8717,7 +8714,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -8725,7 +8722,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 3.9
   },
   {
    "program": "mathematics-minor",
@@ -8745,10 +8742,9 @@
    ],
    "min_grade": "C-",
    "research_modes": [
-    "cache",
-    "snapshot"
+    "cache"
    ],
-   "seconds": 1.7
+   "seconds": 1.9
   },
   {
    "program": "natural-sciences-chemistry-ba",
@@ -8773,7 +8769,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 4.2
   },
   {
    "program": "paleontology-minor",
@@ -8796,7 +8792,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.4
   },
   {
    "program": "social-work-bsw",
@@ -8813,7 +8809,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C",
@@ -8821,7 +8817,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 1.7
   },
   {
    "program": "film-media-arts-post-production-ba",
@@ -8837,7 +8833,7 @@
    "open_rules": 23,
    "options": 2,
    "credits": [
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -8845,7 +8841,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.7
+   "seconds": 3.9
   },
   {
    "program": "stage-management-certificate",
@@ -8866,7 +8862,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.4
   },
   {
    "program": "event-entertainment-management-certificate",
@@ -8887,7 +8883,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 1.4
   },
   {
    "program": "tourism-hospitality-management-minor",
@@ -8908,7 +8904,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 3.2
   },
   {
    "program": "ceramics-bfa",
@@ -8933,7 +8929,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.4
   },
   {
    "program": "facilities-management-bs",
@@ -8949,7 +8945,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": null,
@@ -8982,7 +8978,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.4
   },
   {
    "program": "native-perennial-garden-design-certificate",
@@ -9003,7 +8999,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.9
+   "seconds": 1.1
   },
   {
    "program": "user-experience-user-interface-design-minor",
@@ -9047,7 +9043,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.6
+   "seconds": 11.7
   },
   {
    "program": "jazz-studies-performance-voice-bm",
@@ -9072,7 +9068,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 6.0
   },
   {
    "program": "music-history-certificate",
@@ -9095,7 +9091,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.5
+   "seconds": 6.7
   },
   {
    "program": "music-therapy-bm",
@@ -9120,7 +9116,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.5
   },
   {
    "program": "performing-arts-certificate",
@@ -9143,7 +9139,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 5.2
   },
   {
    "program": "diversity-inclusion-certificate",
@@ -9164,7 +9160,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.7
   },
   {
    "program": "middle-grades-education-language-arts-bsed",
@@ -9180,7 +9176,7 @@
    "open_rules": 30,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -9188,7 +9184,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 4.7
   },
   {
    "program": "secondary-education-mathematics-education-bsed",
@@ -9204,7 +9200,7 @@
    "open_rules": 37,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -9212,7 +9208,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.4
+   "seconds": 4.4
   },
   {
    "program": "environmental-engineering-minor",
@@ -9233,7 +9229,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 2.6
   },
   {
    "program": "business-analytics-minor",
@@ -9254,7 +9250,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 4.7
   },
   {
    "program": "economics-bba",
@@ -9270,7 +9266,7 @@
    "open_rules": 64,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -9278,7 +9274,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.7
+   "seconds": 9.7
   },
   {
    "program": "financial-planning-minor",
@@ -9299,7 +9295,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 3.8
   },
   {
    "program": "international-business-marketing-bba",
@@ -9315,7 +9311,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -9323,7 +9319,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 4.6
+   "seconds": 5.9
   },
   {
    "program": "marketing-bba",
@@ -9339,7 +9335,7 @@
    "open_rules": 32,
    "options": 2,
    "credits": [
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -9347,7 +9343,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 5.2
+   "seconds": 5.9
   },
   {
    "program": "sales-minor",
@@ -9368,7 +9364,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 0.9
+   "seconds": 2.4
   },
   {
    "program": "anthropology-ba",
@@ -9393,7 +9389,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 5.0
   },
   {
    "program": "chinese-certificate",
@@ -9416,7 +9412,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.7
   },
   {
    "program": "criminal-justice-ba",
@@ -9433,7 +9429,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -9441,7 +9437,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 3.2
+   "seconds": 5.8
   },
   {
    "program": "english-minor",
@@ -9464,7 +9460,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 2.9
   },
   {
    "program": "french-studies-ba",
@@ -9489,7 +9485,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.7
+   "seconds": 7.8
   },
   {
    "program": "geography-urban-studies-minor",
@@ -9512,7 +9508,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.5
   },
   {
    "program": "interdisciplinary-german-studies-ba",
@@ -9537,7 +9533,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 4.3
   },
   {
    "program": "italian-studies-minor",
@@ -9560,7 +9556,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 1.9
   },
   {
    "program": "law-american-criminal-justice-system-certificate",
@@ -9583,7 +9579,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 3.8
   },
   {
    "program": "philosophy-ba",
@@ -9600,7 +9596,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -9608,7 +9604,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.5
+   "seconds": 1.8
   },
   {
    "program": "psychology-ba",
@@ -9632,7 +9628,7 @@
    "research_modes": [
     "cache"
    ],
-   "seconds": 1.7
+   "seconds": 4.0
   },
   {
    "program": "sociology-minor",
@@ -9655,7 +9651,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 2.2
   },
   {
    "program": "advertising-art-direction-ba",
@@ -9672,7 +9668,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C",
@@ -9680,7 +9676,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.9
+   "seconds": 2.4
   },
   {
    "program": "communication-pre-law-ba",
@@ -9697,7 +9693,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": null,
@@ -9705,7 +9701,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 2.7
   },
   {
    "program": "digital-media-engagement-minor",
@@ -9728,7 +9724,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.7
   },
   {
    "program": "media-studies-production-media-analysis-ba",
@@ -9745,7 +9741,7 @@
    "options": 3,
    "credits": [
     17.0,
-    15.0,
+    17.0,
     15.0
    ],
    "min_grade": "C-",
@@ -9753,7 +9749,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.6
+   "seconds": 2.9
   },
   {
    "program": "sports-media-certificate",
@@ -9776,7 +9772,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.3
+   "seconds": 2.0
   },
   {
    "program": "global-health-minor",
@@ -9797,7 +9793,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.1
   },
   {
    "program": "nursing-bsn",
@@ -9814,7 +9810,7 @@
    "options": 3,
    "credits": [
     15.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": null,
@@ -9822,7 +9818,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.4
+   "seconds": 2.8
   },
   {
    "program": "artificial-intelligence-bs",
@@ -9839,7 +9835,7 @@
    "options": 3,
    "credits": [
     18.0,
-    15.0,
+    18.0,
     15.0
    ],
    "min_grade": "C-",
@@ -9847,7 +9843,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.9
+   "seconds": 8.4
   },
   {
    "program": "biology-with-teaching-bs",
@@ -9872,7 +9868,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 4.8
   },
   {
    "program": "computer-science-bs",
@@ -9889,15 +9885,14 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
    "research_modes": [
-    "cache",
-    "snapshot"
+    "cache"
    ],
-   "seconds": 1.9
+   "seconds": 12.2
   },
   {
    "program": "data-science-computational-analytics-minor",
@@ -9920,7 +9915,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.1
+   "seconds": 2.9
   },
   {
    "program": "environmental-science-environmental-geochemistry-bs",
@@ -9945,7 +9940,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 3.6
   },
   {
    "program": "genomic-medicine-bs",
@@ -9970,7 +9965,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.3
+   "seconds": 3.0
   },
   {
    "program": "information-science-technology-minor",
@@ -9993,7 +9988,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.5
   },
   {
    "program": "mathematics-physics-bs",
@@ -10018,7 +10013,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.6
+   "seconds": 2.6
   },
   {
    "program": "natural-sciences-chemistry-bs",
@@ -10043,7 +10038,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.0
+   "seconds": 3.9
   },
   {
    "program": "pharmaceutical-studies-bs",
@@ -10068,7 +10063,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 2.2
+   "seconds": 2.8
   },
   {
    "program": "acting-certificate",
@@ -10089,7 +10084,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.2
+   "seconds": 1.6
   },
   {
    "program": "film-media-arts-producing-ba",
@@ -10114,7 +10109,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.7
+   "seconds": 2.2
   },
   {
    "program": "technical-production-management-bfa",
@@ -10131,7 +10126,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C",
@@ -10139,7 +10134,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.7
   },
   {
    "program": "event-entertainment-management-minor",
@@ -10160,7 +10155,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.9
   },
   {
    "program": "art-ba",
@@ -10185,7 +10180,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.3
+   "seconds": 1.4
   },
   {
    "program": "city-regional-planning-minor",
@@ -10206,7 +10201,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.0
+   "seconds": 0.9
   },
   {
    "program": "fibers-materials-studies-bfa",
@@ -10231,7 +10226,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.4
+   "seconds": 1.1
   },
   {
    "program": "illustration-emerging-media-bfa",
@@ -10298,7 +10293,7 @@
    "options": 3,
    "credits": [
     16.0,
-    15.0,
+    16.0,
     15.0
    ],
    "min_grade": "C-",
@@ -10306,7 +10301,7 @@
     "cache",
     "snapshot"
    ],
-   "seconds": 1.1
+   "seconds": 0.9
   }
  ]
 }

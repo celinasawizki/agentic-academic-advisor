@@ -443,7 +443,7 @@ function CreditControl({ value, min, max, disabled, onApply }: { value: number; 
 function ChatBox({ planId, busy, setBusy }: { planId: string; busy: boolean; setBusy: (b: boolean) => void }) {
   const { refresh } = usePlan()
   const [text, setText] = useState("")
-  const [last, setLast] = useState<{ applied: string[]; assumptions: string[]; unclear: string[]; mode: string } | null>(null)
+  const [last, setLast] = useState<{ applied: string[]; assumptions: string[]; warnings?: string[]; unclear: string[]; mode: string } | null>(null)
   const send = async (message: string) => {
     if (!message.trim()) return
     setBusy(true)
@@ -478,6 +478,7 @@ function ChatBox({ planId, busy, setBusy }: { planId: string; busy: boolean; set
           <div className="text-muted-foreground">Interpreted by {last.mode === "llm" ? "Claude (structured output)" : "deterministic parser"} → structured changes, then the optimizer re-ran:</div>
           {last.applied.map((a) => <div key={a} className="flex items-center gap-1.5"><CheckCircle2 className="size-3 text-success" /> {a}</div>)}
           {last.assumptions.map((a) => <div key={a} className="text-warning">Assumption: {a}</div>)}
+          {(last.warnings ?? []).map((a) => <div key={a} className="text-warning">Heads up: {a}</div>)}
           {last.unclear.map((a) => <div key={a} className="text-destructive">{a}</div>)}
         </div>
       )}

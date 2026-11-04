@@ -1,0 +1,12 @@
+# Glossary
+- **Bulletin** — Temple Academic Bulletin (bulletin.temple.edu), 2026-2027 catalog. Source of programs, courses, prereqs.
+- **Term 202703** — Spring 2027; the section snapshot term.
+- **GenEd** — Temple General Education; rules match by course attribute (e.g. `GA`).
+- **WI** — Writing-intensive course; university requires two, read from each major's page.
+- **F-1 rule** — international students: ≤1 online course / 3 online credits *count* toward the 12-credit full course of study. Hybrid not assumed in-person. See [[Rules Engine]].
+- **ISSS** — Temple international student office; hybrid sections are flagged for ISSS confirmation.
+- **CRN** — section registration number.
+- **TUportal** — Temple registration portal; only a mock adapter exists.
+- **Reliability** — VERIFIED / PENDING_VERIFICATION / AMBIGUOUS / UNAVAILABLE / BLOCKED. See [[Requirement Model]].
+- **Course roles** — REQUIRED / DEGREE_ELECTIVE / INTEREST_ELECTIVE / OPTIONAL_ENRICHMENT.
+- **IIS / irreducible conflict set** — minimal set of hard constraints that together make the schedule infeasible. See [[Optimizer (CP-SAT)]].

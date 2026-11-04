@@ -1,0 +1,2 @@
+# Requirements Research Agent
+`research.py`, `adapters/bulletin_live.py` · Finds each program on the bulletin (Claude web search restricted to bulletin.temple.edu with a key; else sitemap ranking), fetches program + school pages live (robots.txt, 1 req/s, 24 h cache), re-parses, checks every [[School & University Rules]] quote is still on the page. Only program names go into queries. Off switch: `LIVE_BULLETIN_RESEARCH=false`. → [[Degree Requirements Agent]]

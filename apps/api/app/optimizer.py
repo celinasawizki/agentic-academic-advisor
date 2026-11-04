@@ -38,13 +38,19 @@ class Strategy:
     w_soft: int
     w_dev: int = 4
     enforce_critical: bool = False
-    free_electives: int = 1  # max interest-based electives that satisfy no requirement
+    # Max interest-based electives that satisfy no requirement. They are a fallback only: the
+    # solver first builds the term from requirement courses and adds a free elective only when
+    # those can't reach the credit minimum/target.
+    free_electives: int = 2
 
 
+# Degree progress dominates every strategy: w_int × interest (≤ w_int × 100 per course) stays below
+# the gap between an individually required course and a GenEd/range match (~0.3 × w_req × 100), so
+# interest decides *which* requirement options to take, never whether to take a requirement.
 STRATEGIES = [
-    Strategy("graduation", "Graduation Priority", w_req=10, w_int=2, w_soft=3, enforce_critical=True, free_electives=0),
-    Strategy("interest", "Interest Priority", w_req=4, w_int=10, w_soft=3, free_electives=2),
-    Strategy("balance", "Work-Life Balance", w_req=4, w_int=3, w_soft=14),
+    Strategy("graduation", "Graduation Priority", w_req=10, w_int=1, w_soft=3, enforce_critical=True),
+    Strategy("interest", "Interest Priority", w_req=10, w_int=3, w_soft=3),
+    Strategy("balance", "Work-Life Balance", w_req=4, w_int=1, w_soft=14),
 ]
 
 
@@ -128,7 +134,7 @@ class ScheduleModel:
             groups["f1"] = HardGroup("f1", "f1_full_time", f"F-1: {settings.f1_full_time_credits} credits must count toward full course of study (max {settings.f1_max_online_credits_counted} online)")
         return list(groups.values())
 
-    def _build(self, strategy: Strategy, enabled: set[str], exclude_sets: list[set[str]]):
+    def _build(self, strategy: Strategy, enabled: set[str], exclude_sets: list[set[str]], free_cap: int = 0):
         m = cp_model.CpModel()
         x = {cand.section.id: m.NewBoolVar(cand.section.id) for cand in self.c}
         lit = {g.key: m.NewBoolVar(g.key) for g in self.hard_groups()}
@@ -192,7 +198,7 @@ class ScheduleModel:
 
         free = [y[c] for c, rids in course_reqs.items() if rids <= {FREE_ELECTIVE}]
         if free:
-            m.Add(sum(free) <= strategy.free_electives)
+            m.Add(sum(free) <= free_cap)
 
         for prev in exclude_sets:
             present = [y[c] for c in prev if c in y]
@@ -208,7 +214,10 @@ class ScheduleModel:
 
         req_terms = sum(int(cand.priority * SCALE) * x[cand.section.id] for cand in self.c)
         int_terms = sum(int(cand.interest * SCALE) * x[cand.section.id] for cand in self.c)
-        m.Maximize(strategy.w_req * req_terms + strategy.w_int * int_terms
+        # A free elective earns no degree value and costs a full requirement's worth, so it only
+        # enters the schedule to close a credit gap that no requirement course can fill.
+        free_cost = strategy.w_req * SCALE * sum(free) if free else 0
+        m.Maximize(strategy.w_req * req_terms + strategy.w_int * int_terms - free_cost
                    - strategy.w_soft * sum(soft_terms) - strategy.w_dev * (SCALE // 10) * dev)
 
         assumptions = [lit[k] for k in lit if k in enabled]
@@ -245,6 +254,9 @@ class ScheduleModel:
             if start is not None and self.prefs.avoid_before and start < to_minutes(self.prefs.avoid_before):
                 out.append({"preference": f"No classes before {self.prefs.avoid_before}", "section": s.id, "course": s.course,
                             "detail": f"{s.course} starts before {self.prefs.avoid_before}."})
+            if self.prefs.avoid_after and any(to_minutes(m.end) > to_minutes(self.prefs.avoid_after) for m in s.meetings):
+                out.append({"preference": f"No classes after {self.prefs.avoid_after}", "section": s.id, "course": s.course,
+                            "detail": f"{s.course} ends after {self.prefs.avoid_after}."})
         return out
 
     def solve(self, strategy: Strategy, exclude_sets: list[set[str]] | None = None, disabled: set[str] | None = None) -> SolveResult:
@@ -252,12 +264,23 @@ class ScheduleModel:
         enabled = {g.key for g in groups} - (disabled or set())
         if not strategy.enforce_critical:
             enabled -= {g.key for g in groups if g.kind == "must_course"}
-        m, x, _ = self._build(strategy, enabled, exclude_sets or [])
-        solver = cp_model.CpSolver()
-        solver.parameters.max_time_in_seconds = 5
-        solver.parameters.num_workers = 1
-        status = solver.Solve(m)
-        if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        def run(free_cap: int):
+            m, x, _ = self._build(strategy, enabled, exclude_sets or [], free_cap)
+            solver = cp_model.CpSolver()
+            solver.parameters.max_time_in_seconds = 5
+            solver.parameters.num_workers = 1
+            return solver, x, solver.Solve(m)
+
+        # Phase 1: requirement courses only. Phase 2 (fallback): allow free electives when the
+        # requirement courses alone can't make a valid term or reach the credit target.
+        solver, x, status = run(0)
+        ok = status in (cp_model.OPTIMAL, cp_model.FEASIBLE)
+        short = ok and sum(c.credits for c in self.c if c.section.component == "primary" and solver.Value(x[c.section.id])) < self.prefs.credit_target
+        if strategy.free_electives and (not ok or short):
+            s2, x2, st2 = run(strategy.free_electives)
+            if st2 in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+                solver, x, status, ok = s2, x2, st2, True
+        if not ok:
             core = self._minimal_core(strategy, enabled, exclude_sets or [], solver)
             return SolveResult(False, conflict_set=core, conflict_set_minimal=True)
         chosen = [cand for cand in self.c if solver.Value(x[cand.section.id])]
@@ -274,7 +297,7 @@ class ScheduleModel:
         )
 
     def _is_feasible(self, strategy: Strategy, enabled: set[str], exclude_sets) -> tuple[bool, list[str]]:
-        m, _, lit = self._build(strategy, enabled, exclude_sets)
+        m, _, lit = self._build(strategy, enabled, exclude_sets, strategy.free_electives)
         solver = cp_model.CpSolver()
         solver.parameters.max_time_in_seconds = 5
         solver.parameters.num_workers = 1

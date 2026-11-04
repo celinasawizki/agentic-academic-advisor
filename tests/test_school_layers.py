@@ -232,3 +232,75 @@ def test_every_temple_major_has_school_and_university_layers():
     assert all(r.get("evidence") for r in layer_rules)
     # every transcribed school rule was found verbatim on its page at ingest time
     assert all(r["evidence_found"] for r in layer_rules if not r["id"].endswith("-wi"))
+
+
+# --- change requests: phrasing coverage, questions, warnings -------------------
+
+@pytest.mark.parametrize("msg,expected", [
+    ("I have soccer practice MWF 3-5pm", [("M", "15:00", "17:00"), ("W", "15:00", "17:00"), ("F", "15:00", "17:00")]),
+    ("I'm busy Tuesday 1-3pm", [("T", "13:00", "15:00")]),
+    ("I work weekends", [("S", "09:00", "17:00"), ("U", "09:00", "17:00")]),
+])
+def test_parser_reads_day_abbreviations_and_busy_times(msg, expected):
+    from app.agents.constraints import _regex_parse
+    got = [(c.day, c.start, c.end) for c in _regex_parse(msg).changes if c.action == "add_unavailable"]
+    assert got == expected
+
+
+def test_parser_maps_common_preferences():
+    from app.agents.constraints import _regex_parse
+    acts = lambda m: [(c.action, c.time or c.day or c.credits) for c in _regex_parse(m).changes]  # noqa: E731
+    assert acts("I can't do Wednesdays") == [("day_off", "W")]
+    assert acts("No classes after 6pm") == [("avoid_after", "18:00")]
+    assert ("avoid_before", "10:00") in acts("I hate mornings")
+    assert acts("make it lighter") == [("adjust_credits", -3)]
+    assert "online-only" in _regex_parse("Only online classes please").unclear[0]
+
+
+def test_questions_are_answered_not_executed_and_consequences_are_warned(client):
+    pid = client.post("/api/plans", json={"student_id": "demo-lina"}).json()["plan_id"]
+    client.get(f"/api/plans/{pid}")
+    q = client.post(f"/api/plans/{pid}/modify", json={"message": "Can I drop PSY 2201?"}).json()
+    assert q["rerun"] is False and q["applied"] == [] and "question" in q["unclear"][0]
+    r = client.post(f"/api/plans/{pid}/modify", json={"message": "I want 21 credits"}).json()
+    assert r["rerun"] and any("overload" in w and "dean" in w for w in r["warnings"])
+
+
+def test_alternatives_are_verified_and_priorities_explained(client):
+    pid = client.post("/api/plans", json={"student_id": "demo-lina"}).json()["plan_id"]
+    st = client.get(f"/api/plans/{pid}").json()["state"]
+    so = st["schedule_optimization"]
+    assert so["candidate_pool"]["considered"] <= so["candidate_pool"]["eligible_courses"] and "maximizes" in so["objective"]
+    assert all(o["weights"]["w_req"] > 0 for o in so["options"])
+    alts = [a for o in st["student_explanation"]["options"] for c in o["courses"] for a in c["alternatives_considered"]]
+    assert alts and all(a["method"] != "heuristic" for a in alts)
+    assert all(a["verified"] or a["method"] == "not re-checked" for a in alts)
+    for c in st["graduation_planning"]["priorities"].values():
+        assert abs(sum(b["value"] for b in c["basis"]) - c["priority"]) < 0.01
+
+
+def test_failed_prerequisite_does_not_allow_same_term_pairing():
+    from app.agents.base import Catalog, PlanContext
+    from app.agents.optimization import sequence_pairs
+    from app.domain import PlanningPreferences, StudentProfile
+    student = StudentProfile(id="s", name="s", academic_year="Junior", expected_graduation="2028-05", catalog_year=None, planning_term="202703",
+                             program_ids=[], campus="Main", f1_status="no", interests_text="", availability=[],
+                             transcript=[TranscriptItem(course="FIN 3901", status="completed", grade="F")],
+                             preferences=PlanningPreferences(credit_min=3, credit_max=18, credit_target=12))
+    cs = {"FIN 3504": course("FIN 3504"), "FIN 3507": course("FIN 3507", 3, [["FIN 3901", "FIN 3504", "@OTHER"]])}
+    ctx = PlanContext(db=None, plan_id="p", student=student, state={},
+                      catalog=Catalog(term_id="202703", term_name="Spring 2027", courses=cs, sections=[], requirements=[], programs={},
+                                      double_count_allowed=set()))
+    assert ("FIN 3504", "FIN 3507") in sequence_pairs(ctx, ["FIN 3504", "FIN 3507"])
+
+
+def test_interest_matching_uses_the_students_own_phrases_not_a_topic_list():
+    from app.agents.interests import detect_themes, fallback_scores
+    themes = detect_themes("I'm interested in health policy, jazz and urban farming", [])
+    assert themes == ["Health policy", "Jazz", "Urban farming"]
+    courses = {"A 1": {"title": "Health Policy in America", "description": "Policy making for public health systems."},
+               "B 1": {"title": "Jazz History", "description": "Improvisation and jazz ensembles."},
+               "C 1": {"title": "Organic Chemistry", "description": "Reactions and mechanisms."}}
+    s = fallback_scores(themes, courses)
+    assert s["A 1"]["score"] > 0 and s["B 1"]["score"] > 0 and s["C 1"]["score"] == 0
+    assert "Health policy" in s["A 1"]["reason"] and s["A 1"]["method"] == "tfidf_similarity"

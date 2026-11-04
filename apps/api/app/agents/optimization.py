@@ -1,10 +1,11 @@
 import re
+import time
 
 from app.agents.base import Agent, PlanContext
 from app.agents.categories import all_eligible, classify
 from app.domain import AvailBlock, SectionData
 from app.optimizer import STRATEGIES, Candidate, HardGroup, ScheduleModel, Strategy
-from app.rules import f1_assessment, overlapping_blocks, section_credits
+from app.rules import counts_as_done, f1_assessment, overlapping_blocks, section_credits
 
 PREF_PREFIX = "Preference: "
 
@@ -33,7 +34,7 @@ def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> Sch
     free_codes = {el["course"] for el in ctx.state["interest_matching"].get("interest_electives", [])}
 
     def priority(code: str) -> float:
-        return 0.1 if code in free_codes else grad["priorities"].get(code, {}).get("priority", 0.3)
+        return 0.0 if code in free_codes else grad["priorities"].get(code, {}).get("priority", 0.3)
 
     def value(code: str) -> float:
         return priority(code) + interest.get(code, {}).get("score", 0.0)
@@ -47,12 +48,18 @@ def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> Sch
     # crowd out the courses that other requirements need.
     need = {r["id"]: max(1, r["remaining_courses"]) for r in ctx.state["degree_requirements"]["remaining"]}
     picked: dict[str, int] = {}
+    pruned: dict[str, str] = {}
     chosen_courses = [c for c in ranked if c in keep_always]
     for code in ranked:
-        if len(chosen_courses) >= MAX_COURSES + len(keep_always):
-            break
+        if code in chosen_courses:
+            continue
         reqs = {r for e in by_course[code] for r in e["requirement_ids"]}
-        if code in chosen_courses or not any(picked.get(r, 0) < need.get(r, 2) + PRUNE_SLACK for r in reqs):
+        if len(chosen_courses) >= MAX_COURSES + len(keep_always):
+            pruned[code] = f"the optimizer considers at most {MAX_COURSES} courses per run and {len(chosen_courses)} scored higher"
+            continue
+        if not any(picked.get(r, 0) < need.get(r, 2) + PRUNE_SLACK for r in reqs):
+            pruned[code] = (f"every requirement it counts toward already had more higher-scoring candidates than open slots "
+                            f"(slots + {PRUNE_SLACK})")
             continue
         chosen_courses.append(code)
         for r in reqs:
@@ -82,8 +89,79 @@ def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> Sch
             for i, c in enumerate(opt):
                 weights[c] = max(weights.get(c, 0), 1 if i == 0 else 0)
         caps[r["id"]] = (max(1, r["remaining_courses"]), weights)
-    return ScheduleModel(candidates, ctx.catalog.courses, blocks, prefs, caps, ctx.student.f1_status == "yes", critical,
-                         student_required=prefs.required_courses, sequence_pairs=sequence_pairs(ctx, chosen_courses))
+    model = ScheduleModel(candidates, ctx.catalog.courses, blocks, prefs, caps, ctx.student.f1_status == "yes", critical,
+                          student_required=prefs.required_courses, sequence_pairs=sequence_pairs(ctx, chosen_courses))
+    # Kept so every "why not this course?" answer can say whether the solver even saw the course.
+    model.pool = {"values": {c: round(value(c), 3) for c in ranked}, "priority": {c: round(priority(c), 3) for c in ranked},
+                  "interest": {c: round(interest.get(c, {}).get("score", 0.0), 3) for c in ranked},
+                  "considered": set(chosen_courses), "pruned": pruned,
+                  "requirements": {c: sorted({r for e in by_course[c] for r in e["requirement_ids"]}) for c in ranked},
+                  "sections": {c: [SectionData(**e["section"]) for e in by_course[c]] for c in ranked}}
+    return model
+
+
+OBJECTIVE_TEXT = ("Each strategy maximizes  w_req × Σ degree priority + w_int × Σ interest score − w_soft × preference penalties "
+                  "− w_dev × |credits − target|  over the selected sections. Degree progress outweighs interest, so interest only "
+                  "chooses among courses that count toward a requirement; a course that satisfies no requirement is added only "
+                  "when requirement courses can't reach your credit target. Subject to every hard constraint "
+                  "(no time conflicts, unavailable times, credit range, prerequisites, one section per component, "
+                  "requirement caps, F-1 counting). Weights per strategy are listed with each option.")
+ALT_BUDGET_SECONDS = 4.0
+ALT_PER_COURSE = 3
+
+
+def verified_alternatives(ctx: PlanContext, model: ScheduleModel, strat: Strategy, res, exclude_sets: list[set[str]]) -> dict:
+    """For each scheduled course, the best other eligible courses for the same requirement(s) and a
+    checked reason each lost: a rule check (not given to the solver, every section blocked, sequencing)
+    or a re-solve with that course forced in (infeasible with the conflicting constraints, or feasible
+    with a lower objective and the courses it would displace)."""
+    pool = model.pool
+    chosen = {s.course for s in res.sections}
+    hard = [b for b in model.blocks if b.kind == "hard"]
+    pairs = set(model.sequence_pairs)
+    titles = ctx.catalog.courses
+    spent, out = 0.0, {}
+    for course in sorted(chosen, key=lambda c: -pool["values"].get(c, 0)):
+        rids = set(pool["requirements"].get(course, [])) - {"FREE_ELECTIVE"} or set(pool["requirements"].get(course, []))
+        alts = sorted({c for c, r in pool["requirements"].items() if c not in chosen and rids & set(r)}, key=lambda c: -pool["values"][c])
+        rows = []
+        for alt in alts[:ALT_PER_COURSE]:
+            row = {"course": alt, "title": titles[alt].title if alt in titles else alt, "score": pool["values"][alt],
+                   "score_of_chosen": pool["values"].get(course, 0), "verified": True}
+            secs = [s for s in pool["sections"][alt] if s.component == "primary"]
+            seq = [a for a, b in pairs if b == alt and a in chosen] + [b for a, b in pairs if a == alt and b in chosen]
+            if alt not in pool["considered"]:
+                row.update(method="candidate pool", why_not=f"Not given to the solver: {pool['pruned'].get(alt, 'lower score')} "
+                           f"(its score {pool['values'][alt]:.2f} = degree priority {pool['priority'][alt]:.2f} + interest {pool['interest'][alt]:.2f}).")
+            elif secs and all(overlapping_blocks(s, hard) for s in secs):
+                row.update(method="rule check", why_not="Every section overlaps a time you marked unavailable.")
+            elif seq:
+                row.update(method="rule check", why_not=f"It can't be taken in the same term as {', '.join(seq)} (prerequisite sequence).")
+            elif spent >= ALT_BUDGET_SECONDS:
+                row.update(verified=False, method="not re-checked", why_not="Not re-checked: the explanation time budget for this option was used up.")
+            else:
+                t = time.time()
+                forced = ScheduleModel(model.c, model.courses, model.blocks, model.prefs, model.caps, model.f1, model.must,
+                                       student_required=[*model.student_required, alt], sequence_pairs=model.sequence_pairs)
+                r = forced.solve(strat, exclude_sets=exclude_sets)
+                spent += time.time() - t
+                if not r.feasible:
+                    why = [g.description for g in r.conflict_set if not g.key.endswith(f":{alt}")]
+                    row.update(method="re-solved with it included",
+                               why_not="Can't be added without breaking: " + ("; ".join(why) if why else "the other selected requirements") + ".")
+                else:
+                    displaced = sorted(chosen - {s.course for s in r.sections})
+                    if r.objective < res.objective:
+                        row.update(method="re-solved with it included", objective_with=r.objective, objective=res.objective, displaced=displaced,
+                                   why_not=f"Possible, but the best {strat.label} schedule that includes it scores lower "
+                                           f"({r.objective:.0f} vs {res.objective:.0f})" + (f" and would replace {', '.join(displaced)}." if displaced else "."))
+                    else:
+                        row.update(method="re-solved with it included", objective_with=r.objective, objective=res.objective, displaced=displaced,
+                                   why_not="An equally good schedule includes it; this option was chosen first (ties are broken by the solver)"
+                                           + (" or it was required to differ from an earlier option." if exclude_sets else "."))
+            rows.append(row)
+        out[course] = rows
+    return out
 
 
 CONCURRENT_RE = re.compile(r"([A-Z]{2,5} \d{4})\s*\((?:may|can) be taken concurrently\)", re.I)
@@ -92,13 +170,14 @@ CONCURRENT_RE = re.compile(r"([A-Z]{2,5} \d{4})\s*\((?:may|can) be taken concurr
 def sequence_pairs(ctx: PlanContext, codes: list[str]) -> list[tuple[str, str]]:
     """A course and an unmet prerequisite of it can't be scheduled in the same term
     (e.g. SPAN 1002 and SPAN 1003), unless the bulletin allows taking them concurrently."""
-    done = {t.course for t in ctx.student.transcript if t.status in ("completed", "transfer")}
     chosen = set(codes)
     pairs = []
     for code in codes:
         course = ctx.catalog.courses.get(code)
         if course is None:
             continue
+        # same passing-grade rule as prerequisite checks: an F/W (or below the minimum) doesn't satisfy it
+        done = {t.course for t in ctx.student.transcript if counts_as_done(t, course.min_prereq_grade)}
         concurrent = {m.upper() for m in CONCURRENT_RE.findall(course.prereq_text or "")}
         for group in course.prereqs:
             if any(c in done for c in group):
@@ -184,27 +263,40 @@ class ScheduleOptimizationAgent(Agent):
                                    "resolutions": [describe_resolution(ctx, g, model.solve(strat, exclude_sets=excluded_sets, disabled={g.key}))
                                                    for g in res.conflict_set]})
                 continue
+            option = self._option(ctx, strat, rank, res, model)
+            option["alternatives"] = verified_alternatives(ctx, model, strat, res, [set(x) for x in excluded_sets])
             excluded_sets.append({s.course for s in res.sections})
-            options.append(self._option(ctx, strat, rank, res, model))
+            options.append(option)
             ctx.log(f"{strat.label}: {res.credits} credits, {len(res.sections)} courses, {len(res.soft_violations)} preference violation(s)",
                     courses=[s.course for s in res.sections], solver_status=res.breakdown.get("status"))
 
         ideal = self._ideal_analysis(ctx)
+        pool = model.pool
+        top_pruned = sorted(pool["pruned"], key=lambda c: -pool["values"][c])[:15]
+        ctx.log(f"Candidate pool: {len(pool['considered'])} of {len(pool['values'])} eligible courses given to the solver",
+                highest_scoring_not_considered={c: pool["values"][c] for c in top_pruned})
         return {"options": options, "infeasible_strategies": infeasible, "ideal_analysis": ideal,
-                "solver": "Google OR-Tools CP-SAT", "strategies": [s.__dict__ for s in STRATEGIES]}
+                "solver": "Google OR-Tools CP-SAT", "strategies": [s.__dict__ for s in STRATEGIES],
+                "objective": OBJECTIVE_TEXT,
+                "candidate_pool": {"eligible_courses": len(pool["values"]), "considered": len(pool["considered"]),
+                                   "max_courses": MAX_COURSES, "slack": PRUNE_SLACK,
+                                   "not_considered": [{"course": c, "score": pool["values"][c], "reason": pool["pruned"][c]} for c in top_pruned]}}
 
     def _option(self, ctx: PlanContext, strat: Strategy, rank: int, res, model: ScheduleModel) -> dict:
         disc = ctx.state["course_discovery"]
         interest = ctx.state["interest_matching"]["scores"]
         grad = ctx.state["graduation_planning"]
         by_section = {e["section"]["id"]: e for e in all_eligible(ctx.state)}
-        soft_count = max(1, sum(1 for b in ctx.student.availability if b.kind == "soft") + bool(ctx.student.preferences.avoid_before))
+        soft_count = max(1, sum(1 for b in ctx.student.availability if b.kind == "soft") + bool(ctx.student.preferences.avoid_before)
+                         + bool(ctx.student.preferences.avoid_after))
         violated_prefs = {v["preference"] for v in res.soft_violations}
         critical = [c["course"] for c in grad["critical_courses"]]
         chosen = {s.course for s in res.sections}
         return {
             "id": f"{ctx.plan_id}-{strat.key}",
             "strategy": strat.key, "label": strat.label, "rank": rank, "credits": res.credits,
+            "weights": {"w_req": strat.w_req, "w_int": strat.w_int, "w_soft": strat.w_soft, "w_dev": strat.w_dev,
+                        "free_electives": strat.free_electives, "enforce_critical": strat.enforce_critical},
             "sections": [{**s.model_dump(), "title": ctx.catalog.courses[s.course].title if s.course in ctx.catalog.courses else s.course,
                           "credits": section_credits(s, ctx.catalog.courses),
                           "requires_linked_section": by_section[s.id].get("requires_linked_section", False),

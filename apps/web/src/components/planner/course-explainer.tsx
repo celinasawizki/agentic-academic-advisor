@@ -32,7 +32,7 @@ export function CourseExplainer({ c }: { c: CourseExplanation }) {
                 <span>{r.text}</span>
                 <div className="mt-1">
                   {r.kind === "requirement" && r.status !== "not_a_requirement" ? <ReliabilityBadge status={r.status} />
-                    : r.kind === "interest" ? (r.ai_generated ? <AISuggestion /> : <Pill>Concept match (deterministic)</Pill>)
+                    : r.kind === "interest" ? (r.ai_generated ? <AISuggestion /> : <Pill>Text similarity (deterministic)</Pill>)
                     : <VerifiedFact />}
                 </div>
               </div>
@@ -44,6 +44,12 @@ export function CourseExplainer({ c }: { c: CourseExplanation }) {
       <dl className="mt-3 space-y-1.5 border-t pt-3 text-xs">
         <Row k="Prerequisites" v={<>{c.prerequisites}{c.prerequisite_text && <div className="mt-0.5 text-muted-foreground">Bulletin: {c.prerequisite_text}</div>}</>} />
         <Row k="Why this section" v={c.section_choice} />
+        {c.priority_basis && c.priority_basis.length > 0 && (
+          <Row k="Degree priority" v={<>
+            <span className="font-medium">{c.priority?.toFixed(2)}</span>
+            <span className="text-muted-foreground"> = {c.priority_basis.map((b) => `${b.factor} ${b.value >= 0 ? "+" : "−"}${Math.abs(b.value).toFixed(2)}`).join(" · ")}</span>
+          </>} />
+        )}
       </dl>
 
       {c.alternatives_considered && c.alternatives_considered.length > 0 && (
@@ -51,7 +57,10 @@ export function CourseExplainer({ c }: { c: CourseExplanation }) {
           <div className="mb-1 flex items-center gap-1.5 font-semibold"><GitCompare className="size-3.5" /> Alternatives considered</div>
           <ul className="space-y-1">
             {c.alternatives_considered.map((a) => (
-              <li key={a.course}><span className="font-medium">{a.course}</span> {a.title} — <span className="text-muted-foreground">not chosen: {a.why_not}</span></li>
+              <li key={a.course}>
+                <span className="font-medium">{a.course}</span> {a.title} — <span className="text-muted-foreground">not chosen: {a.why_not}</span>
+                {a.method && <span className={a.verified ? "ml-1 text-success" : "ml-1 text-warning"}>[{a.verified ? `checked: ${a.method}` : a.method}]</span>}
+              </li>
             ))}
           </ul>
         </div>

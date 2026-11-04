@@ -91,3 +91,38 @@ See [docs/demo-walkthrough.md](docs/demo-walkthrough.md).
 - "90 credits in CLA/CST courses", distribution and Fox Forward rules are shown as policies, not computed.
 - Program-specific GenEd waivers aren't applied yet.
 - Without an API key the search step is a sitemap ranking, not a web search engine.
+
+## 10. Error and black-box pass (2026-11-03, second round)
+
+**New tooling.** `python -m scripts.stress_plans` creates randomized realistic students:
+- a major plus an optional minor and certificate;
+- partial transcripts that include F/W grades, in-progress and transfer rows;
+- jobs, Fridays-off preferences and F-1 status.
+
+It runs each one through planning, change requests, regeneration and manual validation, and asserts invariants on every result:
+- no time conflicts and no hard-block overlaps;
+- credits within range and equal to the sum of the sections;
+- no already-taken course and no missing-prerequisite course;
+- no course in the same term as its own unmet prerequisite;
+- every scheduled course explained, every requirement id real, reliability counts consistent, F-1 met;
+- manual validation agrees with the Review Agent.
+
+The checker was itself tested with injected violations.
+
+| # | Finding | Fix |
+|---|---|---|
+| B13 | Same-term sequencing treated a failed or withdrawn prerequisite as passed, so FIN 3504 was scheduled with FIN 3507 for a student with an F in FIN 3901 (found by stress seed 42: 3 of 400 students) | Uses the same passing-grade/minimum-grade rule as prerequisite checks; regression test added |
+| B14 | Manual schedule validation re-loaded rules without the ones the Research Agent read live, so it could disagree with the plan after a bulletin change | Validation applies the research results first |
+| B15 | "Can I drop PSY 3096?" (a question) silently removed a graduation-critical required course | Questions are answered, not executed; removing a required course always warns which requirement it postpones |
+| B16 | "I want 21 credits" was applied with no warning; below-12 targets for F-1 students too | Warns with the bulletin's overload policy ("19 or more semester hours … need special approval of the dean"; "Credits over 18 carry additional tuition charges") and the F-1 reduced-load rule |
+| B17 | Common requests weren't understood: "MWF 3-5pm", "I can't do Wednesdays", "No classes after 6pm", "I hate mornings", "make it lighter", weekends | Parser handles day abbreviations, letter runs, weekends, busy/unavailable, avoid-after, relative credit changes. The optimizer already penalized avoid-after but never reported it, so violations are now listed |
+
+**Black boxes removed:**
+- **Hand-written interest dictionary.** The deterministic interest matcher used a curated theme list whose entries were exactly the demo student's interests. It is replaced by TF-IDF similarity between the student's own phrases and every course description, combined per phrase. Phrases that only name the student's own program are ignored. Each reason shows the per-phrase scores and matched words. Only standard acronyms (AI, UX, …) are expanded.
+- **Guessed "why not this course?" answers.** They were reconstructed after the fact. Each alternative's reason is now checked, and labeled with the method used:
+  - a rule check: never given to the solver (with its score and the pruning rule), every section blocked, or prerequisite sequence;
+  - otherwise a re-solve with that course forced in, which reports the conflicting constraints or the lower objective and the courses it would displace.
+- **Invisible candidate pruning.** The optimizer now records which eligible courses it never saw and why. The Explanation page shows the objective formula, each strategy's weights and the highest-scoring courses left out.
+- **Unexplained degree-priority numbers.** Each course's priority now carries its additive basis (required/option/range, program type, rules served, courses it unlocks, graduation-critical bonus, cap).
+
+**Results on the final code:** see the run log in the commit message or `docs/audit/stress-report.json`.

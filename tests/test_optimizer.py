@@ -105,3 +105,21 @@ def test_select_one_requirement_takes_one_option_even_with_bundles():
     res = model([phys, biol, chem, chem_lab], caps=caps, p=prefs(credit_min=3, credit_target=12)).solve(INTEREST)
     taken = {s.course for s in res.sections}
     assert len(taken & {"PHYS 1021", "BIOL 1111", "CHEM 1031"}) == 1
+
+
+def test_interest_never_displaces_requirement_courses():
+    """A high-interest course that satisfies no requirement must not take a slot that a
+    requirement course could fill, even under the Interest strategy."""
+    req = cand(section("r", "MKTG 2101", [("T", "09:00", "10:20")]), req_ids=("R",), priority=0.68, interest=0.0)
+    gen = cand(section("g", "ECE 0832", [("M", "09:00", "10:20")]), req_ids=("G",), priority=0.33, interest=0.93)
+    free = cand(section("f", "JUDO 1098", [("W", "09:00", "10:20")]), req_ids=("FREE_ELECTIVE",), priority=0.0, interest=0.91)
+    for strat in STRATEGIES:
+        res = model([req, gen, free], caps={"R": 1, "G": 1}, p=prefs(credit_min=3, credit_max=6, credit_target=6)).solve(strat)
+        assert res.feasible and {s.course for s in res.sections} == {"MKTG 2101", "ECE 0832"}, strat.key
+
+
+def test_free_elective_only_fills_a_credit_gap():
+    req = cand(section("r", "PSY 3096", [("T", "09:00", "10:20")]), req_ids=("R",), priority=1.0)
+    free = cand(section("f", "PHIL 3228", [("W", "09:00", "10:20")]), req_ids=("FREE_ELECTIVE",), priority=0.0, interest=0.9)
+    res = model([req, free], caps={"R": 1}, p=prefs(credit_min=6, credit_max=6, credit_target=6)).solve(INTEREST)
+    assert res.feasible and {s.course for s in res.sections} == {"PSY 3096", "PHIL 3228"}

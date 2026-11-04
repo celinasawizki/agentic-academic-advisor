@@ -73,6 +73,7 @@ export type ScheduleOption = {
   label: string
   rank: number
   credits: number
+  weights?: { w_req: number; w_int: number; w_soft: number; w_dev: number; free_electives: number; enforce_critical: boolean }
   sections: OptionSection[]
   scores: {
     degree_progress: number
@@ -193,7 +194,9 @@ export type CourseExplanation = {
   section_choice: string
   category?: CourseCategory
   category_label?: string
-  alternatives_considered?: { course: string; title: string; why_not: string }[]
+  alternatives_considered?: { course: string; title: string; why_not: string; verified?: boolean; method?: string; score?: number; score_of_chosen?: number; displaced?: string[] }[]
+  priority?: number | null
+  priority_basis?: { factor: string; value: number }[]
   unverified?: string[]
   data: Provenance
 }
@@ -289,6 +292,8 @@ export type PlanState = {
     pre_checks: { course: string; issue: string; detail: string }[]
   }
   schedule_optimization?: {
+    objective?: string
+    candidate_pool?: { eligible_courses: number; considered: number; max_courses: number; slack: number; not_considered: { course: string; score: number; reason: string }[] }
     options: ScheduleOption[]
     infeasible_strategies: { strategy: string; label: string; conflict_set: ConflictGroup[]; minimal: boolean; resolutions: Resolution[] }[]
     ideal_analysis: { perfect_exists: boolean; minimal?: boolean; conflict_set: ConflictGroup[]; resolutions: Resolution[] }

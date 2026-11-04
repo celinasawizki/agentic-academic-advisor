@@ -141,7 +141,40 @@ function HowCreated({ plan, review }: { plan: NonNullable<ReturnType<typeof useP
               </ul>
             </div>
           )}
-          <p className="text-xs text-muted-foreground">Solver: {st.schedule_optimization!.solver}. Strategies: Graduation Priority, Interest Priority, Work-Life Balance, each with different objective weights; later options are constrained to differ from earlier ones.</p>
+          <p className="text-xs text-muted-foreground">Solver: {st.schedule_optimization!.solver}. Later options are constrained to differ from earlier ones.</p>
+          {st.schedule_optimization!.objective && (
+            <div className="rounded-lg bg-muted/40 p-3 text-xs">
+              <div className="mb-1 font-semibold">What the solver optimizes</div>
+              <p className="font-mono text-[11px]">{st.schedule_optimization!.objective}</p>
+              <table className="mt-2 w-full text-left">
+                <thead className="text-muted-foreground"><tr><th className="py-0.5">Strategy</th><th>w_req</th><th>w_int</th><th>w_soft</th><th>w_dev</th><th>Max free electives</th><th>Critical courses required</th></tr></thead>
+                <tbody>
+                  {st.schedule_optimization!.options.filter((o) => o.weights).map((o) => (
+                    <tr key={o.id} className="border-t"><td className="py-0.5">{o.label}</td><td>{o.weights!.w_req}</td><td>{o.weights!.w_int}</td><td>{o.weights!.w_soft}</td>
+                      <td>{o.weights!.w_dev}</td><td>{o.weights!.free_electives}</td><td>{o.weights!.enforce_critical ? "yes" : "no"}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {st.schedule_optimization!.candidate_pool && (() => {
+            const pool = st.schedule_optimization!.candidate_pool!
+            return (
+              <div className="rounded-lg bg-muted/40 p-3 text-xs">
+                <div className="mb-1 font-semibold">Which courses the solver saw</div>
+                <p className="text-muted-foreground">
+                  {pool.considered} of {pool.eligible_courses} eligible courses were given to the solver: the highest-scoring ones (degree
+                  priority + interest), at most {pool.max_courses}, and at most {pool.slack} more per requirement than it has open slots.
+                  Graduation-critical and student-required courses are always included.
+                </p>
+                {pool.not_considered.length > 0 && (
+                  <ul className="mt-1.5 space-y-0.5">
+                    {pool.not_considered.slice(0, 8).map((n) => <li key={n.course}><span className="font-medium">{n.course}</span> (score {n.score.toFixed(2)}): {n.reason}</li>)}
+                  </ul>
+                )}
+              </div>
+            )
+          })()}
         </div>
       )}
     </section>

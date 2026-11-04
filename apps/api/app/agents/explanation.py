@@ -134,7 +134,9 @@ class StudentExplanationAgent(Agent):
                     "reasons": reasons, "prerequisites": prereq, "prerequisite_text": prereq_text,
                     "requirement_status": "Not a degree requirement" if category == INTEREST_ELECTIVE else "Pending verification",
                     "section_choice": self._section_choice(sec, chosen, all_sections, hard, soft),
-                    "alternatives_considered": self._alternatives(ctx, x, chosen, in_option, req_courses, all_sections, hard),
+                    "alternatives_considered": opt["alternatives"].get(x["course"], []) if "alternatives" in opt
+                    else self._alternatives(ctx, x, chosen, in_option, req_courses, all_sections, hard),
+                    "priority": pr.get("priority"), "priority_basis": pr.get("basis", []),
                     "unverified": unverified, "data": provenance,
                 })
             tradeoffs = [v["detail"] for v in opt["soft_violations"]]
@@ -234,7 +236,7 @@ class StudentExplanationAgent(Agent):
             else:
                 why = "the optimizer preferred a different combination for overall credits and preferences"
             title = ctx.catalog.courses[c].title if c in ctx.catalog.courses else c
-            out.append({"course": c, "title": title, "why_not": why})
+            out.append({"course": c, "title": title, "why_not": why, "verified": False, "method": "heuristic"})
         return out
 
     def _section_choice(self, sec, chosen, all_sections, hard, soft) -> str:
