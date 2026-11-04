@@ -119,7 +119,9 @@ class AcademicReviewAgent(Agent):
                                   "data_verified": False}
             if errors:
                 rejected.append(opt["id"])
-                ctx.state.setdefault("_review_rejected_sets", []).append(sorted(x["course"] for x in opt["sections"]))
+                # graduation-plan mode fixes the courses, so the re-optimization avoids the rejected sections instead
+                plan_mode = ctx.state.get("schedule_optimization", {}).get("grad_plan_mode")
+                ctx.state.setdefault("_review_rejected_sets", []).append(sorted(x["id" if plan_mode else "course"] for x in opt["sections"]))
                 ctx.log(f"REJECTED {opt['label']}", errors=[e["detail"] for e in errors])
             else:
                 ctx.log(f"{opt['label']}: deterministic checks passed ({len(warnings)} warning(s))")

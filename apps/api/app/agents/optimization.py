@@ -27,6 +27,9 @@ def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> Sch
     blocks = blocks if blocks is not None else ctx.student.availability
     hard = [b for b in blocks if b.kind == "hard"]
     soft = [b for b in blocks if b.kind == "soft"]
+    plan_items = ctx.student.plan_courses(ctx.catalog.term_name)
+    if plan_items:
+        return build_plan_model(ctx, blocks, plan_items)
     critical = [c for c in cons["must_courses_graduation_strategy"] if c not in prefs.required_courses]
     locked_courses = {e["course"] for e in disc["eligible_sections"] if e["section"]["id"] in prefs.locked_sections}
     keep_always = set(critical) | set(prefs.required_courses) | locked_courses
@@ -100,8 +103,53 @@ def build_model(ctx: PlanContext, blocks: list[AvailBlock] | None = None) -> Sch
     return model
 
 
+PLAN_REQUIREMENT = "GRAD_PLAN"  # marks a plan course that counts toward no parsed open requirement
+
+
+def build_plan_model(ctx: PlanContext, blocks: list[AvailBlock], plan_items) -> ScheduleModel:
+    """Graduation-plan mode: the courses come from the student's uploaded graduation plan for this
+    semester, and the solver only picks sections. No other course is added and graduation-critical
+    courses are not forced in. A plan course with no eligible section, or one that conflicts with a
+    hard constraint, makes the model infeasible, so the conflict set and resolutions say exactly why."""
+    disc = ctx.state["course_discovery"]
+    prefs = ctx.student.preferences
+    plan = [it.course for it in plan_items if it.course not in prefs.excluded_courses]
+    required = list(dict.fromkeys(plan + [c for c in prefs.required_courses if c not in plan]))
+    planned_credits = sum(it.credits or (ctx.catalog.courses[it.course].credits if it.course in ctx.catalog.courses else 0)
+                          for it in plan_items if it.course in required)
+    target = int(round(min(max(planned_credits, prefs.credit_min), prefs.credit_max))) if planned_credits else prefs.credit_target
+    model_prefs = prefs.model_copy(update={"credit_target": target})
+    grad = ctx.state["graduation_planning"]
+    interest = ctx.state["interest_matching"]["scores"]
+    by_course: dict[str, list[dict]] = {}
+    for e in disc["eligible_sections"]:
+        if e["course"] in required:
+            by_course.setdefault(e["course"], []).append(e)
+    hard = [b for b in blocks if b.kind == "hard"]
+    soft = [b for b in blocks if b.kind == "soft"]
+    candidates = []
+    for code, entries in by_course.items():
+        secs = [(SectionData(**e["section"]), e) for e in entries]
+        secs.sort(key=lambda se: (se[0].id not in prefs.locked_sections, bool(overlapping_blocks(se[0], hard)),
+                                  len(overlapping_blocks(se[0], soft)), se[1].get("time_tba", False)))
+        for sec, e in secs:  # every section: the course set is fixed, so section choice is the whole problem
+            candidates.append(Candidate(section=sec, credits=section_credits(sec, ctx.catalog.courses),
+                                        requirement_ids=e["requirement_ids"] or [PLAN_REQUIREMENT],
+                                        priority=grad["priorities"].get(code, {}).get("priority", 0.3),
+                                        interest=interest.get(code, {}).get("score", 0.0)))
+    model = ScheduleModel(candidates, ctx.catalog.courses, blocks, model_prefs, {}, ctx.student.f1_status == "yes", [],
+                          student_required=required, sequence_pairs=sequence_pairs(ctx, list(by_course)), plan_mode=True)
+    values = {c: round(grad["priorities"].get(c, {}).get("priority", 0.3) + interest.get(c, {}).get("score", 0.0), 3) for c in by_course}
+    model.pool = {"values": values, "priority": {}, "interest": {}, "considered": set(by_course), "pruned": {},
+                  "requirements": {c: sorted({r for e in by_course[c] for r in e["requirement_ids"]}) for c in by_course},
+                  "sections": {c: [SectionData(**e["section"]) for e in by_course[c]] for c in by_course},
+                  "plan_mode": True, "plan_courses": required, "plan_credits": planned_credits}
+    return model
+
+
 OBJECTIVE_TEXT = ("Each strategy maximizes  w_req × Σ degree priority + w_int × Σ interest score − w_soft × preference penalties "
-                  "− w_dev × |credits − target|  over the selected sections. Degree progress outweighs interest, so interest only "
+                  "− w_dev × |credits − target|. Priority and interest count once per selected course (its lab or "
+                  "recitation adds no extra value); preference penalties apply to every selected section. Degree progress outweighs interest, so interest only "
                   "chooses among courses that count toward a requirement; a course that satisfies no requirement is added only "
                   "when requirement courses can't reach your credit target. Subject to every hard constraint "
                   "(no time conflicts, unavailable times, credit range, prerequisites, one section per component, "
@@ -251,8 +299,14 @@ class ScheduleOptimizationAgent(Agent):
 
     def run(self, ctx: PlanContext) -> dict:
         model = build_model(ctx)
+        plan_mode = model.pool.get("plan_mode", False)
+        # In graduation-plan mode the course set is fixed, so options, review rejections and "show me
+        # different options" are kept distinct by section ids (which never match a course code).
         excluded_sets: list[set[str]] = [set(x) for x in ctx.state.get("_review_rejected_sets", [])]
-        excluded_sets += [set(x) for x in ctx.student.preferences.avoid_course_sets]
+        excluded_sets += [set(x) for x in ctx.student.preferences.avoid_course_sets]  # course codes, or section ids in plan mode
+        if plan_mode:
+            ctx.log(f"Graduation-plan mode: scheduling only {', '.join(model.pool['plan_courses'])} "
+                    f"({model.pool['plan_credits']:g} planned credits); the solver chooses sections, not courses")
         options, infeasible = [], []
         for rank, strat in enumerate(STRATEGIES, start=1):
             res = model.solve(strat, exclude_sets=excluded_sets)
@@ -264,8 +318,8 @@ class ScheduleOptimizationAgent(Agent):
                                                    for g in res.conflict_set]})
                 continue
             option = self._option(ctx, strat, rank, res, model)
-            option["alternatives"] = verified_alternatives(ctx, model, strat, res, [set(x) for x in excluded_sets])
-            excluded_sets.append({s.course for s in res.sections})
+            option["alternatives"] = {} if plan_mode else verified_alternatives(ctx, model, strat, res, [set(x) for x in excluded_sets])
+            excluded_sets.append({s.id for s in res.sections} if plan_mode else {s.course for s in res.sections})
             options.append(option)
             ctx.log(f"{strat.label}: {res.credits} credits, {len(res.sections)} courses, {len(res.soft_violations)} preference violation(s)",
                     courses=[s.course for s in res.sections], solver_status=res.breakdown.get("status"))
@@ -276,6 +330,7 @@ class ScheduleOptimizationAgent(Agent):
         ctx.log(f"Candidate pool: {len(pool['considered'])} of {len(pool['values'])} eligible courses given to the solver",
                 highest_scoring_not_considered={c: pool["values"][c] for c in top_pruned})
         return {"options": options, "infeasible_strategies": infeasible, "ideal_analysis": ideal,
+                "grad_plan_mode": plan_mode, "grad_plan_courses": model.pool.get("plan_courses", []),
                 "solver": "Google OR-Tools CP-SAT", "strategies": [s.__dict__ for s in STRATEGIES],
                 "objective": OBJECTIVE_TEXT,
                 "candidate_pool": {"eligible_courses": len(pool["values"]), "considered": len(pool["considered"]),
@@ -306,6 +361,7 @@ class ScheduleOptimizationAgent(Agent):
                           "component_pairing": by_section[s.id].get("component_pairing", "single"),
                           "prereq_status": by_section[s.id]["prereq_status"],
                           "prereq_pending": by_section[s.id]["prereq_pending"],
+                          "from_grad_plan": s.course in model.pool.get("plan_courses", []),
                           "interest_score": interest.get(s.course, {}).get("score", 0),
                           "priority": grad["priorities"].get(s.course, {}).get("priority", 0)} for s in res.sections],
             "scores": {**res.breakdown,

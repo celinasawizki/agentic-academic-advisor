@@ -125,18 +125,36 @@ class ChangeSetOut(BaseModel):
 TIME_RANGE_RE = re.compile(r"(\d{1,2})(?::(\d\d))?\s*(am|pm)?\s*(?:-|–|to|until|till)\s*(\d{1,2})(?::(\d\d))?\s*(am|pm)?")
 
 
+def _to24(h: int, ap: str | None) -> int | None:
+    if ap == "am":
+        return 0 if h == 12 else h
+    if ap == "pm":
+        return 12 if h == 12 else h + 12
+    return None
+
+
 def _parse_range(t: str) -> tuple[str, str] | None:
+    """First time range in `t` as 24h (start, end), or None if there is none or it can't be read unambiguously.
+    A bare start inherits the end's meridiem when that keeps the range ordered ("8-10pm" -> 20:00-22:00);
+    with no meridiem at all, 1-6 are afternoon hours ("6-9" -> 18:00-21:00). "12am" as an end is midnight (24:00)."""
     m = TIME_RANGE_RE.search(t)
     if not m:
         return None
     sh, sm, sa, eh, em, ea = int(m.group(1)), m.group(2) or "00", m.group(3), int(m.group(4)), m.group(5) or "00", m.group(6)
-    if (sa == "pm" and sh < 12) or (sa is None and sh < 7):
-        sh += 12
-    if (ea == "pm" and eh < 12) or (ea is None and eh < sh and eh + 12 > sh):
-        eh += 12
-    if not (0 <= sh < 24 and 0 < eh <= 24 and sh < eh):
+    e = 24 if (ea == "am" and eh == 12) else _to24(eh, ea)
+    s = _to24(sh, sa)
+    if s is None:
+        if ea == "pm":
+            s = sh + 12 if sh < 12 and sh + 12 < e else sh
+        elif ea == "am":
+            s = 0 if sh == 12 else sh
+        else:
+            s = sh + 12 if sh < 7 else sh
+    if e is None:
+        e = eh + 12 if (eh < s and eh + 12 > s) else eh
+    if not (0 <= s < 24 and 0 < e <= 24 and s < e) or (e == 24 and em != "00"):
         return None
-    return f"{sh:02d}:{sm}", f"{eh:02d}:{em}"
+    return f"{s:02d}:{sm}", f"{e:02d}:{em}"
 
 
 DAY_TOKEN = {"mon": "M", "monday": "M", "tue": "T", "tues": "T", "tuesday": "T", "wed": "W", "wednesday": "W",
@@ -145,6 +163,7 @@ DAY_TOKEN = {"mon": "M", "monday": "M", "tue": "T", "tues": "T", "tuesday": "T",
 DAY_LABEL = {"M": "Monday", "T": "Tuesday", "W": "Wednesday", "R": "Thursday", "F": "Friday", "S": "Saturday", "U": "Sunday"}
 LETTER_DAYS = re.compile(r"\b(mwf|mw|tr|tth|tuth|mtwr|mtwrf|mtwthf|wf|mf)\b")
 JOB_RE = re.compile(r"\b(job|work|internship|practice|shift|rehearsal|volunteer|training|game|team|club|caregiving|commute)\w*")
+_DAY_WORD = r"(?:mon|monday|tue|tues|tuesday|wed|wednesday|thu|thur|thurs|thursday|fri|friday|sat|saturday|sun|sunday)s?"
 
 
 def _days(t: str) -> list[str]:
@@ -162,58 +181,171 @@ def _days(t: str) -> list[str]:
     return list(dict.fromkeys(found))
 
 
-def _hour(h: str, mm: str | None, ap: str | None) -> str:
-    hour = int(h) % 12 + (12 if ap == "pm" or (ap is None and int(h) < 7) else 0)
-    return f"{hour:02d}:{mm or '00'}"
+def _hour(h: str, mm: str | None, ap: str | None, ctx: str = "") -> tuple[str, str | None]:
+    """24h time for a single clock time, plus an assumption when am/pm had to be inferred.
+    Bare 12 is noon. In an 'after'/'done by' context, bare 1-10 are evening/afternoon hours (classes run to ~10 PM);
+    in a 'before' context, bare 7-11 are morning hours and 1-6 afternoon."""
+    n = int(h)
+    if ap:
+        hour = _to24(n, ap)
+    elif n == 12 or n >= 13:
+        hour = n
+    elif ctx == "after":
+        hour = n + 12 if n <= 10 else n
+    elif ctx == "before":
+        hour = n if n >= 7 else n + 12
+    else:
+        hour = n + 12 if n < 7 else n
+    out = f"{hour % 24:02d}:{mm or '00'}"
+    note = None
+    if not ap and n < 12:
+        note = f"No AM/PM given; read '{h}{':' + mm if mm else ''}' as {(hour - 1) % 12 + 1}:{mm or '00'} {'PM' if hour >= 12 else 'AM'}."
+    return out, note
+
+
+SOFT_RE = re.compile(r"prefer|ideally|if possible|would like|'d like|rather|would be nice|hopefully|if you can")
+OFF_RE = re.compile(r"\boff\b|no (classes|class|school)( on)?|free (on )?|can'?t (do|make|come)|cannot (do|make)|not available|unavailable|busy")
+CANT_RE = re.compile(r"can'?t|cannot|not available|unavailable|busy")
+PART_RE = re.compile(r"\b(morning|afternoon|evening|night)s?\b")
+PART_WINDOW = {"morning": ("07:00", "12:00"), "afternoon": ("12:00", "17:00"), "evening": ("17:00", "22:00"), "night": ("17:00", "22:00")}
+_T = r"(\d{1,2})(?::(\d\d))?\s*(am|pm)?\b"
+BEFORE_RE = re.compile(r"(?:\bno (?:classes|class|school)|\bnothing|\bnot)\b[^,;.]*?\b(?:before|earlier than)\s+" + _T
+                       + r"|start(?:ing)? (?:after|no earlier than)\s+" + _T)
+AFTER_RE = re.compile(r"(?:\bno (?:classes|class|school)|\bnothing|\bnot)\b[^,;.]*?\b(?:after|past|later than)\s+" + _T
+                      + r"|(?:done|finished?|out|end) by\s+" + _T)
+TIMEISH_RE = re.compile(r"\b\d{1,2}(?::\d\d)?\s*(?:am|pm)\b|\b\d{1,2}(?::\d\d)?\s*(?:-|–|to|until|till)\s*\d{1,2}")
+PREFER_LATER_RE = re.compile(r"later in the day|sleep in|no (early|morning)|later classes|move .* later|hate mornings|not a morning person|mornings are")
+CLAUSE_SPLIT_RE = re.compile(r"\s*(?:[,;!?]|\.(?:\s|$)|\band\b|\bbut\b|\balso\b|\bplus\b|\bthen\b)\s*")
+CODE = r"([a-z]{2,5}\s?\d{4})"
+REPLACE_PATTERNS = [  # (pattern, index of the course going out, index of the course coming in)
+    (re.compile(rf"\breplace\s+{CODE}\s+(?:with|by|for)\s+{CODE}"), 1, 2),
+    (re.compile(rf"\bswap(?:\s+out)?\s+{CODE}\s+(?:for|with)\s+{CODE}"), 1, 2),
+    (re.compile(rf"\b(?:switch|change|trade)\s+{CODE}\s+(?:for|to|with)\s+{CODE}"), 1, 2),
+    (re.compile(rf"{CODE}\s+(?:instead of|in place of)\s+{CODE}"), 2, 1),
+    (re.compile(rf"\b(?:instead of|in place of)\s+{CODE}\b.*?{CODE}"), 1, 2),
+]
+EXCLUDE_RE = re.compile(r"replace|drop|remove|exclude|don'?t want|without|swap|get rid of|take out|no longer")
+INCLUDE_RE = re.compile(r"\b(add|include|take|need)\b")
+
+
+def _norm_code(c: str) -> str:
+    m = re.match(r"([a-z]{2,5})\s?(\d{4})", c)
+    return f"{m.group(1).upper()} {m.group(2)}"
+
+
+def _clauses(t: str) -> list[str]:
+    """Split a request into clauses so each day gets its own times and intent. Day lists ("Tuesdays and Thursdays")
+    and "between 3 and 5" are joined first so they aren't split apart."""
+    t = re.sub(rf"\bbetween\s+(\d{{1,2}}(?::\d\d)?\s*(?:am|pm)?)\s+and\s+(\d{{1,2}}(?::\d\d)?\s*(?:am|pm)?)", r"\1-\2", t)
+    join = re.compile(rf"\b({_DAY_WORD})\s*(?:,\s*(?:and\s+|&\s*|or\s+)?|\s(?:and|or)\s|&|/)\s*(?={_DAY_WORD}\b)")
+    while (j := join.sub(r"\1/", t)) != t:
+        t = j
+    return [c for c in CLAUSE_SPLIT_RE.split(t) if c and c.strip()]
+
+
+def _availability(c: str, prev: dict | None, changes: list[ChangeOut], unclear: list[str]) -> dict | None:
+    """Availability / time-of-day changes for one clause. Returns the clause's intent so a following clause
+    that only names days and times ("I have practice, Mondays 3-5") can inherit it."""
+    days = _days(c)
+    strength = "soft" if SOFT_RE.search(c) else "hard"
+    for rx, ctx in ((BEFORE_RE, "before"), (AFTER_RE, "after")):
+        if m := rx.search(c):
+            g = m.groups()
+            h, mm, ap = (g[0], g[1], g[2]) if g[0] else (g[3], g[4], g[5])
+            time, note = _hour(h, mm, ap, ctx)
+            if days:  # a time preference on specific days: soft blocks on those days only, never a whole day off
+                for d in days:
+                    start, end = ("07:00", time) if ctx == "before" else (time, "22:00")
+                    if start < end:
+                        changes.append(ChangeOut(action="add_unavailable", day=d, start=start, end=end, strength="soft",
+                                                 label=f"No classes {ctx} {time} on {DAY_LABEL[d]}", assumption=note))
+            else:
+                changes.append(ChangeOut(action="avoid_before" if ctx == "before" else "avoid_after", time=time, assumption=note))
+            return None
+    job, off, part, rng = JOB_RE.search(c), OFF_RE.search(c), PART_RE.search(c), _parse_range(c)
+    intent = {"label": job.group(1).title(), "off": bool(off), "strength": strength} if job else \
+        {"label": "Unavailable", "off": True, "strength": strength} if off else None
+    if not days:
+        return intent
+    if intent is None and part and (strength == "soft" or re.search(r"\b(no|avoid|not)\b", c)):
+        intent = {"label": "Unavailable", "off": False, "strength": "soft"}  # "I'd prefer no Thursday evenings"
+    if intent is None:
+        if not (prev and (rng or part)):
+            return None
+        intent = prev
+    strength, label = intent["strength"], intent["label"]
+    if part:  # "Tuesday mornings": block that part of the day, not the whole day
+        start, end = PART_WINDOW[part.group(1)]
+        if not (job or CANT_RE.search(c)):
+            strength = "soft"
+        for d in days:
+            changes.append(ChangeOut(action="add_unavailable", day=d, start=start, end=end, strength=strength,
+                                     label=f"{DAY_LABEL[d]} {part.group(1)}s" if label == "Unavailable" else label,
+                                     assumption=f"Read '{part.group(1)}' as {start}-{end}. Adjust in the availability editor."))
+    elif rng:
+        for d in days:
+            changes.append(ChangeOut(action="add_unavailable", day=d, start=rng[0], end=rng[1], strength=strength, label=label))
+    elif TIMEISH_RE.search(c):  # hours given but unreadable: never guess a block
+        unclear.append(f"I couldn't read the hours in \"{c.strip()}\", so no block was added. Try a range like 'Mondays 3-5pm' "
+                       "(overnight blocks need to be split at midnight).")
+    elif intent["off"]:
+        for d in days:
+            changes.append(ChangeOut(action="day_off", day=d, strength=strength, label=f"{DAY_LABEL[d]}s off"))
+    else:
+        for d in days:
+            changes.append(ChangeOut(action="add_unavailable", day=d, start="09:00", end="17:00", strength=strength, label=label,
+                                     assumption=f"Hours not specified; assumed 9:00 AM-5:00 PM on {DAY_LABEL[d]}. Adjust in the availability editor."))
+    return intent
 
 
 def _regex_parse(text: str) -> ChangeSetOut:
-    t = text.lower()
+    t = text.lower().replace("’", "'")
     changes: list[ChangeOut] = []
     unclear: list[str] = []
-    job = JOB_RE.search(t)
-    days = _days(t)
-    rng = _parse_range(t)
-    off = re.search(r"\boff\b|no (classes|class|school)( on)?|free (on )?|can'?t (do|make|come)|cannot (do|make)|not available|unavailable|busy", t)
-    for d in days:
-        name = DAY_LABEL[d]
-        if job or (rng and off):
-            label = job.group(1).title() if job else "Unavailable"
-            if rng:
-                changes.append(ChangeOut(action="add_unavailable", day=d, start=rng[0], end=rng[1], strength="hard", label=label))
-            else:
-                changes.append(ChangeOut(action="add_unavailable", day=d, start="09:00", end="17:00", strength="hard", label=label,
-                                         assumption=f"Hours not specified; assumed 9:00 AM-5:00 PM on {name}. Adjust in the availability editor."))
-        elif off:
-            strength = "soft" if re.search(r"prefer|ideally|if possible|would like|rather", t) else "hard"
-            changes.append(ChangeOut(action="day_off", day=d, strength=strength, label=f"{name}s off"))
-    if m := re.search(r"(\d{1,2})\s*credits?", t):
+    clauses = _clauses(t)
+    prev = None
+    for c in clauses:
+        prev = _availability(c, prev, changes, unclear)
+    if m := re.search(r"\b(?:drop|cut|remove|lose|shed|reduce (?:it |my load )?by|lower (?:it )?by)\s+(\d{1,2})\s*credits?|\b(\d{1,2})\s*(?:fewer|less)\s*credits?", t):
+        n = int(m.group(1) or m.group(2))
+        changes.append(ChangeOut(action="adjust_credits", credits=-n))
+    elif m := re.search(r"\b(?:add|gain|increase (?:it )?by)\s+(\d{1,2})\s*(?:more\s+)?credits?|\b(\d{1,2})\s*(?:more|extra)\s*credits?", t):
+        n = int(m.group(1) or m.group(2))
+        changes.append(ChangeOut(action="adjust_credits", credits=n))
+    elif m := re.search(r"(\d{1,2})\s*credits?", t):
         changes.append(ChangeOut(action="set_credits", credits=int(m.group(1))))
     elif re.search(r"\b(lighter|fewer credits|less (work|load|credits)|reduce (my )?(load|credits)|lower (my )?(load|credits))\b", t):
         changes.append(ChangeOut(action="adjust_credits", credits=-3, assumption="Interpreted 'lighter' as 3 fewer credits (about one course)."))
     elif re.search(r"\b(heavier|more credits|add (a|one more) course)\b", t):
         changes.append(ChangeOut(action="adjust_credits", credits=3, assumption="Interpreted this as 3 more credits (about one course)."))
-    if re.search(r"later in the day|sleep in|no (early|morning)|later classes|move .* later|hate mornings|not a morning person|mornings are", t):
+    if any(PREFER_LATER_RE.search(c) and not (_days(c) and PART_RE.search(c)) for c in clauses):
         changes.append(ChangeOut(action="prefer_later"))
         changes.append(ChangeOut(action="avoid_before", time="10:00", assumption="Interpreted 'later' as avoiding classes before 10:00 AM (soft)."))
-    if m := re.search(r"no (?:classes|class) before (\d{1,2})(?::(\d\d))?\s*(am|pm)?", t):
-        changes.append(ChangeOut(action="avoid_before", time=_hour(m.group(1), m.group(2), m.group(3) or "am")))
-    if m := re.search(r"(?:no (?:classes|class)|nothing) (?:after|past) (\d{1,2})(?::(\d\d))?\s*(am|pm)?|done by (\d{1,2})(?::(\d\d))?\s*(am|pm)?", t):
-        g = m.groups()
-        h, mm, ap = (g[0], g[1], g[2]) if g[0] else (g[3], g[4], g[5])
-        changes.append(ChangeOut(action="avoid_after", time=_hour(h, mm, ap)))
     if m := re.search(r"(?:more|related to|about|something (?:in|with))\s+(?:courses? )?(?:related to |about |on )?([a-z][a-z \-]{1,40}?)(?:[.!?,]|$| courses| classes| instead)", t):
         term = m.group(1).strip()
         if term not in {"the", "a", "my", "credits", "credit", "course", "work", "load"} and not re.match(r"\d", term):
             changes.append(ChangeOut(action="boost_interest", term=term))
-    codes = re.findall(r"\b([A-Z]{2,5})\s?(\d{4})\b", text.upper())
-    for subj, num in codes:
-        code = f"{subj} {num}"
-        if re.search(r"replace|drop|remove|exclude|don'?t want|without|swap", t):
-            changes.append(ChangeOut(action="exclude_course", course=code))
-        elif re.search(r"\b(add|include|take|need)\b", t):
-            changes.append(ChangeOut(action="include_course", course=code))
-    if not changes:
+    # Courses: "replace/swap X with Y" excludes only X and requests Y; other codes take the verb of their own clause.
+    handled: set[str] = set()
+    for rx, out_i, in_i in REPLACE_PATTERNS:
+        for m in rx.finditer(t):
+            out, inc = _norm_code(m.group(out_i)), _norm_code(m.group(in_i))
+            if out in handled or inc in handled or out == inc:
+                continue
+            changes.append(ChangeOut(action="exclude_course", course=out))
+            changes.append(ChangeOut(action="include_course", course=inc))
+            handled |= {out, inc}
+    verb = None
+    for c in clauses:
+        verb = "exclude" if EXCLUDE_RE.search(c) else "include" if INCLUDE_RE.search(c) else verb
+        for raw in re.findall(r"\b([a-z]{2,5}\s?\d{4})\b", c):
+            code = _norm_code(raw)
+            if code in handled or verb is None:
+                continue
+            handled.add(code)
+            changes.append(ChangeOut(action=f"{verb}_course", course=code))
+    changes = [c for i, c in enumerate(changes) if c not in changes[:i]]
+    if not changes and not unclear:
         if re.search(r"\bonline\b", t):
             unclear.append("An online-only filter isn't supported yet. You can exclude specific courses, or block times you can't attend in person. "
                            "If you're on an F-1 visa, at most 3 online credits count toward full-time status.")
@@ -225,7 +357,25 @@ def _regex_parse(text: str) -> ChangeSetOut:
     return ChangeSetOut(changes=changes, unclear=unclear)
 
 
-QUESTION_RE = re.compile(r"^\s*(can|could|should|would|what if|is it ok|am i able|may)\b.*\?\s*$", re.I | re.S)
+_ASKING_RE = re.compile(r"what happens if|what would happen|\bwhat if\b|is it possible|\bwould it\b|\bwill it\b|\bhow would\b|\bwhat would\b", re.I)
+_ASK_START_RE = re.compile(r"^\s*(why|should i|should we|can i|could i|am i able|may i|is it ok|is it okay|do i|does it|would i)\b", re.I)
+_REQUEST_RE = re.compile(r"\bplease\b|^\s*(can|could|would|will) you\b", re.I)
+
+
+def is_question(text: str) -> bool:
+    """True when the student is asking about a change rather than requesting it. A question must not change settings.
+    'What happens if...', 'what if', 'would it', 'is it possible', 'why', 'should/can I...' ask, with or without '?';
+    'Can/could you...' and 'please' are polite requests."""
+    t = text.replace("’", "'")
+    if _ASKING_RE.search(t) or re.match(r"^\s*why\b|^\s*should (i|we)\b", t, re.I):
+        return True
+    if _REQUEST_RE.search(t):
+        return False
+    if _ASK_START_RE.match(t):
+        return True
+    return bool(re.match(r"^\s*(is|are|do|does|would|will|may)\b.*\?\s*$", t, re.I | re.S))
+
+
 OVERLOAD_POLICY = ("Temple Academic Bulletin, Academic Course Load: \"Academic overloads (19 or more semester hours) during fall and spring "
                    "semesters need special approval of the dean or dean's designee\" and \"Credits over 18 carry additional tuition charges.\"")
 
@@ -293,7 +443,9 @@ def apply_changes(student: StudentProfile, cs: ChangeSetOut, required: dict[str,
             for why in (required or {}).get(c.course, []):
                 warnings.append(f"{c.course} is required for {why}; excluding it postpones that requirement, it doesn't remove it.")
         elif c.action == "include_course" and c.course:
-            p.required_courses.append(c.course)
+            if c.course not in p.required_courses:
+                p.required_courses.append(c.course)
+            p.excluded_courses = [x for x in p.excluded_courses if x != c.course]
             applied.append(f"Require {c.course} if an eligible section exists")
         elif c.action == "lock_section" and c.section:
             p.locked_sections.append(c.section)

@@ -24,7 +24,8 @@ STUDENT = {"name": "Sweep", "academic_year": "Sophomore", "expected_graduation":
 def _worker(args: tuple[list[str], bool]) -> list[dict]:
     program_ids, live = args
     tmp = tempfile.mkdtemp()
-    os.environ.update(DATABASE_URL=f"sqlite:///{tmp}/sweep.db", ANTHROPIC_API_KEY="", LIVE_BULLETIN_RESEARCH=str(live).lower())
+    os.environ.update(DATABASE_URL=f"sqlite:///{tmp}/sweep.db", ANTHROPIC_API_KEY="", LIVE_BULLETIN_RESEARCH=str(live).lower(),
+                      REQUIRE_GRAD_PLAN="false")  # exercises requirement-driven planning
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     import logging
     logging.disable(logging.WARNING)

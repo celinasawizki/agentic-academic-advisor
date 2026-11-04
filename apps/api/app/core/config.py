@@ -29,6 +29,11 @@ class Settings(BaseSettings):
     bulletin_cache_ttl_hours: int = 24
     bulletin_timeout_seconds: float = 8.0
 
+    # Real students must upload their graduation plan before schedules are proposed; the plan's
+    # courses for the planning semester are then the only courses scheduled. The whole-pipeline
+    # audit tools (program sweep, stress test) turn this off to exercise requirement-driven planning.
+    require_grad_plan: bool = True
+
     cors_origins: list[str] = ["http://localhost:3000"]
     max_upload_bytes: int = 5 * 1024 * 1024
 

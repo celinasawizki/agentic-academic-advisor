@@ -54,7 +54,7 @@ class CourseData(BaseModel):
     @property
     def min_prereq_grade(self) -> str | None:
         import re
-        m = re.search(r"(?i)minimum grade of ([A-D][+-]?)\b", self.prereq_text or "")
+        m = re.search(r"(?i)minimum grade of ([A-D][+-]?)(?![A-Za-z0-9+-])", self.prereq_text or "")
         return m.group(1).upper() if m else None
 
     @property
@@ -129,6 +129,20 @@ class PlanningPreferences(BaseModel):
     avoid_course_sets: list[list[str]] = []  # "show me different options" history
 
 
+class GradPlanItem(BaseModel):
+    course: str | None = None  # None = a requirement slot ("GenEd Science/Tech course"), never resolved by guessing
+    label: str = ""
+    credits: float | None = None
+    notes: list[str] = []
+    flags: list[str] = []  # winter_session, needs_confirmation
+    include: bool = True   # the student's choice: schedule this course in that semester
+
+
+class GradPlanTerm(BaseModel):
+    term: str  # "Spring 2027"
+    items: list[GradPlanItem] = []
+
+
 class StudentProfile(BaseModel):
     id: str
     name: str
@@ -145,3 +159,11 @@ class StudentProfile(BaseModel):
     transcript: list[TranscriptItem]
     availability: list[AvailBlock]
     preferences: PlanningPreferences = Field(default_factory=PlanningPreferences)
+    grad_plan: list[GradPlanTerm] = []  # the student's uploaded E-Graduation Plan, verified by the student
+
+    def plan_courses(self, term_name: str) -> list[GradPlanItem]:
+        """Courses the graduation plan selects for one semester (included, with a course code)."""
+        for t in self.grad_plan:
+            if t.term.lower() == term_name.lower():
+                return [i for i in t.items if i.course and i.include]
+        return []

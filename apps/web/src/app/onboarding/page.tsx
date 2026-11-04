@@ -1,7 +1,7 @@
 "use client"
 
 import {
-  ArrowLeft, ArrowRight, BookOpen, Building2, CalendarClock, Check, FileUp, Gauge, Globe2, Loader2, Plus, Search, ShieldAlert,
+  ArrowLeft, ArrowRight, BookOpen, Building2, CalendarClock, Check, FileUp, Gauge, Globe2, GraduationCap, Loader2, Plus, Search, ShieldAlert,
   Sparkles, Trash2, UserRound,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Textarea } from "@/components/ui/textarea"
 import { api, type AuditEntry } from "@/lib/api"
-import type { AvailBlock, Program, Term } from "@/lib/types"
+import type { AvailBlock, GradPlanTerm, Program, Term } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 type Status = AuditEntry["status"]
@@ -26,6 +26,7 @@ type Row = { course: string; status: Status; grade: string | null; term: string 
 const STEPS = [
   { key: "profile", title: "What are you currently studying?", icon: UserRound },
   { key: "records", title: "Let's understand your academic progress.", icon: BookOpen },
+  { key: "grad plan", title: "Upload your graduation plan.", icon: GraduationCap },
   { key: "interests", title: "What topics are you most interested in exploring?", icon: Sparkles },
   { key: "availability", title: "When are you available to attend classes?", icon: CalendarClock },
   { key: "credits", title: "How many credits would you like to take?", icon: Gauge },
@@ -48,6 +49,11 @@ const DEMO = {
     ["MATH 1041", "completed", "B"], ["ENG 0802", "completed", "B+"], ["IH 0851", "completed", "A-"], ["ARTH 0808", "transfer", "TR"],
     ["PSY 2301", "in_progress", null], ["PSY 2501", "in_progress", null], ["CIS 1068", "in_progress", null], ["ECON 1102", "in_progress", null],
   ] as [string, Status, string | null][],
+  gradPlan: [{
+    term: "Spring 2027", items: [["PSY 3132", 3], ["MKTG 2101", 3], ["HRM 2501", 3], ["CIS 1051", 4]].map(([course, credits]) => ({
+      course: course as string, label: "", credits: credits as number, notes: [], flags: [], include: true,
+    })),
+  }] as GradPlanTerm[],
   availability: [
     { day: "M", start: "13:00", end: "18:00", kind: "hard", label: "Work" },
     { day: "W", start: "13:00", end: "18:00", kind: "hard", label: "Work" },
@@ -83,6 +89,11 @@ export default function Onboarding() {
   const [credits, setCredits] = useState({ target: 15, min: 12, max: 18 })
   const [campus, setCampus] = useState("Main")
   const [f1, setF1] = useState<"yes" | "no" | "prefer_not">("prefer_not")
+  const [gradPlan, setGradPlan] = useState<GradPlanTerm[]>([])
+  const [gradPlanNotes, setGradPlanNotes] = useState<string[]>([])
+  const [gradPlanUploading, setGradPlanUploading] = useState(false)
+  const termName = terms.find((t) => t.id === term)?.name ?? ""
+  const termCourses = gradPlan.find((t) => t.term.toLowerCase() === termName.toLowerCase())?.items.filter((i) => i.course && i.include) ?? []
 
   useEffect(() => {
     Promise.all([api.programs(), api.terms(), api.courses()])
@@ -95,6 +106,7 @@ export default function Onboarding() {
     setSelected(DEMO.programs); setInterests(DEMO.interests); setAvailability(DEMO.availability); setCredits({ target: 15, min: 12, max: 18 })
     setCareer("People analytics or HR technology at a startup")
     setRows(DEMO.rows.map(([course, status, grade]) => ({ course, status, grade, term: null, source: "manual", confidence: 1, verified: true })))
+    setGradPlan(DEMO.gradPlan); setGradPlanNotes(["Fictional demo graduation plan."])
     setF1("yes"); setConsent(true)
     toast.success("Filled with fictional demo values")
   }
@@ -127,6 +139,25 @@ export default function Onboarding() {
     }
   }
 
+  const uploadGradPlan = async (file: File) => {
+    if (!consent) return toast.error("Please give consent before uploading academic records.")
+    if (file.size > 5 * 1024 * 1024) return toast.error("File is larger than 5 MB.")
+    setGradPlanUploading(true)
+    try {
+      const res = await api.parseGradPlan(file)
+      setGradPlan(res.terms)
+      setGradPlanNotes(res.notes)
+      const mine = res.terms.find((t) => t.term.toLowerCase() === termName.toLowerCase())
+      if (!res.terms.length) toast.error("No semesters were found in this PDF.")
+      else if (!mine) toast.warning(`Your plan has no ${termName} semester. Check the planning semester on step 1.`)
+      else toast.success(`Found ${res.terms.length} semesters. Review ${termName} before continuing.`)
+    } catch (e) {
+      toast.error((e as Error).message)
+    } finally {
+      setGradPlanUploading(false)
+    }
+  }
+
   const addCourse = () => {
     const code = newCourse.trim().toUpperCase().replace(/^([A-Z]{2,5})\s?(\d{4}).*$/, "$1 $2")
     if (!/^[A-Z]{2,5} \d{4}$/.test(code)) return toast.error("Use a course code like PSY 1001")
@@ -138,8 +169,9 @@ export default function Onboarding() {
   const canNext = () => {
     if (step === 0) return name.trim() && selected.some((id) => programs.find((p) => p.id === id)?.supported && id !== "gened")
     if (step === 1) return consent && rows.every((r) => r.verified)
-    if (step === 4) return credits.min <= credits.target && credits.target <= credits.max
-    if (step === 5) return campus === "Main"
+    if (step === 2) return termCourses.length > 0
+    if (step === 5) return credits.min <= credits.target && credits.target <= credits.max
+    if (step === 6) return campus === "Main"
     return true
   }
 
@@ -154,6 +186,10 @@ export default function Onboarding() {
         transcript: rows.map((r) => ({ course: r.course, status: r.status, grade: r.grade, term: r.term, source: r.source,
           confidence: r.confidence, verified_by_student: r.verified })),
         availability, consent_to_process: consent,
+        grad_plan: gradPlan.map((t) => ({
+          term: t.term,
+          items: t.items.map((i) => ({ course: i.course, label: i.label.slice(0, 200), credits: i.credits, notes: i.notes.slice(0, 10), flags: i.flags, include: !!i.course && i.include })),
+        })),
       })
       const { plan_id } = await api.createPlan(id)
       router.push(`/plan/${plan_id}`)
@@ -334,6 +370,11 @@ export default function Onboarding() {
           )}
 
           {step === 2 && (
+            <GradPlanStep plan={gradPlan} onChange={setGradPlan} notes={gradPlanNotes} termName={termName}
+              uploading={gradPlanUploading} consent={consent} onUpload={uploadGradPlan} />
+          )}
+
+          {step === 3 && (
             <div className="space-y-4">
               <Textarea value={interests} onChange={(e) => setInterests(e.target.value)} rows={6} maxLength={4000} className="text-base"
                 placeholder="I'm studying Psychology, but I'm especially interested in Industrial-Organizational Psychology, workplace behavior, artificial intelligence, and how technology affects human decision-making." />
@@ -359,7 +400,7 @@ export default function Onboarding() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
                 Click and drag to paint. <b className="text-foreground">Unavailable</b> times are hard constraints the planner will never violate.
@@ -379,7 +420,7 @@ export default function Onboarding() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 5 && (
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {[12, 15, 18].map((n) => (
@@ -404,7 +445,7 @@ export default function Onboarding() {
             </div>
           )}
 
-          {step === 5 && (
+          {step === 6 && (
             <div className="grid gap-3 sm:grid-cols-2">
               {[["Main", "Main Campus", "Philadelphia · includes eligible online courses", true], ["Ambler", "Ambler Campus", "Coming soon", false],
                 ["Rome", "Temple Rome", "Coming soon", false], ["Japan", "Temple Japan", "Coming soon", false]].map(([id, label, sub, ok]) => (
@@ -418,7 +459,7 @@ export default function Onboarding() {
             </div>
           )}
 
-          {step === 6 && (
+          {step === 7 && (
             <div className="space-y-5">
               <div className="grid gap-3 sm:grid-cols-3">
                 {([["yes", "Yes"], ["no", "No"], ["prefer_not", "Prefer not to say"]] as const).map(([v, l]) => (
@@ -453,6 +494,7 @@ export default function Onboarding() {
           )}
         </div>
         {step === 1 && !canNext() && <p className="mt-2 text-right text-xs text-muted-foreground">Give consent and verify every extracted row to continue.</p>}
+        {step === 2 && !canNext() && <p className="mt-2 text-right text-xs text-muted-foreground">Upload your graduation plan and keep at least one {termName || "planning-semester"} course selected to continue.</p>}
       </div>
     </div>
   )
@@ -506,5 +548,109 @@ function DaysOff({ availability, onChange }: { availability: AvailBlock[]; onCha
         })}
       </div>
     </div>
+  )
+}
+
+function GradPlanStep({ plan, onChange, notes, termName, uploading, consent, onUpload }: {
+  plan: GradPlanTerm[]; onChange: (p: GradPlanTerm[]) => void; notes: string[]; termName: string
+  uploading: boolean; consent: boolean; onUpload: (f: File) => void
+}) {
+  const [newCourse, setNewCourse] = useState("")
+  const isCurrent = (t: GradPlanTerm) => t.term.toLowerCase() === termName.toLowerCase()
+  const current = plan.find(isCurrent)
+  const others = plan.filter((t) => !isCurrent(t))
+  const setItem = (term: string, idx: number, patch: Partial<GradPlanTerm["items"][number]>) =>
+    onChange(plan.map((t) => (t.term === term ? { ...t, items: t.items.map((it, j) => (j === idx ? { ...it, ...patch } : it)) } : t)))
+  const addToCurrent = () => {
+    const code = newCourse.trim().toUpperCase().replace(/^([A-Z]{2,5})\s?(\d{4}).*$/, "$1 $2")
+    if (!/^[A-Z]{2,5} \d{4}$/.test(code)) return toast.error("Use a course code like PSY 3132")
+    if (current?.items.some((i) => i.course === code)) return toast.error(`${code} is already in your ${termName} plan`)
+    const item = { course: code, label: "", credits: null, notes: ["added by you"], flags: [], include: true }
+    onChange(current ? plan.map((t) => (isCurrent(t) ? { ...t, items: [...t.items, item] } : t)) : [...plan, { term: termName, items: [item] }])
+    setNewCourse("")
+  }
+  const credits = (current?.items ?? []).filter((i) => i.course && i.include).reduce((a, i) => a + (i.credits ?? 0), 0)
+
+  return (
+    <div className="space-y-5">
+      <p className="text-sm text-muted-foreground">
+        Schedules are built only from the courses your graduation plan lists for <b className="text-foreground">{termName || "your planning semester"}</b>.
+        The planner picks sections and times for those courses and never adds other classes. Upload the E-Graduation Plan PDF from your advisor.
+      </p>
+      <label className={cn("flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 text-center transition-colors hover:bg-muted/50", !consent && "pointer-events-none opacity-50")}>
+        {uploading ? <Loader2 className="size-6 animate-spin text-primary" /> : <FileUp className="size-6 text-primary" />}
+        <span className="text-sm font-medium">{plan.length ? "Replace graduation plan" : "Upload graduation plan"}</span>
+        <span className="text-xs text-muted-foreground">PDF, max 5 MB · parsed locally, never stored or sent to an AI provider</span>
+        <input type="file" accept="application/pdf" className="hidden" onChange={(e) => { if (e.target.files?.[0]) onUpload(e.target.files[0]); e.target.value = "" }} />
+      </label>
+      {notes.length > 0 && <ul className="space-y-0.5 text-xs text-muted-foreground">{notes.map((n) => <li key={n}>• {n}</li>)}</ul>}
+
+      {plan.length > 0 && (
+        <div className="overflow-hidden rounded-xl border border-primary/30">
+          <div className="flex items-center justify-between gap-2 bg-cherry-soft px-3 py-2 text-sm">
+            <span className="font-medium text-primary">{termName}: courses to schedule</span>
+            <span className="text-xs text-muted-foreground">{credits ? `${credits} planned credits` : ""}</span>
+          </div>
+          {!current && <p className="px-3 py-4 text-sm text-muted-foreground">Your plan has no {termName} semester. Add the courses you plan to take below, or check the planning semester on step 1.</p>}
+          {current && <PlanItems term={current} onItem={(i, patch) => setItem(current.term, i, patch)} />}
+          <div className="flex gap-2 border-t p-3">
+            <Input value={newCourse} onChange={(e) => setNewCourse(e.target.value)} placeholder="Add a course, e.g. PSY 3132" onKeyDown={(e) => e.key === "Enter" && addToCurrent()} />
+            <Button type="button" variant="outline" size="icon-lg" onClick={addToCurrent}><Plus /></Button>
+          </div>
+        </div>
+      )}
+
+      {others.length > 0 && (
+        <details className="rounded-xl border">
+          <summary className="cursor-pointer px-3 py-2 text-sm font-medium">Other semesters in your plan ({others.length}) — for reference, not scheduled now</summary>
+          <div className="space-y-3 border-t p-3">
+            {others.map((t) => (
+              <div key={t.term}>
+                <div className="mb-1 text-xs font-medium text-muted-foreground">{t.term}</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {t.items.map((i, k) => <Pill key={k} tone={i.course ? "neutral" : "warning"}>{i.course ?? i.label}</Pill>)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </details>
+      )}
+    </div>
+  )
+}
+
+function PlanItems({ term, onItem }: { term: GradPlanTerm; onItem: (i: number, patch: Partial<GradPlanTerm["items"][number]>) => void }) {
+  return (
+    <table className="w-full text-sm">
+      <thead className="bg-muted/50 text-left text-xs text-muted-foreground">
+        <tr><th className="px-3 py-2">Schedule</th><th className="px-3 py-2">Course</th><th className="px-3 py-2">Notes from your plan</th><th className="px-3 py-2 text-right">Credits</th></tr>
+      </thead>
+      <tbody>
+        {term.items.map((it, i) => (
+          <tr key={i} className={cn("border-t", !it.course && "bg-warning-soft/40")}>
+            <td className="px-3 py-1.5">
+              <Checkbox checked={!!it.course && it.include} disabled={!it.course} onCheckedChange={(v) => onItem(i, { include: !!v })} />
+            </td>
+            <td className="px-3 py-1.5 font-medium">
+              {it.course ?? <span className="font-normal text-muted-foreground italic">Open slot: {it.label}</span>}
+              {it.course && it.in_catalog === false && <span className="ml-1.5"><Pill tone="warning">not in dataset</Pill></span>}
+              {!it.course && it.suggested_course && (
+                <button type="button" onClick={() => onItem(i, { course: it.suggested_course!, include: true })} className="ml-2 text-xs font-medium text-primary hover:underline">
+                  Use {it.suggested_course}?
+                </button>
+              )}
+            </td>
+            <td className="px-3 py-1.5">
+              <div className="flex flex-wrap gap-1">
+                {it.flags.includes("winter_session") && <Pill tone="info">Winter session — not in this semester</Pill>}
+                {it.flags.includes("needs_confirmation") && <Pill tone="warning">Confirm with your advisor</Pill>}
+                {it.notes.map((n) => <Pill key={n}>{n}</Pill>)}
+              </div>
+            </td>
+            <td className="px-3 py-1.5 text-right text-muted-foreground">{it.credits ?? "—"}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   )
 }

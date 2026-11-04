@@ -85,7 +85,12 @@ class ScheduleModel:
         must_courses: list[str],
         student_required: list[str] | None = None,
         sequence_pairs: list[tuple[str, str]] | None = None,
+        plan_mode: bool = False,
     ):
+        # plan_mode: the student's graduation plan fixes the courses (passed as student_required);
+        # the solver only chooses sections. Requirement caps and free-elective limits don't apply,
+        # and exclude_sets hold section ids so alternate options differ by section, not by course.
+        self.plan_mode = plan_mode
         self.sequence_pairs = sequence_pairs or []  # (prerequisite, course) that can't share a term
         self.c = candidates
         self.courses = courses
@@ -127,7 +132,8 @@ class ScheduleModel:
         for c in self.must:
             groups[f"must:{c}"] = HardGroup(f"must:{c}", "must_course", f"Include graduation-critical {c}")
         for c in self.student_required:
-            groups[f"req:{c}"] = HardGroup(f"req:{c}", "student_required", f"Include {c} (your request)")
+            groups[f"req:{c}"] = HardGroup(f"req:{c}", "student_required",
+                                           f"Include {c} ({'your graduation plan' if self.plan_mode else 'your request'})")
         for s in self.prefs.locked_sections:
             groups[f"lock:{s}"] = HardGroup(f"lock:{s}", "locked_section", f"Keep locked section {s}")
         if self.f1:
@@ -181,7 +187,7 @@ class ScheduleModel:
             if cand.section.component != "primary":
                 continue
             course_reqs.setdefault(cand.section.course, set()).update(cand.requirement_ids)
-        for req_id, spec in self.caps.items():
+        for req_id, spec in ({} if self.plan_mode else self.caps).items():
             cap, weights = spec if isinstance(spec, tuple) else (spec, {})
             members = [(weights.get(c, 1), y[c]) for c, rids in course_reqs.items() if req_id in rids]
             if sum(w for w, _ in members) > cap:
@@ -196,12 +202,12 @@ class ScheduleModel:
             m.Add(counted <= online)
             m.Add(in_person + counted >= settings.f1_full_time_credits * 10).OnlyEnforceIf(lit["f1"])
 
-        free = [y[c] for c, rids in course_reqs.items() if rids <= {FREE_ELECTIVE}]
+        free = [] if self.plan_mode else [y[c] for c, rids in course_reqs.items() if rids <= {FREE_ELECTIVE}]
         if free:
             m.Add(sum(free) <= free_cap)
 
         for prev in exclude_sets:
-            present = [y[c] for c in prev if c in y]
+            present = [x[s] for s in prev if s in x] if self.plan_mode else [y[c] for c in prev if c in y]
             if present:
                 m.Add(sum(present) <= len(prev) - 1)
 
@@ -212,8 +218,11 @@ class ScheduleModel:
         m.Add(dev >= credits - self.prefs.credit_target * 10)
         m.Add(dev >= self.prefs.credit_target * 10 - credits)
 
-        req_terms = sum(int(cand.priority * SCALE) * x[cand.section.id] for cand in self.c)
-        int_terms = sum(int(cand.interest * SCALE) * x[cand.section.id] for cand in self.c)
+        # Degree priority and interest are per-course values: count them once per course taken (y),
+        # not once per selected section, or a course with lecture + lab + recitation would count 3x.
+        prio, intr = self._course_values()
+        req_terms = sum(int(prio[c] * SCALE) * y[c] for c in y)
+        int_terms = sum(int(intr[c] * SCALE) * y[c] for c in y)
         # A free elective earns no degree value and costs a full requirement's worth, so it only
         # enters the schedule to close a credit gap that no requirement course can fill.
         free_cost = strategy.w_req * SCALE * sum(free) if free else 0
@@ -226,6 +235,16 @@ class ScheduleModel:
                 m.Add(v == 0)
         m.AddAssumptions(assumptions)
         return m, x, lit
+
+    def _course_values(self) -> tuple[dict[str, float], dict[str, float]]:
+        """Per-course degree priority and interest. Every section of a course carries the same
+        values from build_model; the primary (lecture) component's values win if they differ."""
+        prio: dict[str, float] = {}
+        intr: dict[str, float] = {}
+        for cand in sorted(self.c, key=lambda cd: cd.section.component == "primary"):
+            prio[cand.section.course] = cand.priority
+            intr[cand.section.course] = cand.interest
+        return prio, intr
 
     def _soft_penalty(self, s: SectionData) -> int:
         p = 0
@@ -285,11 +304,14 @@ class ScheduleModel:
             return SolveResult(False, conflict_set=core, conflict_set_minimal=True)
         chosen = [cand for cand in self.c if solver.Value(x[cand.section.id])]
         sections = [cand.section for cand in chosen]
+        prio, intr = self._course_values()
+        taken = sorted({cand.section.course for cand in chosen})
         return SolveResult(
             True, sections=sections, credits=round(sum(c.credits for c in chosen if c.section.component == "primary"), 1), objective=solver.ObjectiveValue(),
             breakdown={
-                "degree_progress": round(sum(c.priority for c in chosen), 2),
-                "interest_alignment": round(sum(c.interest for c in chosen) / max(1, len(chosen)), 2),
+                # per course, matching the objective (a lab/recitation adds no extra degree value)
+                "degree_progress": round(sum(prio[c] for c in taken), 2),
+                "interest_alignment": round(sum(intr[c] for c in taken) / max(1, len(taken)), 2),
                 "soft_penalty": sum(self._soft_penalty(s) for s in sections),
                 "status": "optimal" if status == cp_model.OPTIMAL else "feasible",
             },

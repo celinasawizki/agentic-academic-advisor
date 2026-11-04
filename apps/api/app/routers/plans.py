@@ -3,17 +3,18 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.agents.base import PlanContext
-from app.agents.constraints import QUESTION_RE, apply_changes, parse_change_request
+from app.agents.constraints import apply_changes, is_question, parse_change_request
 from app.agents.review import review_sections
 from app.core.auth import Principal, authorize_plan, authorize_student, get_principal
+from app.core.config import settings
 from app.core.db import get_db
 from app.domain import AvailBlock, StudentProfile
 from app.ingest.sections import components_by_course
 from app.models import AgentExecution, AvailabilityBlock, PlanRun, Student
 from app.optimizer import ScheduleModel
 from app.agents.research import apply_research
-from app.orchestrator import PIPELINE, PlanBusy, create_plan, load_catalog, queue_agents, run_plan
-from app.routers.students import AvailabilityIn
+from app.orchestrator import PIPELINE, PlanBusy, create_plan, load_catalog, queue_agents, run_plan, student_profile
+from app.routers.students import AvailabilityIn, plan_term_name
 from app.rules import total_credits
 
 router = APIRouter(prefix="/api/plans", tags=["plans"])
@@ -75,7 +76,11 @@ def _rerun(db: Session, plan: PlanRun, student: StudentProfile, bg: BackgroundTa
 
 @router.post("")
 def create(body: CreatePlanIn, bg: BackgroundTasks, db: Session = Depends(get_db), principal: Principal = Depends(get_principal)):
-    authorize_student(db, principal, body.student_id, "plan")
+    s = authorize_student(db, principal, body.student_id, "plan")
+    if not s.is_demo and settings.require_grad_plan:
+        term = plan_term_name(db, s.planning_term)
+        if not StudentProfile(**student_profile(db, s.id).model_dump()).plan_courses(term):
+            raise HTTPException(422, f"Upload your graduation plan before schedules are proposed: no {term} courses are selected in it.")
     plan = create_plan(db, body.student_id)
     queue_agents(db, plan, None)
     bg.add_task(run_plan, plan.id, None)
@@ -117,7 +122,7 @@ def modify(plan_id: str, body: ModifyIn, bg: BackgroundTasks, db: Session = Depe
         if r["kind"] == "count" and len(r["options"]) == 1 and not r["patterns"]:
             for c in r["options"][0]:
                 required.setdefault(c, []).append(f"{r['program_name']} ({r['name'][:80]})")
-    if QUESTION_RE.match(body.message):  # a question is answered, not executed
+    if is_question(body.message):  # a question is answered, not executed
         preview: list[str] = []
         _, would, _ = apply_changes(student, changes, required, preview)
         return {"applied": [], "assumptions": [], "warnings": preview, "mode": mode, "rerun": False,
@@ -174,6 +179,13 @@ def accept_resolution(plan_id: str, body: ResolveIn, bg: BackgroundTasks, db: Se
     elif kind == "must":
         p.deferred_courses = [*dict.fromkeys([*p.deferred_courses, target])]
         applied = f"Deferred {target} to a future term (graduation risk accepted)"
+    elif kind == "req" and any(i.course == target for i in student.plan_courses(plan_term_name(db, plan.term_id))):
+        for t in student.grad_plan:
+            if t.term.lower() == plan_term_name(db, plan.term_id).lower():
+                for i in t.items:
+                    if i.course == target:
+                        i.include = False
+        applied = f"Deferred {target} from your graduation plan to a future term (check with your advisor)"
     elif kind == "req":
         p.required_courses = [c for c in p.required_courses if c != target]
         applied = f"No longer requiring {target}"
@@ -198,7 +210,9 @@ def regenerate(plan_id: str, bg: BackgroundTasks, db: Session = Depends(get_db),
     """Ask for different combinations: the current options' course sets are avoided next run."""
     plan = authorize_plan(db, principal, plan_id, "modify")
     student = StudentProfile(**plan.state["_student"])
-    current = [sorted({s["course"] for s in o["sections"]}) for o in plan.state.get("schedule_optimization", {}).get("options", [])]
+    opt = plan.state.get("schedule_optimization", {})
+    key = "id" if opt.get("grad_plan_mode") else "course"  # graduation-plan courses are fixed: vary the sections
+    current = [sorted({s[key] for s in o["sections"]}) for o in opt.get("options", [])]
     student.preferences.avoid_course_sets = [*student.preferences.avoid_course_sets, *current][-MAX_AVOID_SETS:]
     _rerun(db, plan, student, bg, {"message": "Show me different options", "applied": [f"Avoiding {len(current)} previous combination(s)"],
                                    "assumptions": [], "mode": "ui"}, "schedule_optimization")

@@ -58,6 +58,7 @@ def student_profile(db: Session, student_id: str) -> StudentProfile:
         availability=[AvailBlock(day=a.day, start=a.start, end=a.end, kind=a.kind, label=a.label) for a in s.availability],
         preferences=PlanningPreferences(**{**(s.preferences or {}), "credit_target": s.credit_target,
                                            "credit_min": s.credit_min, "credit_max": s.credit_max}),
+        grad_plan=s.grad_plan or [],
     )
 
 

@@ -1,4 +1,4 @@
-import type { Plan, Program, Term } from "./types"
+import type { GradPlanTerm, Plan, Program, Term } from "./types"
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
 
@@ -58,6 +58,13 @@ export const api = {
     fd.append("file", file)
     return request<{ entries: AuditEntry[]; notes: string[] }>("/api/degree-audit/parse", { method: "POST", body: fd })
   },
+  parseGradPlan: (file: File) => {
+    const fd = new FormData()
+    fd.append("file", file)
+    return request<{ source: string | null; terms: GradPlanTerm[]; notes: string[] }>("/api/grad-plan/parse", { method: "POST", body: fd })
+  },
+  putGradPlan: (student_id: string, terms: GradPlanTerm[]) =>
+    request<{ ok: boolean }>(`/api/students/${student_id}/grad-plan`, { method: "PUT", body: JSON.stringify({ terms }) }),
   createPlan: (student_id: string) =>
     request<{ plan_id: string }>("/api/plans", { method: "POST", body: JSON.stringify({ student_id }) }),
   plan: (id: string, full = true) => request<Plan>(`/api/plans/${id}${full ? "" : "?full=false"}`),
