@@ -159,7 +159,7 @@ def upsert_student(db: Session, s: dict, is_demo: bool) -> Student:
                  planning_term=s["planning_term"], program_ids=s["programs"], campus=s["campus"], f1_status=s["f1_status"],
                  credit_target=s["credit_target"], credit_min=s["credit_min"], credit_max=s["credit_max"],
                  consent_to_process=s.get("consent_to_process", is_demo), access_token_hash=s.get("access_token_hash"),
-                 preferences=s.get("preferences") or {})
+                 preferences=s.get("preferences") or {}, grad_plan=s.get("grad_plan") or [])
     st.transcript = [TranscriptEntry(course_code=t["course"], status=t["status"], grade=t.get("grade"), term=t.get("term"),
                                      source=t.get("source", "demo" if is_demo else "manual"), confidence=t.get("confidence", 1.0),
                                      verified_by_student=t.get("verified_by_student", is_demo)) for t in s["transcript"]]

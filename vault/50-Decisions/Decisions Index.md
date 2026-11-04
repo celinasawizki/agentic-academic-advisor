@@ -7,5 +7,6 @@ tags: [moc, decisions]
 - [[ADR-003 Explain infeasibility with irreducible sets]]
 - [[ADR-004 Never guess requirements]]
 - [[ADR-005 One pipeline for every program]]
+- [[ADR-006 Graduation plan selects the semester's courses]]
 
 New decision → copy [[ADR Template]].

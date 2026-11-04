@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.orm import Session
 
 from app.adapters.degree_audit import extract_text, parse_audit_text
+from app.adapters.grad_plan import parse_grad_plan
 from app.core.auth import Principal, authorize_student, get_principal, new_token
 from app.core.config import settings
 from app.core.db import get_db
@@ -45,6 +46,35 @@ class AvailabilityIn(BaseModel):
         return v
 
 
+class GradPlanItemIn(BaseModel):
+    course: str | None = Field(default=None, pattern=r"^[A-Z]{2,5} \d{4}$")
+    label: str = Field(default="", max_length=200)
+    credits: float | None = Field(default=None, ge=0, le=12)
+    notes: list[str] = Field(default_factory=list, max_length=10)
+    flags: list[Literal["winter_session", "needs_confirmation"]] = Field(default_factory=list)
+    include: bool = True
+
+
+class GradPlanTermIn(BaseModel):
+    term: str = Field(pattern=r"^(Fall|Spring|Summer|Winter) \d{4}$")
+    items: list[GradPlanItemIn] = Field(default_factory=list, max_length=15)
+
+
+def plan_term_name(db: Session, term_id: str) -> str:
+    t = db.get(AcademicTerm, term_id)
+    return t.name if t else term_id
+
+
+def require_term_courses(grad_plan: list[GradPlanTermIn], term_name: str) -> None:
+    """Schedules are only proposed from the courses the student's graduation plan selects for the term."""
+    for t in grad_plan:
+        if t.term.lower() == term_name.lower():
+            if any(i.course and i.include for i in t.items):
+                return
+            raise HTTPException(422, f"Your graduation plan has no courses selected for {term_name}. Include at least one course for that semester.")
+    raise HTTPException(422, f"Upload your graduation plan first: it has no {term_name} semester, so there is nothing to schedule.")
+
+
 class OnboardingIn(BaseModel):
     name: str = Field(max_length=120)
     academic_year: str = Field(max_length=20)
@@ -62,6 +92,7 @@ class OnboardingIn(BaseModel):
     credit_max: int = Field(ge=1, le=24)
     transcript: list[TranscriptIn] = Field(default_factory=list, max_length=200)
     availability: list[AvailabilityIn] = Field(default_factory=list, max_length=200)
+    grad_plan: list[GradPlanTermIn] = Field(default_factory=list, max_length=16)
     consent_to_process: bool
 
 
@@ -86,10 +117,13 @@ def create_student(body: OnboardingIn, db: Session = Depends(get_db)):
         raise HTTPException(422, "Unknown planning term")
     if not (body.credit_min <= body.credit_target <= body.credit_max):
         raise HTTPException(422, "Credit target must be within the acceptable range")
+    if settings.require_grad_plan or body.grad_plan:
+        require_term_courses(body.grad_plan, plan_term_name(db, body.planning_term))
     sid = f"stu-{uuid.uuid4().hex[:20]}"
     token, token_hash = new_token()
     st = upsert_student(db, {**body.model_dump(), "id": sid, "transcript": [t.model_dump() for t in body.transcript],
-                             "availability": [a.model_dump() for a in body.availability], "access_token_hash": token_hash},
+                             "availability": [a.model_dump() for a in body.availability], "access_token_hash": token_hash,
+                             "grad_plan": [t.model_dump() for t in body.grad_plan]},
                         is_demo=False)
     if body.career_interests.strip():
         st.interests.append(StudentInterest(text=body.career_interests.strip(), tags=["career"]))
@@ -134,3 +168,35 @@ async def parse_degree_audit(file: UploadFile = File(...), db: Session = Depends
     if not result["entries"]:
         result["notes"].append("No course codes were found. You can add courses manually.")
     return result
+
+
+@router.post("/grad-plan/parse")
+async def parse_grad_plan_upload(file: UploadFile = File(...), db: Session = Depends(get_db)):
+    """Parses an E-Graduation Plan PDF in memory and returns its semesters for the student to
+    verify. Like degree audits, the file is never stored, logged, or sent to an AI provider."""
+    data = await file.read(settings.max_upload_bytes + 1)
+    if len(data) > settings.max_upload_bytes:
+        raise HTTPException(413, "File too large (max 5 MB)")
+    if not data.startswith(b"%PDF-"):
+        raise HTTPException(415, "Upload your graduation plan as a PDF")
+    try:
+        result = parse_grad_plan(data, {c.code for c in db.query(Course.code).all()})
+    except Exception:
+        raise HTTPException(422, "Could not read this PDF")
+    return result
+
+
+class GradPlanIn(BaseModel):
+    terms: list[GradPlanTermIn] = Field(max_length=16)
+
+
+@router.put("/students/{student_id}/grad-plan")
+def put_grad_plan(student_id: str, body: GradPlanIn, db: Session = Depends(get_db), principal: Principal = Depends(get_principal)):
+    existing = db.get(Student, student_id)
+    if existing is not None and existing.is_demo:
+        raise HTTPException(400, "Demo students are shared and their records cannot be changed")
+    s = authorize_student(db, principal, student_id, "modify")
+    require_term_courses(body.terms, plan_term_name(db, s.planning_term))
+    s.grad_plan = [t.model_dump() for t in body.terms]
+    db.commit()
+    return {"ok": True}

@@ -51,7 +51,24 @@ export type OptionSection = Section & {
   prereq_pending: string[]
   interest_score: number
   priority: number
+  from_grad_plan?: boolean
 }
+
+export type GradPlanItem = {
+  course: string | null
+  label: string
+  credits: number | null
+  notes: string[]
+  flags: ("winter_session" | "needs_confirmation")[]
+  include: boolean
+  suggested_course?: string | null
+  in_catalog?: boolean | null
+  raw_line?: string
+}
+
+export type GradPlanTerm = { term: string; heading?: string; items: GradPlanItem[]; planned_credits?: number }
+
+export type GradPlanCourseStatus = { course: string; credits: number | null; notes: string[]; schedulable: boolean; seats_full?: boolean; reason: string | null }
 
 export type SoftViolation = { preference: string; section: string; course: string; detail: string }
 
@@ -245,6 +262,7 @@ export type StudentSnapshot = {
     deferred_courses?: string[]
     accepted_tradeoffs?: string[]
   }
+  grad_plan?: GradPlanTerm[]
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -265,6 +283,7 @@ export type PlanState = {
     excluded: { course: string; section?: string; reason: string; kind?: string }[]
     pattern_exclusion_summary?: Record<string, number>
     courses: Record<string, { code: string; title: string; credits: number; description: string; requirement_ids: string[]; prereq_status: string; prereq_text?: string; offered?: boolean }>
+    grad_plan?: { term: string; courses: GradPlanCourseStatus[] } | null
   }
   interest_matching?: {
     themes: { label: string; evidence: string }[]
@@ -298,6 +317,8 @@ export type PlanState = {
     infeasible_strategies: { strategy: string; label: string; conflict_set: ConflictGroup[]; minimal: boolean; resolutions: Resolution[] }[]
     ideal_analysis: { perfect_exists: boolean; minimal?: boolean; conflict_set: ConflictGroup[]; resolutions: Resolution[] }
     solver: string
+    grad_plan_mode?: boolean
+    grad_plan_courses?: string[]
   }
   academic_review?: {
     reviews: Record<string, { status: string; checks: { check: string; passed: boolean; severity: string; detail: string }[]; errors: number; warnings: number }>

@@ -128,6 +128,7 @@ class Student(Base):
     consent_to_process: Mapped[bool] = mapped_column(Boolean, default=False)
     access_token_hash: Mapped[str | None] = mapped_column(String(64), index=True)
     preferences: Mapped[dict] = mapped_column(JSON, default=dict)
+    grad_plan: Mapped[list] = mapped_column(JSON, default=list)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
     transcript: Mapped[list["TranscriptEntry"]] = relationship(cascade="all, delete-orphan")
     interests: Mapped[list["StudentInterest"]] = relationship(cascade="all, delete-orphan")

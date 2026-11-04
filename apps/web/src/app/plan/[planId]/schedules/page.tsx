@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  GraduationCap,
   AlertTriangle, ArrowRightLeft, CalendarCog, CheckCircle2, CircleSlash, Info, Loader2, Lock, LockOpen, MessageSquare, Send, Sparkles,
   Shuffle, Trash2, Upload, XCircle,
 } from "lucide-react"
@@ -19,7 +20,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from "@/components/ui/input"
 import { api, type ValidateResult } from "@/lib/api"
 import { meetingLabel } from "@/lib/time"
-import type { AvailBlock, OptionSection, Resolution, ScheduleOption } from "@/lib/types"
+import type { AvailBlock, OptionSection, PlanState, Resolution, ScheduleOption } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 const EXAMPLES = ["Give me Fridays off", "Find more courses related to AI", "Move my classes later in the day", "I want to take 18 credits instead", "I got a job on Tuesdays. Rebuild my schedule."]
@@ -131,6 +132,8 @@ function Builder() {
         details={expl.conflict_explanation.details} minimal={!!opt.ideal_analysis.minimal} resolutions={opt.ideal_analysis.resolutions}
         options={opt.options} onSelect={setSelectedId} onAccept={accept} onEditAvailability={() => setAvailOpen(true)} />
 
+      {opt.grad_plan_mode && st.course_discovery?.grad_plan && <GradPlanBanner gp={st.course_discovery.grad_plan} />}
+
       {((prefs.accepted_tradeoffs?.length ?? 0) > 0 || (prefs.deferred_courses?.length ?? 0) > 0) && (
         <div className="flex flex-wrap items-center gap-1.5 rounded-xl border bg-muted/30 px-3 py-2 text-xs">
           <span className="font-medium">Your accepted tradeoffs:</span>
@@ -170,12 +173,12 @@ function Builder() {
               </div>
               <div className="flex flex-wrap gap-2">
                 <Button variant="outline" size="sm" onClick={() => setAvailOpen(true)}><CalendarCog /> Availability</Button>
-                <CreditControl key={prefs.credit_target} value={prefs.credit_target} min={prefs.credit_min} max={prefs.credit_max} disabled={busy}
-                  onApply={(n) => rerun(() => api.preferences(plan!.id, { credit_target: n, credit_min: Math.min(prefs.credit_min, n), credit_max: Math.max(prefs.credit_max, n) }), `Target set to ${n} credits`)} />
+                {!opt.grad_plan_mode && <CreditControl key={prefs.credit_target} value={prefs.credit_target} min={prefs.credit_min} max={prefs.credit_max} disabled={busy}
+                  onApply={(n) => rerun(() => api.preferences(plan!.id, { credit_target: n, credit_min: Math.min(prefs.credit_min, n), credit_max: Math.max(prefs.credit_max, n) }), `Target set to ${n} credits`)} />}
                 <Button variant="outline" size="sm" disabled={busy} onClick={() => rerun(() => api.regenerate(plan!.id), "Looking for different combinations")}>
                   <Shuffle /> Different options
                 </Button>
-                {themes.length > 0 && (
+                {themes.length > 0 && !opt.grad_plan_mode && (
                   <Button variant="outline" size="sm" disabled={busy}
                     onClick={() => rerun(() => api.modify(plan!.id, `Find more courses related to ${themes[0].label}`), `Boosting ${themes[0].label}`)}>
                     <Sparkles /> More {themes[0].label}
@@ -511,5 +514,37 @@ function AvailabilityEditor({ initial, onCancel, onSave }: { initial: AvailBlock
           <Button onClick={() => onSave(blocks)}>Save & re-plan</Button>
         </div>
     </>
+  )
+}
+
+function GradPlanBanner({ gp }: { gp: NonNullable<NonNullable<PlanState["course_discovery"]>["grad_plan"]> }) {
+  const blocked = gp.courses.filter((c) => !c.schedulable)
+  const full = gp.courses.filter((c) => c.schedulable && c.seats_full)
+  return (
+    <div className="rounded-2xl border border-primary/25 bg-cherry-soft/60 p-4 text-sm">
+      <div className="flex items-center gap-2 font-semibold text-primary"><GraduationCap className="size-4" /> Built from your graduation plan for {gp.term}</div>
+      <p className="mt-1 text-muted-foreground">
+        Only these courses are scheduled; the planner chooses sections and times and adds nothing else. To change the courses, update your
+        graduation plan with your advisor or remove a course below.
+      </p>
+      <div className="mt-2 flex flex-wrap gap-1.5">
+        {gp.courses.map((c) => (
+          <Pill key={c.course} tone={!c.schedulable ? "danger" : c.seats_full ? "warning" : "success"}>
+            {c.course}{c.credits ? ` · ${c.credits} cr` : ""}{!c.schedulable ? " · can't be scheduled" : c.seats_full ? " · full in snapshot" : ""}
+          </Pill>
+        ))}
+      </div>
+      {blocked.length > 0 && (
+        <ul className="mt-2 space-y-0.5 text-xs text-destructive">
+          {blocked.map((c) => <li key={c.course}><b>{c.course}</b>: {c.reason ?? "no eligible section this term"}. Defer it below or check with your advisor.</li>)}
+        </ul>
+      )}
+      {full.length > 0 && (
+        <p className="mt-2 text-xs text-warning">
+          {full.map((c) => c.course).join(", ")}: every section was full when the class-search snapshot was taken. Seat counts are not live —
+          join the waitlist or confirm a seat with the department.
+        </p>
+      )}
+    </div>
   )
 }

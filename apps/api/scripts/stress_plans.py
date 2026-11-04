@@ -147,7 +147,8 @@ def check_plan(plan: dict, student: dict, courses: dict) -> list[str]:
 def _worker(args):
     seed, n, worker = args
     tmp = tempfile.mkdtemp()
-    os.environ.update(DATABASE_URL=f"sqlite:///{tmp}/stress.db", ANTHROPIC_API_KEY="", LIVE_BULLETIN_RESEARCH="false")
+    os.environ.update(DATABASE_URL=f"sqlite:///{tmp}/stress.db", ANTHROPIC_API_KEY="", LIVE_BULLETIN_RESEARCH="false",
+                      REQUIRE_GRAD_PLAN="false")  # exercises requirement-driven planning
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     import logging
     logging.disable(logging.WARNING)

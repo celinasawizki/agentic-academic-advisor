@@ -15,10 +15,15 @@ def course_record(c, pre, req_ids: list[str], offered: bool) -> dict:
             "prereq_text": c.prereq_text, "attributes": c.attributes, "offered": offered}
 
 
-def evaluate_course(c, secs: list[SectionData], student, excluded_courses: set[str], term_name: str) -> dict:
+def evaluate_course(c, secs: list[SectionData], student, excluded_courses: set[str], term_name: str,
+                    allow_full: bool = False) -> dict:
     """Deterministic eligibility of one course for the planning term. Returns usable section
     entries, or the reason the course cannot be scheduled. Shared by Course Discovery and
-    the Interest Matching Agent's elective search."""
+    the Interest Matching Agent's elective search.
+
+    allow_full: a course the student's graduation plan selects stays schedulable when its only
+    Main Campus/online sections were full in the snapshot (seat counts are not live; the student
+    can waitlist). Those sections are flagged `seats_full` and the review warns about them."""
     pre = prereq_status(c, student.transcript)
     out = {"prereq": pre, "eligible": [], "reason": None, "notes": [], "blocked": False}
     if not secs:
@@ -40,11 +45,17 @@ def evaluate_course(c, secs: list[SectionData], student, excluded_courses: set[s
     full = [s for s in secs if campus_supported(s) and s.seats_available is not None and s.seats_available <= 0]
     usable = [s for s in secs if campus_supported(s) and s not in full]
     comps = {x.component for x in secs}
+    kept_full = False
+    if allow_full and full and {x.component for x in usable} != {x.component for x in secs if campus_supported(x)}:
+        usable, kept_full = [s for s in secs if campus_supported(s)], True  # some component has only full sections
     usable_comps = {x.component for x in usable}
     if campus_bad:
         out["notes"].append({"reason": f"{len(campus_bad)} section(s) at unsupported campuses ({', '.join(sorted({s.campus for s in campus_bad}))})"})
     if full:
         out["notes"].append({"reason": f"{len(full)} section(s) full in the snapshot (seat counts are as of the snapshot date, not live)"})
+    if kept_full:
+        out["notes"].append({"reason": "Main Campus/online sections were full in the snapshot; kept because your graduation plan "
+                                       "selects this course — join the waitlist or confirm a seat with the department"})
     if not usable:
         out["reason"] = "No open Main Campus or online section"
         return out
@@ -55,7 +66,8 @@ def evaluate_course(c, secs: list[SectionData], student, excluded_courses: set[s
         out["eligible"].append({"section": sec.model_dump(), "course": c.code, "prereq_status": pre.status,
                                 "prereq_pending": pre.pending_courses, "component": sec.component,
                                 "components": sorted(usable_comps), "component_pairing": "inferred" if len(usable_comps) > 1 else "single",
-                                "requires_linked_section": sec.linked, "time_tba": not sec.meetings and sec.modality != "online"})
+                                "requires_linked_section": sec.linked, "time_tba": not sec.meetings and sec.modality != "online",
+                                "seats_full": sec.seats_available is not None and sec.seats_available <= 0})
     return out
 
 
@@ -80,6 +92,11 @@ class CourseDiscoveryAgent(Agent):
             for c in r["candidate_courses"]:
                 wanted.setdefault(c, []).append(r["id"])
                 explicit.add(c)
+        plan_items = ctx.student.plan_courses(ctx.catalog.term_name)
+        plan_codes = {it.course for it in plan_items}
+        for it in plan_items:
+            wanted.setdefault(it.course, [])
+            explicit.add(it.course)
         pattern_reqs: list[RequirementData] = [reqs[r["id"]] for r in remaining if reqs.get(r["id"]) and reqs[r["id"]].patterns]
         for code, secs in by_course.items():
             c = courses.get(code)
@@ -98,19 +115,23 @@ class CourseDiscoveryAgent(Agent):
                  term_secs[0].retrieved_at if term_secs else None, "snapshot")
 
         eligible, excluded, course_info = [], [], {}
+        blocked_reason: dict[str, str] = {}
         pattern_skips: Counter = Counter()
         for code, req_ids in wanted.items():
             c = courses.get(code)
             is_explicit = code in explicit
             if c is None:
+                blocked_reason[code] = "Not found in the bulletin course catalog"
                 (excluded.append({"course": code, "reason": "Not found in the bulletin course catalog"}) if is_explicit
                  else pattern_skips.update(["Not found in the bulletin course catalog"]))
                 continue
-            ev = evaluate_course(c, by_course.get(code, []), ctx.student, excluded_courses, ctx.catalog.term_name)
+            ev = evaluate_course(c, by_course.get(code, []), ctx.student, excluded_courses, ctx.catalog.term_name,
+                                 allow_full=code in plan_codes)
             course_info[code] = course_record(c, ev["prereq"], req_ids, code in by_course)
             if is_explicit:
                 excluded.extend({"course": code, **n} for n in ev["notes"])
             if ev["reason"]:
+                blocked_reason[code] = ev["reason"]
                 if is_explicit:
                     excluded.append({"course": code, "reason": ev["reason"], **({"kind": "prerequisite"} if ev["blocked"] else {})})
                 else:
@@ -144,7 +165,19 @@ class CourseDiscoveryAgent(Agent):
                 f"{len(excluded)} listed-course exclusions", exclusions=[f"{e['course']}: {e['reason']}" for e in excluded[:40]])
         if pattern_skips:
             ctx.log("Range/attribute matches skipped (summary)", **dict(pattern_skips.most_common(6)))
-        return {"term_id": ctx.catalog.term_id, "term_name": ctx.catalog.term_name, "eligible_sections": eligible,
+        grad_plan = None
+        if plan_items:
+            ok = {e["course"] for e in eligible}
+            grad_plan = {"term": ctx.catalog.term_name,
+                         "courses": [{"course": it.course, "credits": it.credits, "notes": it.notes,
+                                      "schedulable": it.course in ok,
+                                      "seats_full": bool(ok) and it.course in ok and all(e.get("seats_full") for e in eligible if e["course"] == it.course),
+                                      "reason": blocked_reason.get(it.course)}
+                                     for it in plan_items]}
+            ctx.log(f"Graduation plan selects {len(plan_items)} course(s) for {ctx.catalog.term_name}: "
+                    f"{', '.join(it.course for it in plan_items)}; {len(ok & {it.course for it in plan_items})} have eligible sections",
+                    not_schedulable={c["course"]: c["reason"] for c in grad_plan["courses"] if not c["schedulable"]})
+        return {"term_id": ctx.catalog.term_id, "term_name": ctx.catalog.term_name, "eligible_sections": eligible, "grad_plan": grad_plan,
                 "excluded": excluded, "pattern_exclusion_summary": dict(pattern_skips), "courses": course_info,
                 "requirement_availability": availability,
                 "data_source": "temple_class_search_snapshot"}

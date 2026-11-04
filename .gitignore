@@ -27,3 +27,6 @@ data/temple/.cache/
 # obsidian per-user state
 vault/.obsidian/workspace*.json
 vault/.obsidian/cache
+
+# agent swarm task board
+SWARM_STATUS.md
