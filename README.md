@@ -19,7 +19,7 @@ Every program uses the same data model and pipeline — nothing is hardcoded per
 
 ## What it does
 
-A student completes a 7-step onboarding (any combination of Temple programs, academic records, interests in their own words, a drag-to-paint weekly availability grid, credit load, campus, F-1 status). Ten specialized agents then share one planning state:
+A student completes an 8-step onboarding (any combination of Temple programs, academic records, their **graduation plan**, interests in their own words, a drag-to-paint weekly availability grid, credit load, campus, F-1 status). Ten specialized agents then share one planning state:
 
 | # | Agent | Responsibility | Engine |
 |---|---|---|---|
@@ -38,6 +38,7 @@ Language models interpret and explain; **they never decide validity**. Conflicts
 
 ### Highlights
 
+- **The graduation plan picks the courses.** Students upload the E-Graduation Plan PDF from their advisor before any schedule is proposed. A local, rule-based parser (no LLM) reads each semester block, the student reviews every row, and the optimizer then schedules only the courses the plan lists for the planning term, choosing sections and times around their availability. Lines that name a slot instead of a course (e.g. "GenEd Science/Tech course") are never resolved to a guessed course, and winter-session courses are left out by default. Name and TUID are dropped during parsing. See [ADR-006](vault/50-Decisions/ADR-006%20Graduation%20plan%20selects%20the%20semester's%20courses.md).
 - **No silent violations.** When no schedule satisfies every preference, CP-SAT runs with each hard constraint behind an assumption literal, returns the responsible assumptions, and a deletion filter shrinks them to an **irreducible conflicting set**. Each resolution (relax a soft preference, change a hard block, defer a course, reduce credits) is re-solved to confirm it works before it is offered.
 - **Real course structure.** Courses with separate lecture, lab and recitation sections get one section of each component, with clashes checked between them and credits counted once.
 - **Hard vs. soft vs. academic vs. immigration** constraints are distinct types. Soft preferences are relaxed only with student approval; hard availability is never scheduled over; the F-1 rule cannot be overridden by preferences.
@@ -84,7 +85,7 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main:app --port 8000  # creates SQLite and loads data/temple on first start (~3 s); later schema changes migrate additively
 
-# Web (new terminal)
+# Web (new terminal, from the repo root)
 cd apps/web
 npm install
 echo "NEXT_PUBLIC_API_URL=http://127.0.0.1:8000" > .env.local
@@ -92,6 +93,8 @@ npm run dev                       # http://localhost:3000
 ```
 
 The API reloads the catalog automatically whenever files in `data/temple` change (students and plans are kept), and adds new columns to existing SQLite databases automatically. Real students created through onboarding receive an access token stored in the browser; without it their records return 404.
+
+Then open http://localhost:3000. To try it without your own documents, open `/demo` and run a fictional student (e.g. Lina Haddad), or go to `/onboarding` and click **Prefill fictional demo values**, which includes a fictional graduation plan. Real students must upload a graduation plan before schedules are generated; set `REQUIRE_GRAD_PLAN=false` in `.env` to turn that off and let the optimizer choose courses from the open requirements instead.
 
 Without `ANTHROPIC_API_KEY` every agent uses its deterministic fallback and the workspace labels each agent "Deterministic". With a key, Interest Matching, Explanation and change-request parsing call `claude-opus-5-5` with schema-validated structured outputs and server-side refusal fallbacks.
 
