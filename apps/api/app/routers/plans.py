@@ -60,7 +60,8 @@ def persist_student(db: Session, plan: PlanRun, student: StudentProfile) -> None
     row.preferences = p.model_dump(exclude={"credit_target", "credit_min", "credit_max"})
     db.query(AvailabilityBlock).filter_by(student_id=row.id).delete()
     for b in student.availability:
-        db.add(AvailabilityBlock(student_id=row.id, day=b.day, start=b.start, end=b.end, kind=b.kind, label=b.label))
+        db.add(AvailabilityBlock(student_id=row.id, day=b.day, start=b.start, end=b.end, kind=b.kind,
+                                 label=b.label[:AvailabilityBlock.__table__.c.label.type.length]))  # LLM labels are unbounded
 
 
 def _rerun(db: Session, plan: PlanRun, student: StudentProfile, bg: BackgroundTasks, history_entry: dict, start: str):
@@ -157,6 +158,24 @@ def update_preferences(plan_id: str, body: PreferencesIn, bg: BackgroundTasks, d
     return {"applied": applied, "rerun": True}
 
 
+def _defer(db: Session, plan: PlanRun, student: StudentProfile, kind: str, target: str) -> str:
+    """Apply one course deferral (graduation-critical, graduation-plan or student-required course)."""
+    p = student.preferences
+    if kind == "must":
+        p.deferred_courses = [*dict.fromkeys([*p.deferred_courses, target])]
+        return f"Deferred {target} to a future term (graduation risk accepted)"
+    term = plan_term_name(db, plan.term_id)
+    if any(i.course == target for i in student.plan_courses(term)):
+        for t in student.grad_plan:
+            if t.term.lower() == term.lower():
+                for i in t.items:
+                    if i.course == target:
+                        i.include = False
+        return f"Deferred {target} from your graduation plan to a future term (check with your advisor)"
+    p.required_courses = [c for c in p.required_courses if c != target]
+    return f"No longer requiring {target}"
+
+
 @router.post("/{plan_id}/resolve")
 def accept_resolution(plan_id: str, body: ResolveIn, bg: BackgroundTasks, db: Session = Depends(get_db),
                       principal: Principal = Depends(get_principal)):
@@ -165,6 +184,15 @@ def accept_resolution(plan_id: str, body: ResolveIn, bg: BackgroundTasks, db: Se
     plan = authorize_plan(db, principal, plan_id, "modify")
     student = StudentProfile(**plan.state["_student"])
     p = student.preferences
+    parts = [x.strip() for x in body.relaxes.split(" + ")]
+    if len(parts) > 1:
+        # A combined deferral offered by the optimizer: every part must be a course deferral.
+        if not all(x.startswith(("must:", "req:")) for x in parts):
+            raise HTTPException(422, "Only course deferrals can be combined")
+        applied = "; ".join(_defer(db, plan, student, *x.split(":", 1)) for x in parts)
+        _rerun(db, plan, student, bg, {"message": "Accepted a resolution option", "applied": [applied], "assumptions": [], "mode": "ui"},
+               "course_discovery")
+        return {"applied": [applied], "rerun": True}
     kind, _, target = body.relaxes.partition(":")
     pref_label = target.removeprefix("Preference: ") if target.startswith("Preference: ") else None
     if kind == "avail" and pref_label is not None:
@@ -176,19 +204,8 @@ def accept_resolution(plan_id: str, body: ResolveIn, bg: BackgroundTasks, db: Se
         applied = f"Accepted tradeoff: gave up '{pref_label}' for this term"
     elif kind == "avail":
         raise HTTPException(422, "This is a hard availability constraint. Change it yourself in the availability editor if your schedule allows.")
-    elif kind == "must":
-        p.deferred_courses = [*dict.fromkeys([*p.deferred_courses, target])]
-        applied = f"Deferred {target} to a future term (graduation risk accepted)"
-    elif kind == "req" and any(i.course == target for i in student.plan_courses(plan_term_name(db, plan.term_id))):
-        for t in student.grad_plan:
-            if t.term.lower() == plan_term_name(db, plan.term_id).lower():
-                for i in t.items:
-                    if i.course == target:
-                        i.include = False
-        applied = f"Deferred {target} from your graduation plan to a future term (check with your advisor)"
-    elif kind == "req":
-        p.required_courses = [c for c in p.required_courses if c != target]
-        applied = f"No longer requiring {target}"
+    elif kind in ("must", "req"):
+        applied = _defer(db, plan, student, kind, target)
     elif kind == "lock":
         p.locked_sections = [s for s in p.locked_sections if s != target]
         applied = f"Unlocked {target}"

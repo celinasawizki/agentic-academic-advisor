@@ -8,5 +8,6 @@ tags: [moc, decisions]
 - [[ADR-004 Never guess requirements]]
 - [[ADR-005 One pipeline for every program]]
 - [[ADR-006 Graduation plan selects the semester's courses]]
+- [[ADR-007 Optional MySQL backend on Temple's course server]]
 
 New decision → copy [[ADR Template]].

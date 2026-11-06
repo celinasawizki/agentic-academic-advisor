@@ -92,6 +92,14 @@ echo "NEXT_PUBLIC_API_URL=http://127.0.0.1:8000" > .env.local
 npm run dev                       # http://localhost:3000
 ```
 
+**Database.** By default the API uses a local SQLite file, so it runs anywhere with no setup. To use Temple's course MySQL server instead, put the account the instructor provided in `.env` (never commit it):
+
+```bash
+DATABASE_URL=mysql+pymysql://USER:PASSWORD@dataanalytics.temple.edu:3306/DATABASE?charset=utf8mb4
+```
+
+The account must be allowed to create tables in `DATABASE`. The first start creates the tables and loads the catalog over the network (about a minute); later starts reuse it. The server may only be reachable from Temple's network or VPN. Everyone using the same database shares the same students and plans, so enter only fictional data there unless that is agreed. `TEST_DATABASE_URL` runs the test suite against another server; point it at a throwaway database.
+
 The API reloads the catalog automatically whenever files in `data/temple` change (students and plans are kept), and adds new columns to existing SQLite databases automatically. Real students created through onboarding receive an access token stored in the browser; without it their records return 404.
 
 Then open http://localhost:3000. To try it without your own documents, open `/demo` and run a fictional student (e.g. Lina Haddad), or go to `/onboarding` and click **Prefill fictional demo values**, which includes a fictional graduation plan. Real students must upload a graduation plan before schedules are generated; set `REQUIRE_GRAD_PLAN=false` in `.env` to turn that off and let the optimizer choose courses from the open requirements instead.

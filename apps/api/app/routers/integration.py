@@ -46,6 +46,10 @@ def save_draft(body: DraftIn, db: Session = Depends(get_db), principal: Principa
     opt = db.get(ScheduleOption, body.option_id)
     if not opt or opt.plan_id != plan.id:
         raise HTTPException(404, "Schedule option not found")
+    if plan.status == "running":
+        raise HTTPException(409, "Planning is running for this plan; wait for the new options before saving a draft.")
+    if body.option_id not in {o["id"] for o in plan.state.get("schedule_optimization", {}).get("options", [])}:
+        raise HTTPException(409, "This option is from an earlier version of the plan and is no longer offered.")
     if not body.student_approved:
         raise HTTPException(422, "The student must review and approve the schedule before a draft is saved.")
     if opt.review_status == "rejected":

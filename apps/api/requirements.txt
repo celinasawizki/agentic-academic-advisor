@@ -5,6 +5,7 @@ ortools==9.15.6755
 pydantic==2.14.2
 pydantic-settings==2.16.2
 pypdf==6.21.4
+PyMySQL==1.2.3
 pytest==9.2.0
 python-dotenv==1.2.4
 python-multipart==0.0.33

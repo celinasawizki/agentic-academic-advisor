@@ -11,7 +11,7 @@ from app.adapters.grad_plan import parse_grad_plan
 from app.core.auth import Principal, authorize_student, get_principal, new_token
 from app.core.config import settings
 from app.core.db import get_db
-from app.models import (StudentInterest, AcademicTerm, AdvisorReview, AgentExecution, Course, IntegrationStatus, PlanRun, ScheduleCourse,
+from app.models import (StudentInterest, AcademicProgram, AcademicTerm, AdvisorReview, AgentExecution, Course, IntegrationStatus, PlanRun, ScheduleCourse,
                         SchedulingConstraint, ScheduleOption, Student, ValidationResult)
 from app.orchestrator import student_profile
 from app.seed import upsert_student
@@ -98,7 +98,7 @@ class OnboardingIn(BaseModel):
 
 @router.get("/students/demo")
 def demo_students(db: Session = Depends(get_db)):
-    return [{"id": s.id, "name": s.name, "academic_year": s.academic_year} for s in db.query(Student).filter_by(is_demo=True).all()]
+    return [{"id": s.id, "name": s.name, "academic_year": s.academic_year} for s in db.query(Student).filter_by(is_demo=True).order_by(Student.id).all()]
 
 
 @router.get("/students/{student_id}")
@@ -115,6 +115,10 @@ def create_student(body: OnboardingIn, db: Session = Depends(get_db)):
         raise HTTPException(422, f"{body.campus} campus scheduling is not supported in this prototype yet. Choose Main Campus.")
     if not db.get(AcademicTerm, body.planning_term):
         raise HTTPException(422, "Unknown planning term")
+    # Compare ids exactly: MySQL's case-insensitive collation would also find "CIS-BS" for "cis-bs".
+    unknown = [p for p in dict.fromkeys(body.programs) if getattr(db.get(AcademicProgram, p), "id", None) != p]
+    if unknown:  # otherwise the plan silently runs with no requirements for that program
+        raise HTTPException(422, f"Unknown program(s): {', '.join(u[:120] for u in unknown)}")
     if not (body.credit_min <= body.credit_target <= body.credit_max):
         raise HTTPException(422, "Credit target must be within the acceptable range")
     if settings.require_grad_plan or body.grad_plan:

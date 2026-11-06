@@ -17,7 +17,7 @@ def programs(db: Session = Depends(get_db)):
 
 @router.get("/terms")
 def terms(db: Session = Depends(get_db)):
-    return [{"id": t.id, "name": t.name, "start": t.start_date, "end": t.end_date} for t in db.query(AcademicTerm).all()]
+    return [{"id": t.id, "name": t.name, "start": t.start_date, "end": t.end_date} for t in db.query(AcademicTerm).order_by(AcademicTerm.id).all()]
 
 
 @router.get("/courses")

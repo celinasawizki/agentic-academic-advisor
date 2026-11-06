@@ -29,8 +29,12 @@ class ReviewIn(BaseModel):
 @router.get("/overview", dependencies=[Depends(require_advisor)])
 def overview(db: Session = Depends(get_db)):
     out = []
-    for s in db.query(Student).filter_by(is_demo=True).all():
-        plan = db.query(PlanRun).filter_by(student_id=s.id, status="complete").order_by(PlanRun.created_at.desc()).first()
+    for s in db.query(Student).filter_by(is_demo=True).order_by(Student.id).all():
+        # Sort only the ids: sorting whole rows drags the large `state` JSON into MySQL's sort
+        # buffer and fails with "Out of sort memory" (error 1038) once plans grow past ~256 KB.
+        plan_id = (db.query(PlanRun.id).filter_by(student_id=s.id, status="complete")
+                   .order_by(PlanRun.created_at.desc()).limit(1).scalar())
+        plan = db.get(PlanRun, plan_id) if plan_id else None
         item = {"student_id": s.id, "name": s.name, "academic_year": s.academic_year, "programs": s.program_ids,
                 "expected_graduation": s.expected_graduation, "f1": s.f1_status == "yes", "plan_id": None}
         if plan:

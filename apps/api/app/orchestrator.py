@@ -4,6 +4,7 @@ shows real progress. The Review agent can reject options, which triggers a
 bounded revision loop back through the optimizer."""
 
 import logging
+import time
 import traceback
 import uuid
 from datetime import datetime, timezone
@@ -114,13 +115,27 @@ def run_plan(plan_id: str, start_from: str | None = None) -> None:
         _run(db, plan_id, start_from)
     except Exception:  # noqa: BLE001 - surface any failure to the UI instead of hanging
         log.exception("Plan %s failed", plan_id)
-        plan = db.get(PlanRun, plan_id)
-        if plan:
-            plan.status = "failed"
-            plan.state = {**plan.state, "_error": traceback.format_exc(limit=3)}
-            db.commit()
+        _mark_failed(db, plan_id, traceback.format_exc(limit=3))
     finally:
         db.close()
+
+
+def _mark_failed(db: Session, plan_id: str, error: str, attempts: int = 3) -> None:
+    """Release the plan so the student can retry. The failing session may hold an invalidated
+    transaction (e.g. a dropped MySQL connection), so roll back first and retry briefly;
+    otherwise the plan stays 'running' and every later change is refused with 409."""
+    for attempt in range(attempts):
+        try:
+            db.rollback()
+            plan = db.get(PlanRun, plan_id)
+            if plan:
+                plan.status = "failed"
+                plan.state = {**plan.state, "_error": error}
+                db.commit()
+            return
+        except Exception:  # noqa: BLE001
+            log.warning("Could not mark plan %s failed (attempt %d)", plan_id, attempt + 1, exc_info=True)
+            time.sleep(2 * (attempt + 1))
 
 
 def _run(db: Session, plan_id: str, start_from: str | None) -> None:

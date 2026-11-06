@@ -4,7 +4,8 @@ import tempfile
 from pathlib import Path
 
 _tmp = tempfile.mkdtemp()
-os.environ["DATABASE_URL"] = f"sqlite:///{_tmp}/test.db"
+# TEST_DATABASE_URL runs the suite against another server (e.g. MySQL); it must be a throwaway database.
+os.environ["DATABASE_URL"] = os.environ.get("TEST_DATABASE_URL") or f"sqlite:///{_tmp}/test.db"
 os.environ["ANTHROPIC_API_KEY"] = ""  # tests must be deterministic and offline
 os.environ["LIVE_BULLETIN_RESEARCH"] = "false"
 # Most workflow tests exercise requirement-driven planning; test_grad_plan.py turns the gate back on.

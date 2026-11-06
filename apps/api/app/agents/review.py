@@ -107,6 +107,14 @@ class AcademicReviewAgent(Agent):
     def run(self, ctx: PlanContext) -> dict:
         opt_out = ctx.state["schedule_optimization"]
         reviews, rejected = {}, []
+        # An option from an earlier iteration that this run did not produce (e.g. its strategy is now
+        # infeasible) must not survive as a reviewed, exportable row.
+        current = {o["id"] for o in opt_out["options"]}
+        for old in ctx.db.query(ScheduleOption).filter_by(plan_id=ctx.plan_id).all():
+            if old.id not in current:
+                ctx.db.query(ValidationResult).filter_by(option_id=old.id).delete()
+                ctx.db.delete(old)
+        ctx.db.flush()
         for opt in opt_out["options"]:
             secs = [SectionData(**{k: v for k, v in x.items() if k in SectionData.model_fields}) for x in opt["sections"]]
             checks = review_sections(ctx, secs, {x["course"]: x["requirement_ids"] for x in opt["sections"]},

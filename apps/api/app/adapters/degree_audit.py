@@ -10,7 +10,9 @@ from pypdf import PdfReader
 
 COURSE_RE = re.compile(r"\b([A-Z]{2,5})\s?(\d{4})\b")
 TERM_RE = re.compile(r"\b(FA|SP|SU|Fall|Spring|Summer)\s?'?(\d{2,4})\b", re.I)
-GRADE_RE = re.compile(r"\b(A-|A|B\+|B-|B|C\+|C-|C|D\+|D|F|P|TR|IP|CR)\b")
+# A "\b" after "+"/"-" never matches before a space, which silently turned B+ into B and C- into C
+# (and C- vs C decides minimum-grade rules). Delimit with lookarounds instead.
+GRADE_RE = re.compile(r"(?<![A-Za-z0-9])(A-|A|B\+|B-|B|C\+|C-|C|D\+|D-|D|F|P|TR|IP|CR)(?![A-Za-z0-9+-])")
 
 
 def extract_text(pdf_bytes: bytes) -> str:
