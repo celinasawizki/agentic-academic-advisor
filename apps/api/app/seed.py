@@ -28,6 +28,7 @@ def init_db() -> None:
 def _add_missing_columns() -> None:
     """Additive-only migration for prototype databases: add new nullable columns."""
     insp = inspect(engine)
+    q = engine.dialect.identifier_preparer.quote  # "col" on SQLite/PostgreSQL, `col` on MySQL
     with engine.begin() as conn:
         for table in Base.metadata.sorted_tables:
             if not insp.has_table(table.name):
@@ -35,7 +36,7 @@ def _add_missing_columns() -> None:
             existing = {c["name"] for c in insp.get_columns(table.name)}
             for col in table.columns:
                 if col.name not in existing:
-                    conn.execute(text(f'ALTER TABLE {table.name} ADD COLUMN "{col.name}" {col.type.compile(engine.dialect)}'))
+                    conn.execute(text(f"ALTER TABLE {q(table.name)} ADD COLUMN {q(col.name)} {col.type.compile(engine.dialect)}"))
 
 
 def term_name(code: str) -> str:

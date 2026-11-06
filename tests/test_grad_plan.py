@@ -158,6 +158,18 @@ def test_a_blocked_grad_plan_course_is_explained_not_replaced(client, gate_on):
     assert defer["feasible"] and defer["courses"] == ["MKTG 2101"]
 
 
+def test_no_feasible_schedule_is_never_reported_as_satisfying_every_preference(client, gate_on):
+    # QA on MySQL: with no soft preferences the ideal check short-circuited to "perfect", so the
+    # student saw "We found a schedule that satisfies all of your preferences" next to zero options.
+    plan = {"term": "Spring 2027", "items": [{"course": "MKTG 2101", "credits": 3}, {"course": "PSY 3610", "credits": 3}]}
+    st = run_plan_for(client, [plan])
+    assert not st["schedule_optimization"]["options"]
+    ideal = st["schedule_optimization"]["ideal_analysis"]
+    assert not ideal["perfect_exists"]
+    assert "Include PSY 3610 (your graduation plan)" in {g["description"] for g in ideal["conflict_set"]}
+    assert not st["student_explanation"]["headline"].startswith("We found a schedule")
+
+
 def test_deferring_a_blocked_grad_plan_course_schedules_the_rest(client, gate_on):
     plan = {"term": "Spring 2027", "items": [{"course": "MKTG 2101", "credits": 3}, {"course": "PSY 3610", "credits": 3}]}
     r = client.post("/api/students", json=student_body(grad_plan=[plan]))
@@ -166,6 +178,35 @@ def test_deferring_a_blocked_grad_plan_course_schedules_the_rest(client, gate_on
     assert client.post(f"/api/plans/{pid}/resolve", json={"relaxes": "req:PSY 3610"}, headers=auth).status_code == 200
     opt = client.get(f"/api/plans/{pid}", headers=auth).json()["state"]["schedule_optimization"]
     assert opt["options"] and all({s["course"] for s in o["sections"]} == {"MKTG 2101"} for o in opt["options"])
+
+
+def test_two_blocked_grad_plan_courses_get_a_verified_combined_deferral(client, gate_on):
+    # QA: with two blocked planned courses, deferring either one alone is infeasible and no other
+    # resolution worked, so the student had no way forward.
+    plan = {"term": "Spring 2027", "items": [{"course": "MKTG 2101", "credits": 3}, {"course": "PSY 3610", "credits": 3},
+                                             {"course": "PSY 3710", "credits": 3}]}
+    r = client.post("/api/students", json=student_body(grad_plan=[plan]))
+    auth = {"Authorization": f"Bearer {r.json()['access_token']}"}
+    pid = client.post("/api/plans", json={"student_id": r.json()["id"]}, headers=auth).json()["plan_id"]
+    opt = client.get(f"/api/plans/{pid}", headers=auth).json()["state"]["schedule_optimization"]
+    assert not opt["options"]
+    resolutions = opt["infeasible_strategies"][0]["resolutions"]
+    singles = [x for x in resolutions if " + " not in x["relaxes"]]
+    assert singles and not any(x["feasible"] for x in singles)  # each planned course is its own conflict
+    combo = next(x for x in resolutions if set(x["relaxes"].split(" + ")) == {"req:PSY 3610", "req:PSY 3710"})
+    assert combo["feasible"] and set(combo["courses"]) == {"MKTG 2101"} and combo["type"] == "defer_course"
+    assert client.post(f"/api/plans/{pid}/resolve", json={"relaxes": combo["relaxes"]}, headers=auth).status_code == 200
+    opt = client.get(f"/api/plans/{pid}", headers=auth).json()["state"]["schedule_optimization"]
+    assert opt["options"] and all({s["course"] for s in o["sections"]} == {"MKTG 2101"} for o in opt["options"])
+
+
+def test_combined_resolution_only_combines_course_deferrals(client, gate_on):
+    plan = {"term": "Spring 2027", "items": [{"course": "MKTG 2101", "credits": 3}]}
+    r = client.post("/api/students", json=student_body(grad_plan=[plan]))
+    auth = {"Authorization": f"Bearer {r.json()['access_token']}"}
+    pid = client.post("/api/plans", json={"student_id": r.json()["id"]}, headers=auth).json()["plan_id"]
+    bad = client.post(f"/api/plans/{pid}/resolve", json={"relaxes": "req:MKTG 2101 + f1:full_time"}, headers=auth)
+    assert bad.status_code == 422
 
 
 def test_show_different_options_varies_sections_not_courses(client, gate_on):

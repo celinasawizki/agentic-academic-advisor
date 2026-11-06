@@ -234,6 +234,43 @@ def sequence_pairs(ctx: PlanContext, codes: list[str]) -> list[tuple[str, str]]:
     return pairs
 
 
+DEFERRABLE = ("must_course", "student_required")
+COMBINED_SEP = " + "
+MAX_COMBINED_DEFERRALS = 6
+
+
+def combined_deferral(ctx: PlanContext, model, strat, excluded_sets, conflict_set: list[HardGroup], singles: list[dict]) -> dict | None:
+    """When deferring a required/planned course alone is not enough because another one is also
+    unschedulable (e.g. two graduation-plan courses both lack prerequisites: each is its own minimal
+    conflict, so neither conflict set names the other), keep deferring the course the solver blocks
+    on next. Offered only if that ends in a schedule the solver confirms, and only course deferrals
+    are combined (never availability, credit or F-1 constraints)."""
+    groups = [g for g in conflict_set if g.kind in DEFERRABLE]
+    if not groups or any(r["feasible"] for r in singles if r["relaxes"] in {g.key for g in groups}):
+        return None
+    for _ in range(MAX_COMBINED_DEFERRALS):
+        res = model.solve(strat, exclude_sets=excluded_sets, disabled={g.key for g in groups})
+        if res.feasible:
+            break
+        more = [g for g in res.conflict_set if g.kind in DEFERRABLE and g.key not in {x.key for x in groups}]
+        if not more:
+            return None
+        groups += more
+    else:
+        return None
+    if len(groups) < 2:
+        return None
+    courses = [g.key.split(":", 1)[1] for g in groups]
+    names = ", ".join(courses[:-1]) + f" and {courses[-1]}"
+    return {"relaxes": COMBINED_SEP.join(g.key for g in groups), "feasible": True, "credits": res.credits,
+            "sections": [s.id for s in res.sections], "courses": [s.course for s in res.sections],
+            "type": "defer_course", "constraint_class": "academic_priority",
+            "title": f"Defer {names} to a future term",
+            "detail": f"Deferring any one of these alone is not enough; deferring all {len(courses)} gives a valid schedule. "
+                      "They would be taken in a later term, subject to availability.",
+            "alternatives": [], "alternative_note": None, "requires": "your decision; check with your advisor"}
+
+
 def describe_resolution(ctx: PlanContext, g: HardGroup, res) -> dict:
     grad = ctx.state["graduation_planning"]
     out = {"relaxes": g.key, "feasible": res.feasible, "credits": res.credits,
@@ -312,10 +349,12 @@ class ScheduleOptimizationAgent(Agent):
             res = model.solve(strat, exclude_sets=excluded_sets)
             if not res.feasible:
                 ctx.log(f"{strat.label}: infeasible", conflict_set=[g.description for g in res.conflict_set])
+                resolutions = [describe_resolution(ctx, g, model.solve(strat, exclude_sets=excluded_sets, disabled={g.key}))
+                               for g in res.conflict_set]
+                combined = combined_deferral(ctx, model, strat, excluded_sets, res.conflict_set, resolutions)
                 infeasible.append({"strategy": strat.key, "label": strat.label,
                                    "conflict_set": [g.__dict__ for g in res.conflict_set], "minimal": res.conflict_set_minimal,
-                                   "resolutions": [describe_resolution(ctx, g, model.solve(strat, exclude_sets=excluded_sets, disabled={g.key}))
-                                                   for g in res.conflict_set]})
+                                   "resolutions": resolutions + ([combined] if combined else [])})
                 continue
             option = self._option(ctx, strat, rank, res, model)
             option["alternatives"] = {} if plan_mode else verified_alternatives(ctx, model, strat, res, [set(x) for x in excluded_sets])
@@ -325,6 +364,12 @@ class ScheduleOptimizationAgent(Agent):
                     courses=[s.course for s in res.sections], solver_status=res.breakdown.get("status"))
 
         ideal = self._ideal_analysis(ctx)
+        if not options and infeasible and ideal["perfect_exists"]:
+            # The ideal check can short-circuit (no soft preferences, no must-courses) without solving;
+            # with no feasible option at all, report the solver's conflict set instead of "all satisfied".
+            first = infeasible[0]
+            ideal = {"perfect_exists": False, "minimal": first["minimal"], "conflict_set": first["conflict_set"],
+                     "resolutions": first["resolutions"]}
         pool = model.pool
         top_pruned = sorted(pool["pruned"], key=lambda c: -pool["values"][c])[:15]
         ctx.log(f"Candidate pool: {len(pool['considered'])} of {len(pool['values'])} eligible courses given to the solver",

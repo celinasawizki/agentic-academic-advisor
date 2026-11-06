@@ -3,14 +3,42 @@
 
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import JSON, Boolean, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import DateTime as _DateTime
+from sqlalchemy.dialects.mysql import DATETIME as MYSQL_DATETIME
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import TypeDecorator
 
 from app.core.db import Base
 
 
 def now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+class DateTime(TypeDecorator):
+    """UTC timestamp that behaves the same on SQLite, PostgreSQL and MySQL. MySQL's
+    DATETIME drops the timezone and, by default, fractions of a second; this stores
+    naive UTC with microseconds and always returns an aware UTC datetime."""
+    impl = _DateTime
+    cache_ok = True
+
+    def __init__(self, timezone: bool = True):  # noqa: ARG002 - always UTC
+        super().__init__()
+
+    def load_dialect_impl(self, dialect):
+        return dialect.type_descriptor(MYSQL_DATETIME(fsp=6) if dialect.name == "mysql" else _DateTime(timezone=True))
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return None
+        value = value.astimezone(timezone.utc) if value.tzinfo else value
+        return value.replace(tzinfo=None) if dialect.name == "mysql" else value.replace(tzinfo=timezone.utc)
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return None
+        return value.replace(tzinfo=timezone.utc) if value.tzinfo is None else value.astimezone(timezone.utc)
 
 
 class ResearchSource(Base):
@@ -225,10 +253,10 @@ class ScheduleOption(Base):
     label: Mapped[str] = mapped_column(String(60))
     strategy: Mapped[str] = mapped_column(String(30))
     rank: Mapped[int] = mapped_column(Integer)
-    total_credits: Mapped[int] = mapped_column(Integer)
+    total_credits: Mapped[float] = mapped_column(Float)
     scores: Mapped[dict] = mapped_column(JSON, default=dict)
     violated_soft: Mapped[list[dict]] = mapped_column(JSON, default=list)
-    review_status: Mapped[str] = mapped_column(String(20), default="pending")  # approved|flagged|rejected|pending
+    review_status: Mapped[str] = mapped_column(String(40), default="pending")  # approved | checks_passed_with_warnings | flagged | rejected | pending
     courses: Mapped[list["ScheduleCourse"]] = relationship(cascade="all, delete-orphan")
 
 

@@ -1,7 +1,7 @@
 "use client"
 
 import {
-  ArrowLeft, ArrowRight, BookOpen, Building2, CalendarClock, Check, FileUp, Gauge, Globe2, GraduationCap, Loader2, Plus, Search, ShieldAlert,
+  ArrowLeft, ArrowRight, BookOpen, Building2, CalendarClock, Check, Gauge, Globe2, GraduationCap, Loader2, Plus, Search, ShieldAlert,
   Sparkles, Trash2, UserRound,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -10,6 +10,7 @@ import { toast } from "sonner"
 
 import { AvailabilityGrid } from "@/components/planner/availability-grid"
 import { Pill } from "@/components/planner/badges"
+import { PdfDropZone } from "@/components/planner/pdf-drop-zone"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -310,12 +311,8 @@ export default function Onboarding() {
                 </span>
               </label>
               <div className="grid gap-4 sm:grid-cols-2">
-                <label className={cn("flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 text-center transition-colors hover:bg-muted/50", !consent && "pointer-events-none opacity-50")}>
-                  {uploading ? <Loader2 className="size-6 animate-spin text-primary" /> : <FileUp className="size-6 text-primary" />}
-                  <span className="text-sm font-medium">Upload degree audit or unofficial transcript</span>
-                  <span className="text-xs text-muted-foreground">PDF, max 5 MB · parsed locally</span>
-                  <input type="file" accept="application/pdf" className="hidden" onChange={(e) => e.target.files?.[0] && upload(e.target.files[0])} />
-                </label>
+                <PdfDropZone title="Upload degree audit or unofficial transcript" hint="Drop a PDF here or click · max 5 MB · parsed locally"
+                  busy={uploading} disabled={!consent} onFile={upload} />
                 <div className="rounded-xl border p-4">
                   <div className="mb-2 text-sm font-medium">Add a course manually</div>
                   <div className="flex gap-2">
@@ -577,12 +574,9 @@ function GradPlanStep({ plan, onChange, notes, termName, uploading, consent, onU
         Schedules are built only from the courses your graduation plan lists for <b className="text-foreground">{termName || "your planning semester"}</b>.
         The planner picks sections and times for those courses and never adds other classes. Upload the E-Graduation Plan PDF from your advisor.
       </p>
-      <label className={cn("flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-6 text-center transition-colors hover:bg-muted/50", !consent && "pointer-events-none opacity-50")}>
-        {uploading ? <Loader2 className="size-6 animate-spin text-primary" /> : <FileUp className="size-6 text-primary" />}
-        <span className="text-sm font-medium">{plan.length ? "Replace graduation plan" : "Upload graduation plan"}</span>
-        <span className="text-xs text-muted-foreground">PDF, max 5 MB · parsed locally, never stored or sent to an AI provider</span>
-        <input type="file" accept="application/pdf" className="hidden" onChange={(e) => { if (e.target.files?.[0]) onUpload(e.target.files[0]); e.target.value = "" }} />
-      </label>
+      <PdfDropZone title={plan.length ? "Replace graduation plan" : "Upload graduation plan"}
+        hint="Drop a PDF here or click · max 5 MB · parsed locally, never stored or sent to an AI provider"
+        busy={uploading} disabled={!consent} onFile={onUpload} />
       {notes.length > 0 && <ul className="space-y-0.5 text-xs text-muted-foreground">{notes.map((n) => <li key={n}>• {n}</li>)}</ul>}
 
       {plan.length > 0 && (

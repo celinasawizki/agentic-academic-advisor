@@ -143,6 +143,15 @@ def test_parse_audit_text():
     assert rows["GENED 0812"]["status"] == "transfer"
 
 
+def test_parse_audit_keeps_plus_and_minus_grades():
+    """Regression: B+ was read as B and C- as C, which can wrongly pass a minimum-grade-of-C rule."""
+    from app.adapters.degree_audit import parse_audit_text
+    text = ("PSY 1001 Intro 3.0 B+\nPSY 1004 Stats 3.0 C-\nMATH 1041 Calculus 4.0 A-\nENG 0802 Writing 4.0 D-\n"
+            "PSY 2201 Clinical 3.0 C\nCIS 1051 Python 4.0 A")
+    rows = {e["course"]: e["grade"] for e in parse_audit_text(text, set())["entries"]}
+    assert rows == {"PSY 1001": "B+", "PSY 1004": "C-", "MATH 1041": "A-", "ENG 0802": "D-", "PSY 2201": "C", "CIS 1051": "A"}
+
+
 
 def _real_student(client):
     r = client.post("/api/students", json={"name": "T", "academic_year": "Junior", "expected_graduation": "2028-05",

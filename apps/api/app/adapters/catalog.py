@@ -4,7 +4,7 @@ retrieval timestamp and catalog year) rather than generated."""
 import json
 from abc import ABC, abstractmethod
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from app.core.config import settings
 from app.domain import RequirementData
@@ -28,7 +28,8 @@ class DbCatalogAdapter(RequirementsCatalogAdapter):
 
     def programs(self) -> dict[str, dict]:
         out = {}
-        for p in self.db.query(AcademicProgram).all():
+        # Load sources in one query: lazy per-program loads cost ~435 round trips on a remote MySQL (~10 s).
+        for p in self.db.query(AcademicProgram).options(selectinload(AcademicProgram.source)).all():
             out[p.id] = {"id": p.id, "name": p.name, "type": p.type, "college": p.college, "catalog_year": p.catalog_year,
                          "supported": p.supported, "total_credit_hours": p.total_credit_hours,
                          "layers": p.layers or [], "min_grade": p.min_grade,
